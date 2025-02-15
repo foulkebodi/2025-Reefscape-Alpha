@@ -5,19 +5,23 @@
 package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
+import frc.robot.Constants.ClimberConstants;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.climber.ClimberClimbCmd;
+import frc.robot.commands.climber.ClimberHomeCmd;
 import frc.robot.commands.elevator.ElevatorCoralOneCmd;
 import frc.robot.commands.elevator.ElevatorCoralThreeCmd;
 import frc.robot.commands.elevator.ElevatorCoralTwoCmd;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
+import frc.robot.commands.elevator.ElevatorManualCmd;
 import frc.robot.commands.pivot.PivotReefCmd;
 import frc.robot.commands.pivot.PivotStowCmd;
 import frc.robot.commands.util.ExampleCommand;
 import frc.robot.commands.util.SysIDRoutines;
+import frc.robot.subsystems.ClimberSys;
 import frc.robot.subsystems.ElevatorSys;
 import frc.robot.subsystems.PivotSys;
 import frc.robot.subsystems.drive.PoseEstimator;
@@ -55,6 +59,7 @@ public class RobotContainer {
 	private final SwerveDrive swerveDrive = new SwerveDrive();
 	private final ElevatorSys elevatorSys = new ElevatorSys();
 	private final PivotSys pivotSys = new PivotSys();
+	private final ClimberSys climberSys = new ClimberSys();
 
 	private final PoseEstimator poseEstimator = new PoseEstimator(
 		SwerveDriveConstants.kinematics,
@@ -117,16 +122,24 @@ public class RobotContainer {
 					true,
 					swerveDrive,
 					poseEstimator));
-
-		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold).onFalse(new ElevatorHomeCmd(elevatorSys));
-		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
-		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
-		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
+		
+		elevatorSys.setDefaultCommand(new ElevatorManualCmd(
+			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
+			elevatorSys));
+		
+		operatorController.a().onTrue(new ElevatorHomeCmd(elevatorSys));
+		operatorController.b().onTrue(new ElevatorCoralOneCmd(elevatorSys));
+		operatorController.y().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
+		operatorController.x().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
 
 		operatorController.povUp().onTrue(new PivotReefCmd(pivotSys));
 		operatorController.povDown().onTrue(new PivotStowCmd(pivotSys));
 
-		
+		operatorController.povRight().onTrue(new ClimberClimbCmd(climberSys));
+		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
+
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold).onFalse(new ElevatorHomeCmd(elevatorSys));
+
 	}
 
 	/**

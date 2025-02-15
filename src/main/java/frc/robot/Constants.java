@@ -9,7 +9,6 @@ import com.pathplanner.lib.config.ModuleConfig;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
@@ -78,6 +77,9 @@ public final class Constants {
 
         public static final int frontBeamBreakPort = 8;
         public static final int backBeamBreakPort = 7;
+       
+        public static final int leftClimberMtrID = 21;
+        public static final int rightClimberMtrID = 22;
 	}
 
     public static class SwerveModuleConstants {
@@ -271,7 +273,7 @@ public final class Constants {
         // MAXMotion
         public static final double maxAccelRPMPerSec = 100.0;
 
-        public static final double intakeRPM = 5250.0; // maximum: 1696.0
+        public static final double intakeRPM = 500.0; // maximum: 1696.0
         
         public static final double outtakeRPM = 900.0; // maximum: 1696.0
 
@@ -282,5 +284,59 @@ public final class Constants {
         public static final double rollerCircumferenceMeters = rollerDiameterMeters * Math.PI;
 
         public static final double metersPerSecondPerRPM = rollerCircumferenceMeters / 60.0;
+    }
+
+    public class CoralConstants {
+
+        public static final int maxCoralCurrentAmps = 50;
+
+        public static final double gearRatio = 4.0;
+
+        public static final double outputRevPerMtrRev = 1 / gearRatio;
+
+        public static final double outputRPMPerMtrRPM = 1 / gearRatio;
+
+        public static final double maxRPM = 6784.0 / gearRatio;
+
+        public static final double maxAccelRPMPerSec = 100.0;
+
+        public static final double outtakeRPM = 100.0;
+
+        public static final double intakeRPM = 5250.0;
+
+    }
+
+    public static class ClimberConstants {
+        public static final int maxClimberCurrentAmps = 50;
+
+        public static final double gearRatio = 48.0;
+
+        public static final double kP = 0.012; // 0.035;
+        public static final double kD = 0.00025; // 0.00037;
+
+        public static final double degPerEncRev = 360.0 / gearRatio;
+        public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
+
+        public static final double freeSpeedRPM = 6784.0 / gearRatio;
+
+        public static final double maxVelDegPerSec = 200.0; // 400.0;
+
+        public static final double maxAccelDegPerSecSq = 200.0; // 575.0;
+
+        public static final double maxManualDegPerSec = 100.0;
+
+        public static final double maxManualDegPerSecSq = 375.0;
+
+        public static final double climbingPresetDeg = 150.0;
+
+        public static final double homePresetDeg = 0.0;
+
+        public static final float lowerLimitDeg = 0f;
+
+        public static final float upperLimitDeg = 180f;
+
+        public static final double podiumCorrectionIncrementDeg = .01;
+
+        public static final double toleranceDeg = 0.5;
     }
 }

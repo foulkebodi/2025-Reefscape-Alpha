@@ -4,14 +4,11 @@ import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
-import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RollerConstants;
 import frc.robot.Constants.CANDevices;
-import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.CoralConstants;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -33,6 +30,8 @@ public class CoralSys extends SubsystemBase {
   private final DigitalInput backBeamBreak;
   private final DigitalInput frontBeamBreak;
 
+  private double targetRPM;
+
 public CoralSys() {
     rightCoralMtr = new SparkFlex(CANDevices.rightCoralMtrID, MotorType.kBrushless);
     SparkFlexConfig rightCoralSparkFlexConfig = new SparkFlexConfig();
@@ -48,16 +47,16 @@ public CoralSys() {
     rightCoralSparkFlexConfig.voltageCompensation(10);
     leftCoralSparkFlexConfig.voltageCompensation(10);
 
-    rightCoralSparkFlexConfig.smartCurrentLimit(RollerConstants.maxRollerCurrentAmps);
-    leftCoralSparkFlexConfig.smartCurrentLimit(RollerConstants.maxRollerCurrentAmps);
+    rightCoralSparkFlexConfig.smartCurrentLimit(CoralConstants.maxCoralCurrentAmps);
+    leftCoralSparkFlexConfig.smartCurrentLimit(CoralConstants.maxCoralCurrentAmps);
 
     leftCoralEnc = leftCoralMtr.getEncoder();
     rightCoralEnc = rightCoralMtr.getEncoder();
 
-    leftCoralSparkFlexConfig.encoder.positionConversionFactor(RollerConstants.outputRevPerMtrRev);
-    leftCoralSparkFlexConfig.encoder.velocityConversionFactor(RollerConstants.outputRPMPerMtrRPM);
-    rightCoralSparkFlexConfig.encoder.positionConversionFactor(RollerConstants.outputRevPerMtrRev);
-    rightCoralSparkFlexConfig.encoder.velocityConversionFactor(RollerConstants.outputRPMPerMtrRPM);
+    leftCoralSparkFlexConfig.encoder.positionConversionFactor(CoralConstants.outputRevPerMtrRev);
+    leftCoralSparkFlexConfig.encoder.velocityConversionFactor(CoralConstants.outputRPMPerMtrRPM);
+    rightCoralSparkFlexConfig.encoder.positionConversionFactor(CoralConstants.outputRevPerMtrRev);
+    rightCoralSparkFlexConfig.encoder.velocityConversionFactor(CoralConstants.outputRPMPerMtrRPM);
 
     leftCoralController = leftCoralMtr.getClosedLoopController();
     rightCoralController = rightCoralMtr.getClosedLoopController();
@@ -69,8 +68,8 @@ public CoralSys() {
     // rightCoralSparkFlexConfig.closedLoop.velocityFF(AlgaeRollerConstants.feedForward);
 
     // MAXMotion
-    leftCoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(RollerConstants.maxAccelRPMPerSec); // RPM per sec
-    rightCoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(RollerConstants.maxAccelRPMPerSec); // RPM per sec
+    leftCoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(CoralConstants.maxAccelRPMPerSec); // RPM per sec
+    rightCoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(CoralConstants.maxAccelRPMPerSec); // RPM per sec
     // rightCoralSparkFlexConfig.closedLoop.maxMotion.allowedClosedLoopError(0.0); // Rotations * positionconversionfactor
 
     leftCoralMtr.configure(
@@ -88,21 +87,32 @@ public CoralSys() {
 
   @Override
   public void periodic() {
-      // if (bbb = 0 and fbb = 1) {
-      // rollers stopped
-      // } else {
-      // rollers at intake rpm
-      // }
+    if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {  
+      leftCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);
+      rightCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);
+    } else if (targetRPM == CoralConstants.outtakeRPM) {
+      leftCoralController.setReference(CoralConstants.outtakeRPM, ControlType.kMAXMotionVelocityControl);
+      rightCoralController.setReference(CoralConstants.outtakeRPM, ControlType.kMAXMotionVelocityControl);
+    } else if (DriverStation.isDisabled()) {
+      leftCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);          
+      rightCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);
+    } else {
+      leftCoralController.setReference(CoralConstants.intakeRPM, ControlType.kMAXMotionVelocityControl);
+      rightCoralController.setReference(CoralConstants.intakeRPM, ControlType.kMAXMotionVelocityControl);
+    }
   }
 
-  public void setRPM(double rpm) {
-
+  // public void setRPM(double rpm) {
     // MAXMotion
     // leftCoralController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
     // rightCoralController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
     // Velocity PID
     // leftCoralController.setReference(rpm, ControlType.kVelocity);
     // rightCoralController.setReference(rpm, ControlType.kVelocity);
+  // }
+
+  public void settargetRPM(double rpm) {
+    targetRPM = rpm;
   }
 
   public double getRPM() {
