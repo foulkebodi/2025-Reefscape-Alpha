@@ -4,13 +4,22 @@
 
 package frc.robot;
 
-import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.elevator.ElevatorCoralOneCmd;
+import frc.robot.commands.elevator.ElevatorCoralThreeCmd;
+import frc.robot.commands.elevator.ElevatorCoralTwoCmd;
+import frc.robot.commands.elevator.ElevatorHomeCmd;
+import frc.robot.commands.pivot.PivotReefCmd;
+import frc.robot.commands.pivot.PivotStowCmd;
 import frc.robot.commands.util.ExampleCommand;
 import frc.robot.commands.util.SysIDRoutines;
+import frc.robot.subsystems.ElevatorSys;
+import frc.robot.subsystems.PivotSys;
 import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.util.ExampleSubsystem;
@@ -25,6 +34,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -43,13 +53,16 @@ public class RobotContainer {
 	private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
 	private final SwerveDrive swerveDrive = new SwerveDrive();
+	private final ElevatorSys elevatorSys = new ElevatorSys();
+	private final PivotSys pivotSys = new PivotSys();
 
 	private final PoseEstimator poseEstimator = new PoseEstimator(
 		SwerveDriveConstants.kinematics,
 		() -> swerveDrive.getHeading(),
 		() -> swerveDrive.getModulePositions());
 
-	private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+	private final CommandXboxController driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
+	private final CommandXboxController operatorController = new CommandXboxController(ControllerConstants.kOperatorControllerPort);
 
 	// Initializes and populates the auto chooser with all the PathPlanner autos in the project.
 	// The deafulat auto is "Do Nothing" and runs Commands.none(), which does nothing.
@@ -74,15 +87,14 @@ public class RobotContainer {
 			swerveDrive);
 
 		new PathPlannerAuto("TestAuto");
-		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
 
+		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
 		// autoChooser.addOption("SysID Quasistatic Forward", SysIDRoutines.quasistaticForward(swerveDrive));
 		// autoChooser.addOption("SysID Quasistatic Reverse", SysIDRoutines.quasistaticReverse(swerveDrive));
 		// autoChooser.addOption("SysID Dynamic Forward", SysIDRoutines.dynamicForward(swerveDrive));
 		// autoChooser.addOption("SysID Dynamic Reverse", SysIDRoutines.dynamicReverse(swerveDrive));
 
 		SmartDashboard.putData(autoChooser);
-
 		// TODO Register the commands used in the PathPlanner auto builder like the below example.
 		NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
 	}
@@ -99,13 +111,22 @@ public class RobotContainer {
 	private void configureBindings() {
 		swerveDrive.setDefaultCommand(
 			new ArcadeDriveCmd(
-					() -> MathUtil.applyDeadband(driverController.getLeftY(), OperatorConstants.joystickDeadband),
-					() -> MathUtil.applyDeadband(driverController.getLeftX(), OperatorConstants.joystickDeadband),
-					() -> MathUtil.applyDeadband(driverController.getRightX(), OperatorConstants.joystickDeadband),
+					() -> MathUtil.applyDeadband(driverController.getLeftY(), ControllerConstants.joystickDeadband),
+					() -> MathUtil.applyDeadband(driverController.getLeftX(), ControllerConstants.joystickDeadband),
+					() -> MathUtil.applyDeadband(driverController.getRightX(), ControllerConstants.joystickDeadband),
 					true,
 					swerveDrive,
 					poseEstimator));
-		// driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetPose()));
+
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold).onFalse(new ElevatorHomeCmd(elevatorSys));
+		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
+		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
+		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
+
+		operatorController.povUp().onTrue(new PivotReefCmd(pivotSys));
+		operatorController.povDown().onTrue(new PivotStowCmd(pivotSys));
+
+		
 	}
 
 	/**

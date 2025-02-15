@@ -37,9 +37,9 @@ public final class Constants {
     }
 
 
-	public static class OperatorConstants {
+	public static class ControllerConstants {
 		public static final int kDriverControllerPort = 0;
-        public static final int operatorGamepadport = 1;
+        public static final int kOperatorControllerPort = 1;
 
 		public static final double joystickDeadband = 0.15;
         public static final double tiggerPressedThreshold = 0.25;
@@ -68,95 +68,18 @@ public final class Constants {
         public static final int leftElevatorMtrID = 15;
         public static final int rightElevatorMtrID = 16;
 
-        public static final int algaePivotMtrID = 17;
-        public static final int algaeRollerMtrID = 18;
+        public static final int pivotMtrID = 17;
+        public static final int rollerMtrID = 18;
 
-        public static final int algaePivotEncPort = 9;
+        public static final int pivotEncPortID = 9;
 
+        public static final int leftCoralMtrID = 20;
+        public static final int rightCoralMtrID = 19;
+
+        public static final int frontBeamBreakPort = 8;
+        public static final int backBeamBreakPort = 7;
 	}
 
-	// public static class SwerveModuleConstants {
-    //     // TODO Tune the below PID and FF values using the SysID routines.
-    //     public static final double driveKp = 0.0; // 0.13
-    //     public static final double driveKd = 0.0;
-
-    //     public static final double steerKp = 0.0; // 0.37431
-    //     public static final double steerKd = 0.0; // 0.27186
-
-    //     public static final double driveKsVolts = 0.667;
-    //     public static final double driveKvVoltSecsPerMeter = 2.44;
-    //     public static final double driveKaVoldSecsPerMeterSq = 0.0;
-
-    //     public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(driveKsVolts, driveKvVoltSecsPerMeter, driveKaVoldSecsPerMeterSq);
-
-    //     // TODO You may want to change this value depending on your breakers and the current usage of the rest of your robot.
-    //     public static final int driveCurrentLimitAmps = 40;
-
-    //     // TODO This number may have to be adjusted depending on what wheels you use.
-    //     public static final double wheelRadiusMeters = Units.inchesToMeters(2.0);
-
-    //     // TODO Set this value to the coefficient of friction of your wheels.
-    //     public static final double wheelCoefficientOfFriction = 1.5;
-
-    //     public static final double driveGearReduction = (16.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0);
-
-    //     public static final double driveMetersPerEncRev = driveGearReduction * 2.0 * wheelRadiusMeters * Math.PI;
-
-    //     public static final double driveMetersPerSecPerEncRPM = driveMetersPerEncRev / 60.0;
-
-    //     public static final double steerGearReduction = (15.0 / 32.0) * (10.0 / 60.0);
-
-    //     public static final double steerRadiansPerEncRev = steerGearReduction * 2.0 * Math.PI;
-
-    //     public static final double steerRadiansPerSecPerEncRPM = steerRadiansPerEncRev / 60.0;
-        
-    //     public static final double driveFreeSpeedMetersPerSec = Units.feetToMeters(20.1);
-
-    //     public static final double driveFreeSpeedRadPerSec = driveFreeSpeedMetersPerSec / wheelRadiusMeters;
-
-    //     public static final double driveNominalOperatingVoltage = 12.0;
-    //     public static final double driveStallTorqueNewtonMeters = 3.6 / driveGearReduction; // Motor's stall torque times gear ratio
-    //     public static final double driveStallCurrentAmps = 211.0;
-    //     public static final double driveFreeCurrentAmps = 3.6;
-
-    //     public static final ModuleConfig moduleConfig = new ModuleConfig(
-    //         wheelRadiusMeters, driveFreeSpeedMetersPerSec, wheelCoefficientOfFriction, 
-    //         new DCMotor(driveNominalOperatingVoltage, driveStallTorqueNewtonMeters, driveStallCurrentAmps, driveFreeCurrentAmps, driveFreeSpeedRadPerSec, 1),
-    //         driveCurrentLimitAmps, 4);
-    // }
-
-	// public static class SwerveDriveConstants {
-    //     public static final Rotation2d flModuleOffset = Rotation2d.fromDegrees(32.08);
-    //     public static final Rotation2d frModuleOffset = Rotation2d.fromDegrees(164.17);
-    //     public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(71.68);
-    //     public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(116.9);
-
-	// 	// TODO Set these dimensions for the distance between the center of each wheel.
-    //     // Note that these values are different from the robot's overall dimenstions.
-	// 	public static final double chassisLengthMeters = Units.inchesToMeters(21.75);
-    //     public static final double chassisWidthMeters = Units.inchesToMeters(21.75);
-
-    //     public static final double chassisRadiusMeters = Math.hypot(chassisLengthMeters, chassisWidthMeters);
-
-    //     public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-    //         new Translation2d(chassisWidthMeters / 2.0, chassisLengthMeters / 2.0),  // front left
-    //         new Translation2d(chassisWidthMeters / 2.0, -chassisLengthMeters / 2.0), // front right
-    //         new Translation2d(-chassisWidthMeters / 2.0, chassisLengthMeters / 2.0), // back left
-    //         new Translation2d(-chassisWidthMeters / 2.0, -chassisLengthMeters / 2.0) // back right
-    //     );
-
-    //     public static final double maxAttainableSpeedMetersPerSec = Units.feetToMeters(20.1);
-    //     public static final double maxAttainableRotationRadPerSec = 13.4;
-
-    //     public static final double skewCompensationRatioOmegaPerTheta = 0.1;
-
-    //     // TODO Tune the below PID values using the SysID routines.
-    //     public static final double autoTranslationKp = 5.0;
-    //     public static final double autoTranslationKd = 0.0;
-
-    //     public static final double autoRotationKp = 5.0;
-    //     public static final double autoRotationKd = 0.0;
-    // }
     public static class SwerveModuleConstants {
         // TODO Tune the below PID and FF values using the SysID routines.
         public static final double driveKp = 0.13; // 0.1
@@ -252,12 +175,13 @@ public final class Constants {
         public static final double kP = 0.03; // 0.035
         public static final double kD = 0.0; // 0.00037
 
-        public static final double sprocketDiameter = 0.9;
+        public static final double sprocketToothCount = 0.9;
+        public static final double chainPitch = 0.25; // inches     
 
-        public static final double inchesPerEncRev = ((2 * sprocketDiameter) / gearRatio);
-        public static final double inchesPerSecPerRPM = ((2 * sprocketDiameter) / gearRatio * 60.0);
+        public static final double inchesPerMtrRev = ((sprocketToothCount * chainPitch) / gearRatio);
+        public static final double inchesPerSecPerRPM = ((sprocketToothCount * chainPitch) / gearRatio * 60.0);
 
-        public static final double freeSpeedInchesPerSec = 6784.0 / gearRatio * sprocketDiameter;
+        public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
 
         public static final double maxVelInchesPerSec = 50.0; // 400.0
 
@@ -265,28 +189,28 @@ public final class Constants {
 
         public static final double maxManualInchesPerSec = 100.0;
 
-        public static final double  maxManualInchesPerSecSq = 100.0;
+        public static final double maxManualInchesPerSecSq = 100.0;
 
-        public static final double coralOnePresetInches = -10.0;
+        public static final double coralOnePresetInches = 10.0;
  
-        public static final double coralTwoPresetInches = -20.0;
+        public static final double coralTwoPresetInches = 20.0;
 
-        public static final double coralThreePresetInches = -30.0;
+        public static final double coralThreePresetInches = 30.0;
 
         public static final double homePresetInches = 0.0;
 
-        public static final double lowerLimitInches = -30f;
+        public static final double lowerLimitInches = 0f;
 
-        public static final double upperLimitInches = 0f; // 47.47
+        public static final double upperLimitInches = 30f; // 47.47
 
         public static final double toleranceInches = 0.1;
+    }
 
-     }
-      public class AlgaePivotConstants {
+    public class PivotConstants {
 
         public static final int maxPivotCurrentAmps = 50;
 
-        public static final double gearRatio = 45.0;
+        public static final double gearRatio = 48.0;
 
         public static final double kP = 0.012; // 0.035;
         public static final double kD = 0.00025; // 0.00037;
@@ -296,57 +220,67 @@ public final class Constants {
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 800.0; // 400.0;
+        public static final double maxVelDegPerSec = 200.0; // 400.0;
 
-        public static final double maxAccelDegPerSecSq = 575.0; // 575.0;
+        public static final double maxAccelDegPerSecSq = 200.0; // 575.0;
 
-        public static final double maxManualDegPerSec = 180.0;
+        public static final double maxManualDegPerSec = 100.0;
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double trapPresetDeg = 150.0;
+        public static final double stowPresetDeg = 150.0;
 
-        public static final double ampPresetDeg = 67.0;
+        public static final double reefPresetDeg = 67.0;
         
-        public static final double sourcePresetDeg = 68.0;
+        public static final double scoringPresetDeg = 68.0;
 
         public static final double groundPresetDeg = 183.0;
 
-        public static final double homePresetDeg = 0.0;
-
-        public static final double podiumPresetDeg = 82.4;
-
         public static final float lowerLimitDeg = 0f;
 
-        public static final float upperLimitDeg = 181f;
+        public static final float upperLimitDeg = 180f;
 
         public static final double podiumCorrectionIncrementDeg = .01;
 
         public static final double toleranceDeg = 0.5;
 
         public static final double absPivotEncOffsetDeg = 208.0 - 60.0;
+    }
 
-        /*
-         Used to calculate the approximate time of flight of the note.
-         */
-        public static final double pivotHeightMeters = Units.inchesToMeters(10.5);
+    public class RollerConstants {
+    
+        public static final int maxRollerCurrentAmps = 50;
 
-        /*
-         Takes distance to speaker in meters as the key and pivot angle in degrees as the value.
-         */
-        public static final InterpolatingDoubleTreeMap pivotDegSpeakerShotInterpolator = constructPivotInterpolator();
+        public static final double gearRatio = 4.0;
+
+        public static final double freeSpeedRPM = 6784.0;
+
+        public static final double outputRevPerMtrRev = 1 / gearRatio;
+
+        public static final double outputRPMPerMtrRPM = 1 / gearRatio;
+
+        public static final double maxRPM = freeSpeedRPM / gearRatio;
+
+        // Velovity PID
+        public static final double feedForward = 0.00018;
+
+        public static final double kP = 0.0002; // 0.0002
+
+        public static final double kD = 0.0025; // 0.003
+
+        // MAXMotion
+        public static final double maxAccelRPMPerSec = 100.0;
+
+        public static final double intakeRPM = 5250.0; // maximum: 1696.0
         
-        private static InterpolatingDoubleTreeMap constructPivotInterpolator() {
-            InterpolatingDoubleTreeMap pivotInterpolator = new InterpolatingDoubleTreeMap();
+        public static final double outtakeRPM = 900.0; // maximum: 1696.0
 
-            // data points with coordinate (lateral distance to speaker [meters], pivot angle [degrees])
-            pivotInterpolator.put(1.23, 59.0 - 2.0);
-            pivotInterpolator.put(2.24, 79.7 - 2.0);
-            pivotInterpolator.put(2.77, 84.0 - 3.0);
-            pivotInterpolator.put(3.12, podiumPresetDeg);
-            // pivotInterpolator.put(3.5, 77.0);
+        public static final double idleRPM = 10.0; // maximum: 1696.0
+        
+        public static final double rollerDiameterMeters = Units.inchesToMeters(4.0);
 
-            return pivotInterpolator;
-        }
+        public static final double rollerCircumferenceMeters = rollerDiameterMeters * Math.PI;
+
+        public static final double metersPerSecondPerRPM = rollerCircumferenceMeters / 60.0;
     }
 }

@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants.AlgaePivotConstants;
+import frc.robot.Constants.PivotConstants;
 import frc.robot.Constants.CANDevices;
 
-public class AlgaePivotSys extends SubsystemBase {
-    private final SparkFlex algaePivotMtr;
+public class PivotSys extends SubsystemBase {
+    private final SparkFlex pivotMtr;
 
     private final ProfiledPIDController pivotController;
 
@@ -27,56 +27,54 @@ public class AlgaePivotSys extends SubsystemBase {
 
     private double manualPower = 0.0;
     
-    public AlgaePivotSys() {
+    public PivotSys() {
 
-        algaePivotMtr = new SparkFlex(CANDevices.algaePivotMtrID, MotorType.kBrushless);
-        SparkFlexConfig algaePivotMtrSparkFlexConfig = new SparkFlexConfig();
+        pivotMtr = new SparkFlex(CANDevices.pivotMtrID, MotorType.kBrushless);
+        SparkFlexConfig pivotMtrSparkFlexConfig = new SparkFlexConfig();
 
-        algaePivotMtrSparkFlexConfig.inverted(false);
+        pivotMtrSparkFlexConfig.inverted(false);
 
-        algaePivotMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
+        pivotMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
-        algaePivotMtrSparkFlexConfig.voltageCompensation(10);
+        pivotMtrSparkFlexConfig.voltageCompensation(10);
 
-        algaePivotMtrSparkFlexConfig.smartCurrentLimit(AlgaePivotConstants.maxPivotCurrentAmps);
+        pivotMtrSparkFlexConfig.smartCurrentLimit(PivotConstants.maxPivotCurrentAmps);
 
-        algaePivotMtrSparkFlexConfig.softLimit.forwardSoftLimitEnabled(true);
-        algaePivotMtrSparkFlexConfig.softLimit.reverseSoftLimitEnabled(true);
-        algaePivotMtrSparkFlexConfig.softLimit.forwardSoftLimit(AlgaePivotConstants.upperLimitDeg);
-        algaePivotMtrSparkFlexConfig.softLimit.reverseSoftLimit(AlgaePivotConstants.lowerLimitDeg);
+        pivotMtrSparkFlexConfig.softLimit.forwardSoftLimitEnabled(true);
+        pivotMtrSparkFlexConfig.softLimit.reverseSoftLimitEnabled(true);
+        pivotMtrSparkFlexConfig.softLimit.forwardSoftLimit(PivotConstants.upperLimitDeg);
+        pivotMtrSparkFlexConfig.softLimit.reverseSoftLimit(PivotConstants.lowerLimitDeg);
 
-        algaePivotMtrSparkFlexConfig.encoder.positionConversionFactor(AlgaePivotConstants.degPerEncRev);
-        algaePivotMtrSparkFlexConfig.encoder.velocityConversionFactor(AlgaePivotConstants.degPerSecPerRPM);
+        pivotMtrSparkFlexConfig.encoder.positionConversionFactor(PivotConstants.degPerEncRev);
+        pivotMtrSparkFlexConfig.encoder.velocityConversionFactor(PivotConstants.degPerSecPerRPM);
 
-        algaePivotMtr.configure(
-            algaePivotMtrSparkFlexConfig,
+        pivotMtr.configure(
+            pivotMtrSparkFlexConfig,
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
 
-        absPivotEnc = new DutyCycleEncoder(CANDevices.algaePivotEncPort, 360.0, AlgaePivotConstants.absPivotEncOffsetDeg);
+        absPivotEnc = new DutyCycleEncoder(CANDevices.pivotEncPortID, 360.0, PivotConstants.absPivotEncOffsetDeg);
 
         pivotController = new ProfiledPIDController(
-        AlgaePivotConstants.kP, 0.0, AlgaePivotConstants.kD, 
-        new Constraints(AlgaePivotConstants.maxVelDegPerSec, AlgaePivotConstants.maxAccelDegPerSecSq));
+        PivotConstants.kP, 0.0, PivotConstants.kD, 
+        new Constraints(PivotConstants.maxVelDegPerSec, PivotConstants.maxAccelDegPerSecSq));
     }
  
     // This method will be called once per scheduler run
     @Override
     public void periodic() {
         if(manualPower == 0.0) {
-            algaePivotMtr.set(pivotController.calculate(getCurrentPositionDeg(), targetDeg));
+            pivotMtr.set(pivotController.calculate(getCurrentPositionDeg(), targetDeg));
         }
         else {
-            algaePivotMtr.set(manualPower);
+            pivotMtr.set(manualPower);
             targetDeg = getCurrentPositionDeg();
             pivotController.reset(targetDeg);
         }
-
         if(DriverStation.isDisabled()) {
             targetDeg = getCurrentPositionDeg();
             pivotController.reset(targetDeg);
         }
-
         SmartDashboard.putNumber("pivot error deg", getCurrentPositionDeg() - targetDeg);
     }
 
@@ -90,11 +88,11 @@ public class AlgaePivotSys extends SubsystemBase {
     }
 
     public void setManualSpeedDegPerSec(double degPerSec) {
-        double manualPower = (degPerSec / 6.0) / AlgaePivotConstants.freeSpeedRPM;
+        double manualPower = (degPerSec / 6.0) / PivotConstants.freeSpeedRPM;
         this.manualPower = manualPower;
     }
 
     public boolean isAtTarget() {
-        return Math.abs(getCurrentPositionDeg() - targetDeg) < AlgaePivotConstants.toleranceDeg;
+        return Math.abs(getCurrentPositionDeg() - targetDeg) < PivotConstants.toleranceDeg;
     }
 }

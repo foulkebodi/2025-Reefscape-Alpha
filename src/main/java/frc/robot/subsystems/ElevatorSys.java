@@ -39,17 +39,17 @@ public class ElevatorSys extends SubsystemBase {
         
         leftElevatorMtrSparkFlexConfig.inverted(false);
         leftElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
-        leftElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerEncRev);
+        leftElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         leftElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
 
         rightElevatorMtrSparkFlexConfig.inverted(true);
         rightElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
-        rightElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerEncRev);
+        rightElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         rightElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
 
         leftElevatorMtrSparkFlexConfig.voltageCompensation(10); 
         rightElevatorMtrSparkFlexConfig.voltageCompensation(10);
-
+        
         leftElevatorMtrSparkFlexConfig.smartCurrentLimit(ElevatorConstants.maxElevatorCurrentAmps);
         rightElevatorMtrSparkFlexConfig.smartCurrentLimit(ElevatorConstants.maxElevatorCurrentAmps);
 
