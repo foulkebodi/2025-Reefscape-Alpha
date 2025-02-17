@@ -72,14 +72,13 @@ public final class Constants {
 
         public static final int pivotEncPortID = 9;
 
-        public static final int leftCoralMtrID = 20;
         public static final int rightCoralMtrID = 19;
 
         public static final int frontBeamBreakPort = 8;
         public static final int backBeamBreakPort = 7;
        
-        public static final int leftClimberMtrID = 21;
-        public static final int rightClimberMtrID = 22;
+        public static final int leftClimberMtrID = 20;
+        public static final int rightClimberMtrID = 21;
 	}
 
     public static class SwerveModuleConstants {
