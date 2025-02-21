@@ -67,8 +67,8 @@ public final class Constants {
         public static final int leftElevatorMtrID = 15;
         public static final int rightElevatorMtrID = 16;
 
-        public static final int pivotMtrID = 17;
-        public static final int rollerMtrID = 18;
+        public static final int pivotMtrID = 17;// 17
+        public static final int rollerMtrID = 18; // 18
 
         public static final int pivotEncPortID = 9;
 

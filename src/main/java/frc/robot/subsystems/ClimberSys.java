@@ -32,7 +32,7 @@ public class ClimberSys extends SubsystemBase {
         leftClimberMtr = new SparkMax(CANDevices.leftClimberMtrID, MotorType.kBrushless);
         SparkMaxConfig leftClimberSparkMaxConfig = new SparkMaxConfig();
 
-        rightClimberMtr = new SparkMax(CANDevices.rightElevatorMtrID, MotorType.kBrushless);
+        rightClimberMtr = new SparkMax(CANDevices.rightClimberMtrID, MotorType.kBrushless);
         SparkMaxConfig rightClimberSparkMaxConfig = new SparkMaxConfig();
 
         leftClimberEnc = leftClimberMtr.getEncoder();

@@ -37,12 +37,12 @@ public class ElevatorSys extends SubsystemBase {
         leftElevatorEnc = leftElevatorMtr.getEncoder();
         righElevatorEnc = rightElevatorMtr.getEncoder();
         
-        leftElevatorMtrSparkFlexConfig.inverted(false);
+        leftElevatorMtrSparkFlexConfig.inverted(true);
         leftElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         leftElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         leftElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
 
-        rightElevatorMtrSparkFlexConfig.inverted(true);
+        rightElevatorMtrSparkFlexConfig.inverted(false);
         rightElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         rightElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         rightElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
