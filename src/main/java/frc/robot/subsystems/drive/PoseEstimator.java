@@ -70,4 +70,8 @@ public class PoseEstimator extends SubsystemBase {
     public void resetPose(Pose2d pose) {
         poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), pose);
     }   
+
+    public void resetHeading() {
+        // poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), new Pose2d());
+    }
 }

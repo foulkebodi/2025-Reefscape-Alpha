@@ -48,6 +48,7 @@ public class RollerSys extends SubsystemBase {
     // algaeRollerMtrSparkFlexConfig.closedLoop.velocityFF(AlgaeRollerConstants.feedForward);
     // MAXMotion
     rollerMtrSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(RollerConstants.maxAccelRPMPerSec); // RPM per sec
+    rollerMtrSparkFlexConfig.closedLoop.velocityFF(RollerConstants.feedForward);
     // algaeRollerMtrSparkFlexConfig.closedLoop.maxMotion.allowedClosedLoopError(0.0); // Rotations * positionconversionfactor
 
     rollerMtr.configure(

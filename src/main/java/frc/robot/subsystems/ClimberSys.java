@@ -9,12 +9,9 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.Constants.ElevatorConstants;
 
 public class ClimberSys extends SubsystemBase {
     private final SparkMax leftClimberMtr;
@@ -38,15 +35,15 @@ public class ClimberSys extends SubsystemBase {
         leftClimberEnc = leftClimberMtr.getEncoder();
         rightClimberEnc = rightClimberMtr.getEncoder();
         
-        leftClimberSparkMaxConfig.inverted(false);
-        leftClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
-        leftClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
-        leftClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
+        leftClimberSparkMaxConfig.inverted(true);
+        leftClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
+        leftClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev * 3.0);
+        leftClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM * 3.0);
 
-        rightClimberSparkMaxConfig.inverted(true);
-        rightClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
+        rightClimberSparkMaxConfig.inverted(false);
+        rightClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
         rightClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
-        rightClimberSparkMaxConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
+        rightClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
 
         leftClimberSparkMaxConfig.voltageCompensation(10); 
         rightClimberSparkMaxConfig.voltageCompensation(10);
@@ -57,10 +54,10 @@ public class ClimberSys extends SubsystemBase {
         leftClimberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true);
         rightClimberSparkMaxConfig.softLimit.reverseSoftLimitEnabled(true);
 
-        leftClimberSparkMaxConfig.softLimit.forwardSoftLimit(ElevatorConstants.upperLimitInches);
-        rightClimberSparkMaxConfig.softLimit.forwardSoftLimit(ElevatorConstants.upperLimitInches);
-        leftClimberSparkMaxConfig.softLimit.reverseSoftLimit(ElevatorConstants.lowerLimitInches);
-        rightClimberSparkMaxConfig.softLimit.reverseSoftLimit(ElevatorConstants.lowerLimitInches);
+        leftClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
+        rightClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
+        leftClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
+        rightClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
 
         leftClimberMtr.configure(
             leftClimberSparkMaxConfig,
@@ -82,17 +79,22 @@ public class ClimberSys extends SubsystemBase {
 
     @Override
     public void periodic() {
-   
+        leftClimberMtr.set(climberController.calculate(getCurrentPositionDeg(), targetDeg));
+        rightClimberMtr.set(climberController.calculate(getCurrentPositionDeg(), targetDeg));
     }
         
     public double getCurrentPositionDeg() {
         return ((leftClimberEnc.getPosition() + rightClimberEnc.getPosition()) / 2);
     }
+    public double getLeftCurrentPositionDeg() {
+        return leftClimberEnc.getPosition();
+    }
+    public double getRightCurrentPositionDeg() {
+        return rightClimberEnc.getPosition();
+    }
 
     public void setTargetDeg(double deg){
         targetDeg = deg;
-        leftClimberMtr.set(climberController.calculate(leftClimberEnc.getPosition(), targetDeg));
-        rightClimberMtr.set(climberController.calculate(rightClimberEnc.getPosition(), targetDeg));
     }
 
     public boolean isAtTarget(){

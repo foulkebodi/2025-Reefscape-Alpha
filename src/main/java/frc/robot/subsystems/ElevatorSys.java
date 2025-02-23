@@ -9,8 +9,8 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
 import frc.robot.Constants.ElevatorConstants;
@@ -20,7 +20,7 @@ public class ElevatorSys extends SubsystemBase {
     private final SparkFlex rightElevatorMtr;
 
     private final RelativeEncoder leftElevatorEnc;
-    private final RelativeEncoder righElevatorEnc;
+    private final RelativeEncoder rightElevatorEnc;
 
     private final ProfiledPIDController elevatorController;
 
@@ -35,7 +35,7 @@ public class ElevatorSys extends SubsystemBase {
         SparkFlexConfig rightElevatorMtrSparkFlexConfig = new SparkFlexConfig();
 
         leftElevatorEnc = leftElevatorMtr.getEncoder();
-        righElevatorEnc = rightElevatorMtr.getEncoder();
+        rightElevatorEnc = rightElevatorMtr.getEncoder();
         
         leftElevatorMtrSparkFlexConfig.inverted(true);
         leftElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
@@ -72,7 +72,7 @@ public class ElevatorSys extends SubsystemBase {
             PersistMode.kPersistParameters);
 
         leftElevatorEnc.setPosition(ElevatorConstants.homePresetInches);
-        righElevatorEnc.setPosition(ElevatorConstants.homePresetInches);
+        rightElevatorEnc.setPosition(ElevatorConstants.homePresetInches);
 
         elevatorController = new ProfiledPIDController(
         ElevatorConstants.kP, 0.0, ElevatorConstants.kD, 
@@ -83,8 +83,7 @@ public class ElevatorSys extends SubsystemBase {
     public void periodic(){
         if(manualPower == 0.0){
             leftElevatorMtr.set(elevatorController.calculate(leftElevatorEnc.getPosition(),targetInches));
-            rightElevatorMtr.set(elevatorController.calculate(leftElevatorEnc.getPosition(),targetInches));
-
+            rightElevatorMtr.set(elevatorController.calculate(rightElevatorEnc.getPosition(),targetInches));
         }
         else {
             leftElevatorMtr.set(manualPower);
@@ -92,17 +91,23 @@ public class ElevatorSys extends SubsystemBase {
             targetInches = getCurrentPositionInches();
             elevatorController.reset(targetInches);
         }
-        
         if(DriverStation.isDisabled()){
             targetInches = getCurrentPositionInches();
             elevatorController.reset(targetInches);
         }
-
-        SmartDashboard.putNumber("elevator error inches", getCurrentPositionInches());
+        SmartDashboard.putNumber("elevator target position", targetInches);
     }
 
     public double getCurrentPositionInches() {
-        return ((leftElevatorEnc.getPosition() + righElevatorEnc.getPosition()) / 2);
+        return ((leftElevatorEnc.getPosition() + rightElevatorEnc.getPosition()) / 2);
+    }
+    
+    public double getLeftCurrentPositionInches() {
+        return leftElevatorEnc.getPosition();
+    }
+
+    public double getRightCurrentPositionInches() {
+        return rightElevatorEnc.getPosition();
     }
 
     public void setTargetInches(double inches){

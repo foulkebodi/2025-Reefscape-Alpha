@@ -8,10 +8,13 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.Constants.ClimberConstants;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.automation.AutoPlaceCoralCmd;
 import frc.robot.commands.climber.ClimberClimbCmd;
 import frc.robot.commands.climber.ClimberHomeCmd;
+import frc.robot.commands.climber.ClimberOutCmd;
+import frc.robot.commands.coral.CoralOuttakeCmd;
+import frc.robot.commands.coral.CoralStopCmd;
 import frc.robot.commands.elevator.ElevatorCoralOneCmd;
 import frc.robot.commands.elevator.ElevatorCoralThreeCmd;
 import frc.robot.commands.elevator.ElevatorCoralTwoCmd;
@@ -20,8 +23,8 @@ import frc.robot.commands.elevator.ElevatorManualCmd;
 import frc.robot.commands.pivot.PivotReefCmd;
 import frc.robot.commands.pivot.PivotStowCmd;
 import frc.robot.commands.util.ExampleCommand;
-import frc.robot.commands.util.SysIDRoutines;
 import frc.robot.subsystems.ClimberSys;
+import frc.robot.subsystems.CoralSys;
 import frc.robot.subsystems.ElevatorSys;
 import frc.robot.subsystems.PivotSys;
 import frc.robot.subsystems.drive.PoseEstimator;
@@ -29,6 +32,8 @@ import frc.robot.subsystems.drive.SwerveDrive;
 import frc.robot.subsystems.util.ExampleSubsystem;
 
 import java.util.function.BooleanSupplier;
+
+import javax.xml.stream.events.Namespace;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -38,6 +43,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -59,6 +65,7 @@ public class RobotContainer {
 	private final ElevatorSys elevatorSys = new ElevatorSys();
 	private final PivotSys pivotSys = new PivotSys();
 	private final ClimberSys climberSys = new ClimberSys();
+	private final CoralSys coralSys = new CoralSys();
 
 	private final PoseEstimator poseEstimator = new PoseEstimator(
 		SwerveDriveConstants.kinematics,
@@ -74,9 +81,7 @@ public class RobotContainer {
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-		// Configure the trigger bindings
-		configureBindings();
-
+		
 		AutoBuilder.configure(
 			poseEstimator::get,
 			poseEstimator::resetPose,
@@ -87,20 +92,32 @@ public class RobotContainer {
 				new PIDConstants(SwerveDriveConstants.autoRotationKp, SwerveDriveConstants.autoRotationKd)),
 			new RobotConfig(RobotConstants.massKg, RobotConstants.momentOfInertiaKgMetersSq, 
 				SwerveModuleConstants.moduleConfig, SwerveDriveConstants.kinematics.getModules()),
-			(BooleanSupplier) () -> true,
+			() -> {
+				var alliance = DriverStation.getAlliance();
+				if (alliance.isPresent()) {
+					return alliance.get() == DriverStation.Alliance.Red;
+				} 
+				return false;
+			},
 			swerveDrive);
 
-		new PathPlannerAuto("TestAuto");
+		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
+		NamedCommands.registerCommand("PlaceCoral", new AutoPlaceCoralCmd(elevatorSys));
+		
+		new PathPlannerAuto("TwoPiece");
 
 		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
+
+		// SysID routines
 		// autoChooser.addOption("SysID Quasistatic Forward", SysIDRoutines.quasistaticForward(swerveDrive));
 		// autoChooser.addOption("SysID Quasistatic Reverse", SysIDRoutines.quasistaticReverse(swerveDrive));
 		// autoChooser.addOption("SysID Dynamic Forward", SysIDRoutines.dynamicForward(swerveDrive));
 		// autoChooser.addOption("SysID Dynamic Reverse", SysIDRoutines.dynamicReverse(swerveDrive));
 
 		SmartDashboard.putData(autoChooser);
-		// TODO Register the commands used in the PathPlanner auto builder like the below example.
-		NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
+		
+		// Configure the trigger bindings
+		configureBindings();
 	}
 
 	/**
@@ -126,18 +143,19 @@ public class RobotContainer {
 			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
 			elevatorSys));
 		
-		operatorController.a().onTrue(new ElevatorHomeCmd(elevatorSys));
-		operatorController.b().onTrue(new ElevatorCoralOneCmd(elevatorSys));
-		operatorController.y().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
-		operatorController.x().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
+		operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
+		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
+		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
+		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
 
 		operatorController.povUp().onTrue(new PivotReefCmd(pivotSys));
-		operatorController.povDown().onTrue(new PivotStowCmd(pivotSys));
 
+		operatorController.povDown().onTrue(new ClimberOutCmd(climberSys));
 		operatorController.povRight().onTrue(new ClimberClimbCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
 
-		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold).onFalse(new ElevatorHomeCmd(elevatorSys));
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+			.onTrue(new CoralOuttakeCmd(coralSys));
 
 	}
 
@@ -147,7 +165,6 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
-		// An example command will be run in autonomous
 		return autoChooser.getSelected();
 	}
 
@@ -158,5 +175,12 @@ public class RobotContainer {
 		SmartDashboard.putNumber("BR CANcoder", swerveDrive.getCanCoderAngles()[3].getDegrees());
 		SmartDashboard.putNumber("pos-x", poseEstimator.get().getX());
 		SmartDashboard.putNumber("pos-y", poseEstimator.get().getY());
+		SmartDashboard.putNumber("left elevator enc", elevatorSys.getLeftCurrentPositionInches());
+		SmartDashboard.putNumber("right elevator enc", elevatorSys.getRightCurrentPositionInches());
+		SmartDashboard.putNumber("elevator position", elevatorSys.getCurrentPositionInches());
+		SmartDashboard.putNumber("climber position", climberSys.getCurrentPositionDeg());
+		SmartDashboard.putNumber("climber left position", climberSys.getLeftCurrentPositionDeg());
+		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
+
 	}
 }

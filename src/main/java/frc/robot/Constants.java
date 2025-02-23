@@ -70,9 +70,9 @@ public final class Constants {
         public static final int pivotMtrID = 17;// 17
         public static final int rollerMtrID = 18; // 18
 
-        public static final int pivotEncPortID = 9;
+        public static final int pivotEncPortID = 3;
 
-        public static final int rightCoralMtrID = 19;
+        public static final int CoralMtrID = 19;
 
         public static final int frontBeamBreakPort = 8;
         public static final int backBeamBreakPort = 7;
@@ -99,7 +99,7 @@ public final class Constants {
         public static final int driveCurrentLimitAmps = 40;
 
         // TODO This number may have to be adjusted depending on what wheels you use.
-        public static final double wheelRadiusMeters = Units.inchesToMeters(2.0);
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.95);
 
         // TODO Set this value to the coefficient of friction of your wheels.
         public static final double wheelCoefficientOfFriction = 1.5;
@@ -151,16 +151,16 @@ public final class Constants {
             new Translation2d(-chassisWidthMeters / 2.0, -chassisLengthMeters / 2.0) // back right
         );
 
-        public static final double maxAttainableSpeedMetersPerSec = Units.feetToMeters(20.1);
+        public static final double maxAttainableSpeedMetersPerSec = Units.feetToMeters(20.1 * 0.9);
         public static final double maxAttainableRotationRadPerSec = 13.4;
 
         public static final double skewCompensationRatioOmegaPerTheta = 0.1;
 
-        // TODO Tune the below PID values using the SysID routines.
-        public static final double autoTranslationKp = 5.0;
+        // Tune the below PID values using the SysID routines.
+        public static final double autoTranslationKp = 10.0;
         public static final double autoTranslationKd = 0.0;
 
-        public static final double autoRotationKp = 5.0;
+        public static final double autoRotationKp = 10.0;
         public static final double autoRotationKd = 0.0;
     }
 
@@ -171,22 +171,22 @@ public final class Constants {
     public static class ElevatorConstants {
         public static final int maxElevatorCurrentAmps = 50;
 
-        public static final double gearRatio = 5.0;
+        public static final double gearRatio = 15.0;
         
-        public static final double kP = 0.03; // 0.035
-        public static final double kD = 0.0; // 0.00037
+        public static final double kP = 0.05; // 
+        public static final double kD = 0.0; // 
 
-        public static final double sprocketToothCount = 0.9;
+        public static final double sprocketToothCount = 20;
         public static final double chainPitch = 0.25; // inches     
 
-        public static final double inchesPerMtrRev = ((sprocketToothCount * chainPitch) / gearRatio);
-        public static final double inchesPerSecPerRPM = ((sprocketToothCount * chainPitch) / gearRatio * 60.0);
+        public static final double inchesPerMtrRev = ((sprocketToothCount * chainPitch * 2.0) / gearRatio);
+        public static final double inchesPerSecPerRPM = ((sprocketToothCount * chainPitch * 2.0) / gearRatio * 60.0);
 
         public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
 
         public static final double maxVelInchesPerSec = 50.0; // 400.0
 
-        public static final double maxAccelInchesPerSecSq = 250.0; // 575.0
+        public static final double maxAccelInchesPerSecSq = 100.0; // 575.0
 
         public static final double maxManualInchesPerSec = 100.0;
 
@@ -196,13 +196,13 @@ public final class Constants {
  
         public static final double coralTwoPresetInches = 20.0;
 
-        public static final double coralThreePresetInches = 30.0;
+        public static final double coralThreePresetInches = 43.5;
 
         public static final double homePresetInches = 0.0;
 
-        public static final double lowerLimitInches = 0f;
+        public static final float lowerLimitInches = 0f;
 
-        public static final double upperLimitInches = 30f; // 47.47
+        public static final float upperLimitInches = 44f; // 47.47
 
         public static final double toleranceInches = 0.1;
     }
@@ -233,7 +233,7 @@ public final class Constants {
 
         public static final double reefPresetDeg = 67.0;
         
-        public static final double scoringPresetDeg = 68.0;
+        public static final double processorPresetDeg = 68.0;
 
         public static final double groundPresetDeg = 183.0;
 
@@ -303,38 +303,37 @@ public final class Constants {
 
         public static final double intakeRPM = 5250.0;
 
+        public static final double feedForward = 0.00018;
+
+        public static final double kP = 0.0002; // 0.0002
+
+        public static final double kD = 0.0025; // 0.003
     }
 
     public static class ClimberConstants {
-        public static final int maxClimberCurrentAmps = 50;
+        public static final int maxClimberCurrentAmps = 90;
 
-        public static final double gearRatio = 48.0;
+        public static final double gearRatio = 125.0;
 
-        public static final double kP = 0.012; // 0.035;
-        public static final double kD = 0.00025; // 0.00037;
+        public static final double kP = 0.028; // 0.035;
+        public static final double kD = 0.0001; // 0.00037;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 200.0; // 400.0;
+        public static final double maxVelDegPerSec = 150.0; // 400.0;
 
-        public static final double maxAccelDegPerSecSq = 200.0; // 575.0;
+        public static final double maxAccelDegPerSecSq = 700.0; // 575.0;
 
-        public static final double maxManualDegPerSec = 100.0;
-
-        public static final double maxManualDegPerSecSq = 375.0;
-
-        public static final double climbingPresetDeg = 150.0;
-
+        public static final double climbingPresetDeg = 190.0;
+        public static final double outPresetDeg = -130.0;
         public static final double homePresetDeg = 0.0;
 
-        public static final float lowerLimitDeg = 0f;
+        public static final float lowerLimitDeg = -135f;
 
-        public static final float upperLimitDeg = 180f;
-
-        public static final double podiumCorrectionIncrementDeg = .01;
+        public static final float upperLimitDeg = 195f;
 
         public static final double toleranceDeg = 0.5;
     }

@@ -4,11 +4,11 @@ import frc.robot.Constants.CoralConstants;
 import frc.robot.subsystems.CoralSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class CoralOuttakeCmd extends Command {
+public class CoralStopCmd extends Command {
 
     private final CoralSys coral;   
 
-    public CoralOuttakeCmd(CoralSys coral){
+    public CoralStopCmd(CoralSys coral){
         this.coral = coral;
 
         addRequirements(coral);
@@ -16,16 +16,15 @@ public class CoralOuttakeCmd extends Command {
 
     @Override
     public void initialize() {
+        coral.settargetRPM(0.0);
     }
 
     @Override
     public void execute(){
-        coral.settargetRPM(CoralConstants.outtakeRPM);
     }
 
     @Override
     public void end(boolean interrupted) {
-
     }
 
     @Override 

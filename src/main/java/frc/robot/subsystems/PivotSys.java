@@ -28,7 +28,6 @@ public class PivotSys extends SubsystemBase {
     private double manualPower = 0.0;
     
     public PivotSys() {
-
         pivotMtr = new SparkFlex(CANDevices.pivotMtrID, MotorType.kBrushless);
         SparkFlexConfig pivotMtrSparkFlexConfig = new SparkFlexConfig();
 
@@ -80,7 +79,7 @@ public class PivotSys extends SubsystemBase {
 
     // Put methods for controlling this subsystem here. Call these from Commands.
     public double getCurrentPositionDeg() {
-            return (absPivotEnc.get());
+        return absPivotEnc.get();
     }
 
     public void setTargetDeg(double degrees) {

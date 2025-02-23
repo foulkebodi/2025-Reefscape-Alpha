@@ -18,11 +18,11 @@ import com.revrobotics.spark.SparkClosedLoopController;
 
 
 public class CoralSys extends SubsystemBase {
-  private final SparkFlex rightCoralMtr;
+  private final SparkFlex CoralMtr;
 
-  private final RelativeEncoder rightCoralEnc;
+  private final RelativeEncoder CoralEnc;
 
-  private final SparkClosedLoopController rightCoralController;
+  // private final SparkClosedLoopController CoralController;
 
   private final DigitalInput backBeamBreak;
   private final DigitalInput frontBeamBreak;
@@ -30,37 +30,39 @@ public class CoralSys extends SubsystemBase {
   private double targetRPM;
 
 public CoralSys() {
-    rightCoralMtr = new SparkFlex(CANDevices.rightCoralMtrID, MotorType.kBrushless);
-    SparkFlexConfig rightCoralSparkFlexConfig = new SparkFlexConfig();
+    CoralMtr = new SparkFlex(CANDevices.CoralMtrID, MotorType.kBrushless);
+    SparkFlexConfig CoralSparkFlexConfig = new SparkFlexConfig();
 
-    rightCoralSparkFlexConfig.inverted(false);
+    CoralSparkFlexConfig.inverted(false);
 
-    rightCoralSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
+    CoralSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
-    rightCoralSparkFlexConfig.voltageCompensation(10);
+    CoralSparkFlexConfig.voltageCompensation(10);
 
-    rightCoralSparkFlexConfig.smartCurrentLimit(CoralConstants.maxCoralCurrentAmps);
+    CoralSparkFlexConfig.smartCurrentLimit(CoralConstants.maxCoralCurrentAmps);
 
-    rightCoralEnc = rightCoralMtr.getEncoder();
-
+    CoralEnc = CoralMtr.getEncoder();
    
-    rightCoralSparkFlexConfig.encoder.positionConversionFactor(CoralConstants.outputRevPerMtrRev);
-    rightCoralSparkFlexConfig.encoder.velocityConversionFactor(CoralConstants.outputRPMPerMtrRPM);
+    CoralSparkFlexConfig.softLimit.forwardSoftLimitEnabled(false);
+    CoralSparkFlexConfig.softLimit.reverseSoftLimitEnabled(false);
 
-    rightCoralController = rightCoralMtr.getClosedLoopController();
+    CoralSparkFlexConfig.encoder.positionConversionFactor(CoralConstants.outputRevPerMtrRev);
+    CoralSparkFlexConfig.encoder.velocityConversionFactor(CoralConstants.outputRPMPerMtrRPM);
+    // CoralController = CoralMtr.getClosedLoopController();
 
     // Velocity PID
-    // rightCoralSparkFlexConfig.closedLoop.p(AlgaeRollerConstants.kP);
+    // rightCoralSparkFlexConfig.closedLoop.p(CoralConstants.kP);
     // rightCoralSparkFlexConfig.closedLoop.i(0.0);
-    // rightCoralSparkFlexConfig.closedLoop.d(AlgaeRollerConstants.kD);
-    // rightCoralSparkFlexConfig.closedLoop.velocityFF(AlgaeRollerConstants.feedForward);
+    // rightCoralSparkFlexConfig.closedLoop.d(CoralConstants.kD);
+    // CoralSparkFlexConfig.closedLoop.velocityFF(CoralConstants.feedForward);
 
     // MAXMotion
-    rightCoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(CoralConstants.maxAccelRPMPerSec); // RPM per sec
+    // CoralSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(CoralConstants.maxAccelRPMPerSec); // RPM per sec
+    // CoralSparkFlexConfig.closedLoop.velocityFF(CoralConstants.feedForward);
     // rightCoralSparkFlexConfig.closedLoop.maxMotion.allowedClosedLoopError(0.0); // Rotations * positionconversionfactor
     
-    rightCoralMtr.configure(
-        rightCoralSparkFlexConfig,
+    CoralMtr.configure(
+        CoralSparkFlexConfig,
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
@@ -70,39 +72,22 @@ public CoralSys() {
 
   @Override
   public void periodic() {
-      // if (bbb = 0 and fbb = 1) {
-      // rollers stopped
-      // } else if (RPM = outtakerpm) {
-      // rollers outtake
-      // } else {
-      // rollers at intake rpm
-      // }
-      // true is broken, false is unbroken
-    if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {  
-      rightCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);
-    } else if (targetRPM == CoralConstants.outtakeRPM) {
-      rightCoralController.setReference(CoralConstants.outtakeRPM, ControlType.kMAXMotionVelocityControl);
-    } else if (DriverStation.isDisabled()) {
-      rightCoralController.setReference(0.0, ControlType.kMAXMotionVelocityControl);
+    if (targetRPM <= 105.0 && targetRPM >= 95) {
+      CoralMtr.set(-0.5);
+    // } else if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {
+      // CoralMtr.set(0.0);
+    // } else if (DriverStation.isDisabled()) {
+      // CoralMtr.set(0.0);
     } else {
-      rightCoralController.setReference(CoralConstants.intakeRPM, ControlType.kMAXMotionVelocityControl);
+      CoralMtr.set(0.0);
     }
   }
-
-  // public void setRPM(double rpm) {
-    // MAXMotion
-    // leftCoralController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
-    // rightCoralController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
-    // Velocity PID
-    // leftCoralController.setReference(rpm, ControlType.kVelocity);
-    // rightCoralController.setReference(rpm, ControlType.kVelocity);
-  // }
 
   public void settargetRPM(double rpm) {
     targetRPM = rpm;
   }
 
   public double getRPM() {
-      return (rightCoralMtr.getEncoder().getVelocity()) / 2;
+      return (CoralMtr.getEncoder().getVelocity());
   }
 }
