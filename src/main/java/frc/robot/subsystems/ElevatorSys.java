@@ -95,7 +95,7 @@ public class ElevatorSys extends SubsystemBase {
             targetInches = getCurrentPositionInches();
             elevatorController.reset(targetInches);
         }
-        SmartDashboard.putNumber("elevator target position", targetInches);
+        SmartDashboard.putNumber("elevator target", targetInches);
     }
 
     public double getCurrentPositionInches() {

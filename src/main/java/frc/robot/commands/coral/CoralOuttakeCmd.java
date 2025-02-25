@@ -1,6 +1,5 @@
 package frc.robot.commands.coral;
 
-import frc.robot.Constants.CoralConstants;
 import frc.robot.subsystems.CoralSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -16,16 +15,15 @@ public class CoralOuttakeCmd extends Command {
 
     @Override
     public void initialize() {
+        coral.setIsOuttaking(true);
     }
 
     @Override
     public void execute(){
-        coral.settargetRPM(CoralConstants.outtakeRPM);
     }
 
     @Override
     public void end(boolean interrupted) {
-
     }
 
     @Override 

@@ -6,34 +6,34 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
 import frc.robot.Constants.CoralConstants;
 
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkClosedLoopController;
 
 
 public class CoralSys extends SubsystemBase {
   private final SparkFlex CoralMtr;
 
-  private final RelativeEncoder CoralEnc;
+  // private final RelativeEncoder CoralEnc;
 
   // private final SparkClosedLoopController CoralController;
 
   private final DigitalInput backBeamBreak;
   private final DigitalInput frontBeamBreak;
 
-  private double targetRPM;
+  // private double power;
+
+  private boolean isOuttaking = false;
 
 public CoralSys() {
     CoralMtr = new SparkFlex(CANDevices.CoralMtrID, MotorType.kBrushless);
     SparkFlexConfig CoralSparkFlexConfig = new SparkFlexConfig();
 
-    CoralSparkFlexConfig.inverted(false);
+    CoralSparkFlexConfig.inverted(true);
 
     CoralSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
@@ -41,13 +41,14 @@ public CoralSys() {
 
     CoralSparkFlexConfig.smartCurrentLimit(CoralConstants.maxCoralCurrentAmps);
 
-    CoralEnc = CoralMtr.getEncoder();
+    // CoralEnc = CoralMtr.getEncoder();
    
     CoralSparkFlexConfig.softLimit.forwardSoftLimitEnabled(false);
     CoralSparkFlexConfig.softLimit.reverseSoftLimitEnabled(false);
 
     CoralSparkFlexConfig.encoder.positionConversionFactor(CoralConstants.outputRevPerMtrRev);
     CoralSparkFlexConfig.encoder.velocityConversionFactor(CoralConstants.outputRPMPerMtrRPM);
+
     // CoralController = CoralMtr.getClosedLoopController();
 
     // Velocity PID
@@ -66,28 +67,32 @@ public CoralSys() {
         ResetMode.kResetSafeParameters,
         PersistMode.kPersistParameters);
 
-  backBeamBreak = new DigitalInput(CANDevices.backBeamBreakPort);
-  frontBeamBreak = new DigitalInput(CANDevices.frontBeamBreakPort);
+    backBeamBreak = new DigitalInput(CANDevices.backBeamBreakPort);
+    frontBeamBreak = new DigitalInput(CANDevices.frontBeamBreakPort);
   }
 
   @Override
   public void periodic() {
-    if (targetRPM <= 105.0 && targetRPM >= 95) {
-      CoralMtr.set(-0.5);
-    // } else if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {
-      // CoralMtr.set(0.0);
-    // } else if (DriverStation.isDisabled()) {
-      // CoralMtr.set(0.0);
-    } else {
+    // CoralMtr.set(power);
+    // uncomment for beam breaks
+    if (isOuttaking) {
+      CoralMtr.set(CoralConstants.outtakePower);
+    } else if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {
       CoralMtr.set(0.0);
+    } else if (DriverStation.isDisabled()) {
+      CoralMtr.set(0.0);
+    } else {
+      CoralMtr.set(CoralConstants.intakePower);
     }
+    SmartDashboard.putBoolean("IsOuttaking", isOuttaking);
+    SmartDashboard.putNumber("coral target power", CoralMtr.get());
   }
 
-  public void settargetRPM(double rpm) {
-    targetRPM = rpm;
-  }
+  // public void setPower(double power) {
+  //   this.power = power;
+  // }
 
-  public double getRPM() {
-      return (CoralMtr.getEncoder().getVelocity());
+  public void setIsOuttaking (boolean isOuttaking){
+    this.isOuttaking = isOuttaking;
   }
 }

@@ -25,7 +25,7 @@ public class PivotSys extends SubsystemBase {
 
     private double targetDeg = 0.0;
 
-    private double manualPower = 0.0;
+    // private double manualPower = 0.0;
     
     public PivotSys() {
         pivotMtr = new SparkFlex(CANDevices.pivotMtrID, MotorType.kBrushless);
@@ -62,19 +62,20 @@ public class PivotSys extends SubsystemBase {
     // This method will be called once per scheduler run
     @Override
     public void periodic() {
-        if(manualPower == 0.0) {
+        // if(manualPower == 0.0) {
             pivotMtr.set(pivotController.calculate(getCurrentPositionDeg(), targetDeg));
-        }
-        else {
-            pivotMtr.set(manualPower);
-            targetDeg = getCurrentPositionDeg();
-            pivotController.reset(targetDeg);
-        }
-        if(DriverStation.isDisabled()) {
-            targetDeg = getCurrentPositionDeg();
-            pivotController.reset(targetDeg);
-        }
-        SmartDashboard.putNumber("pivot error deg", getCurrentPositionDeg() - targetDeg);
+        // }
+        // else {
+        //     pivotMtr.set(manualPower);
+        //     targetDeg = getCurrentPositionDeg();
+        //     pivotController.reset(targetDeg);
+        // }
+        // if(DriverStation.isDisabled()) {
+        //     targetDeg = getCurrentPositionDeg();
+        //     pivotController.reset(targetDeg);
+        // }
+        SmartDashboard.putNumber("pivot target deg", targetDeg);
+        SmartDashboard.putNumber("pivot target power", pivotMtr.get());
     }
 
     // Put methods for controlling this subsystem here. Call these from Commands.
@@ -86,10 +87,10 @@ public class PivotSys extends SubsystemBase {
         targetDeg = degrees;
     }
 
-    public void setManualSpeedDegPerSec(double degPerSec) {
-        double manualPower = (degPerSec / 6.0) / PivotConstants.freeSpeedRPM;
-        this.manualPower = manualPower;
-    }
+    // public void setManualSpeedDegPerSec(double degPerSec) {
+    //     double manualPower = (degPerSec / 6.0) / PivotConstants.freeSpeedRPM;
+    //     this.manualPower = manualPower;
+    // }
 
     public boolean isAtTarget() {
         return Math.abs(getCurrentPositionDeg() - targetDeg) < PivotConstants.toleranceDeg;

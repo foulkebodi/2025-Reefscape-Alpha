@@ -8,6 +8,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
@@ -37,27 +38,27 @@ public class ClimberSys extends SubsystemBase {
         
         leftClimberSparkMaxConfig.inverted(true);
         leftClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
-        leftClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev * 3.0);
-        leftClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM * 3.0);
+        leftClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
+        leftClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
 
         rightClimberSparkMaxConfig.inverted(false);
         rightClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
         rightClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
         rightClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
 
-        leftClimberSparkMaxConfig.voltageCompensation(10); 
-        rightClimberSparkMaxConfig.voltageCompensation(10);
+        // leftClimberSparkMaxConfig.voltageCompensation(10);
+        // rightClimberSparkMaxConfig.voltageCompensation(10);
         
         leftClimberSparkMaxConfig.smartCurrentLimit(ClimberConstants.maxClimberCurrentAmps);
         rightClimberSparkMaxConfig.smartCurrentLimit(ClimberConstants.maxClimberCurrentAmps);
 
-        leftClimberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true);
-        rightClimberSparkMaxConfig.softLimit.reverseSoftLimitEnabled(true);
+        // leftClimberSparkMaxConfig.softLimit.forwardSoftLimitEnabled(true);
+        // rightClimberSparkMaxConfig.softLimit.reverseSoftLimitEnabled(true);
 
-        leftClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
-        rightClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
-        leftClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
-        rightClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
+        // leftClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
+        // rightClimberSparkMaxConfig.softLimit.forwardSoftLimit(ClimberConstants.upperLimitDeg);
+        // leftClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
+        // rightClimberSparkMaxConfig.softLimit.reverseSoftLimit(ClimberConstants.lowerLimitDeg);
 
         leftClimberMtr.configure(
             leftClimberSparkMaxConfig,
@@ -79,16 +80,20 @@ public class ClimberSys extends SubsystemBase {
 
     @Override
     public void periodic() {
-        leftClimberMtr.set(climberController.calculate(getCurrentPositionDeg(), targetDeg));
-        rightClimberMtr.set(climberController.calculate(getCurrentPositionDeg(), targetDeg));
+        leftClimberMtr.set(climberController.calculate(getLeftCurrentPositionDeg(), targetDeg));
+        rightClimberMtr.set(climberController.calculate(getLeftCurrentPositionDeg(), targetDeg));
+        SmartDashboard.putNumber("climber target position", targetDeg);
+        SmartDashboard.putNumber("climber target power", leftClimberMtr.get());
     }
         
     public double getCurrentPositionDeg() {
         return ((leftClimberEnc.getPosition() + rightClimberEnc.getPosition()) / 2);
     }
+
     public double getLeftCurrentPositionDeg() {
         return leftClimberEnc.getPosition();
     }
+    
     public double getRightCurrentPositionDeg() {
         return rightClimberEnc.getPosition();
     }

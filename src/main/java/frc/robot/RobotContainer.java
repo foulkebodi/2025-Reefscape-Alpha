@@ -20,20 +20,20 @@ import frc.robot.commands.elevator.ElevatorCoralThreeCmd;
 import frc.robot.commands.elevator.ElevatorCoralTwoCmd;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
+import frc.robot.commands.pivot.PivotGroundCmd;
+import frc.robot.commands.pivot.PivotProcessorCmd;
 import frc.robot.commands.pivot.PivotReefCmd;
 import frc.robot.commands.pivot.PivotStowCmd;
-import frc.robot.commands.util.ExampleCommand;
+import frc.robot.commands.roller.RollerIdleCmd;
+import frc.robot.commands.roller.RollerIntakeCmd;
+import frc.robot.commands.roller.RollerOuttakeCmd;
 import frc.robot.subsystems.ClimberSys;
 import frc.robot.subsystems.CoralSys;
 import frc.robot.subsystems.ElevatorSys;
 import frc.robot.subsystems.PivotSys;
+import frc.robot.subsystems.RollerSys;
 import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
-import frc.robot.subsystems.util.ExampleSubsystem;
-
-import java.util.function.BooleanSupplier;
-
-import javax.xml.stream.events.Namespace;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -59,13 +60,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
 	private final SwerveDrive swerveDrive = new SwerveDrive();
 	private final ElevatorSys elevatorSys = new ElevatorSys();
 	private final PivotSys pivotSys = new PivotSys();
 	private final ClimberSys climberSys = new ClimberSys();
 	private final CoralSys coralSys = new CoralSys();
+	private final RollerSys rollerSys = new RollerSys();
 
 	private final PoseEstimator poseEstimator = new PoseEstimator(
 		SwerveDriveConstants.kinematics,
@@ -81,7 +83,12 @@ public class RobotContainer {
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-		
+
+		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
+		NamedCommands.registerCommand("ElevatorUp", new ElevatorCoralThreeCmd(elevatorSys));
+		NamedCommands.registerCommand("ElevatorDown", new ElevatorHomeCmd(elevatorSys));	
+		NamedCommands.registerCommand("PlaceCoral", new AutoPlaceCoralCmd(coralSys));
+
 		AutoBuilder.configure(
 			poseEstimator::get,
 			poseEstimator::resetPose,
@@ -101,12 +108,7 @@ public class RobotContainer {
 			},
 			swerveDrive);
 
-		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
-		NamedCommands.registerCommand("PlaceCoral", new AutoPlaceCoralCmd(elevatorSys));
-		
 		new PathPlannerAuto("TwoPiece");
-
-		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
 
 		// SysID routines
 		// autoChooser.addOption("SysID Quasistatic Forward", SysIDRoutines.quasistaticForward(swerveDrive));
@@ -114,7 +116,9 @@ public class RobotContainer {
 		// autoChooser.addOption("SysID Dynamic Forward", SysIDRoutines.dynamicForward(swerveDrive));
 		// autoChooser.addOption("SysID Dynamic Reverse", SysIDRoutines.dynamicReverse(swerveDrive));
 
-		SmartDashboard.putData(autoChooser);
+		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
+
+		SmartDashboard.putData("auto chooser", autoChooser);
 		
 		// Configure the trigger bindings
 		configureBindings();
@@ -130,14 +134,13 @@ public class RobotContainer {
 	 * joysticks}.
 	 */
 	private void configureBindings() {
-		swerveDrive.setDefaultCommand(
-			new ArcadeDriveCmd(
-					() -> MathUtil.applyDeadband(driverController.getLeftY(), ControllerConstants.joystickDeadband),
-					() -> MathUtil.applyDeadband(driverController.getLeftX(), ControllerConstants.joystickDeadband),
-					() -> MathUtil.applyDeadband(driverController.getRightX(), ControllerConstants.joystickDeadband),
-					true,
-					swerveDrive,
-					poseEstimator));
+		swerveDrive.setDefaultCommand(new ArcadeDriveCmd(
+			() -> MathUtil.applyDeadband(driverController.getLeftY(), ControllerConstants.joystickDeadband),
+			() -> MathUtil.applyDeadband(driverController.getLeftX(), ControllerConstants.joystickDeadband),
+			() -> MathUtil.applyDeadband(driverController.getRightX(), ControllerConstants.joystickDeadband),
+			true,
+			swerveDrive,
+			poseEstimator));
 		
 		elevatorSys.setDefaultCommand(new ElevatorManualCmd(
 			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
@@ -148,15 +151,50 @@ public class RobotContainer {
 		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
 		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
 
-		operatorController.povUp().onTrue(new PivotReefCmd(pivotSys));
+		// pivot troubleshooting
+		// operatorController.a().onTrue(new PivotGroundCmd(pivotSys));
+		// operatorController.b().onTrue(new PivotProcessorCmd(pivotSys));
+		// operatorController.x().onTrue(new PivotStowCmd(pivotSys));
+		// operatorController.y().onTrue(new PivotReefCmd(pivotSys));
 
-		operatorController.povDown().onTrue(new ClimberOutCmd(climberSys));
-		operatorController.povRight().onTrue(new ClimberClimbCmd(climberSys));
+		// roller troubleshooting
+		// operatorController.a().onTrue(new RollerIntakeCmd(rollerSys));
+		// operatorController.b().onTrue(new RollerOuttakeCmd(rollerSys));
+		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
+
+		operatorController.povUp().onTrue(new ClimberOutCmd(climberSys));
+		operatorController.povDown().onTrue(new ClimberClimbCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
 
-		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-			.onTrue(new CoralOuttakeCmd(coralSys));
+		// operatorController.leftBumper()
+		// 	.onTrue(new PivotReefCmd(pivotSys))
+		// 	.onTrue(new RollerIntakeCmd(rollerSys))
+		// 	.onFalse(new PivotStowCmd(pivotSys))
+		// 	.onFalse(new RollerIdleCmd(rollerSys));
 
+		// operatorController.rightBumper()
+		// 	.onTrue(new PivotProcessorCmd(pivotSys))
+		// 	.onTrue(new RollerOuttakeCmd(rollerSys))
+		// 	.onFalse(new PivotStowCmd(pivotSys))
+		// 	.onFalse(new RollerIdleCmd(rollerSys));
+
+		// no beam breaks
+		// operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		// .onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));		
+		// operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		// .onTrue(new CoralIntakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
+
+		// beam breaks
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		.onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
+
+		// driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		// 	.onTrue(new PivotGroundCmd(pivotSys))
+		// 	.onTrue(new RollerIntakeCmd(rollerSys))
+		// 	.onFalse(new PivotStowCmd(pivotSys))
+		// 	.onFalse(new RollerIdleCmd(rollerSys));
+
+		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 	}
 
 	/**
@@ -181,6 +219,6 @@ public class RobotContainer {
 		SmartDashboard.putNumber("climber position", climberSys.getCurrentPositionDeg());
 		SmartDashboard.putNumber("climber left position", climberSys.getLeftCurrentPositionDeg());
 		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
-
+		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
 	}
 }

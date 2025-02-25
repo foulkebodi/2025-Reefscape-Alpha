@@ -211,41 +211,41 @@ public final class Constants {
 
         public static final int maxPivotCurrentAmps = 50;
 
-        public static final double gearRatio = 48.0;
+        public static final double gearRatio = 75.0;
 
-        public static final double kP = 0.012; // 0.035;
-        public static final double kD = 0.00025; // 0.00037;
+        public static final double kP = 0.014; // 0.035;
+        public static final double kD = 0.0002; // 0.00037;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 200.0; // 400.0;
+        public static final double maxVelDegPerSec = 100.0;
 
-        public static final double maxAccelDegPerSecSq = 200.0; // 575.0;
+        public static final double maxAccelDegPerSecSq = 50.0;
 
         public static final double maxManualDegPerSec = 100.0;
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double stowPresetDeg = 150.0;
+        public static final double initializepresetDeg = 0.0;
 
-        public static final double reefPresetDeg = 67.0;
+        public static final double stowPresetDeg = 10.0;
+
+        public static final double reefPresetDeg = 50.0;
         
-        public static final double processorPresetDeg = 68.0;
+        public static final double processorPresetDeg = 30.0;
 
-        public static final double groundPresetDeg = 183.0;
+        public static final double groundPresetDeg = 90.0;
 
-        public static final float lowerLimitDeg = 0f;
+        public static final float lowerLimitDeg = -5f;
 
-        public static final float upperLimitDeg = 180f;
-
-        public static final double podiumCorrectionIncrementDeg = .01;
+        public static final float upperLimitDeg = 100f;
 
         public static final double toleranceDeg = 0.5;
 
-        public static final double absPivotEncOffsetDeg = 208.0 - 60.0;
+        public static final double absPivotEncOffsetDeg = 142.0;
     }
 
     public class RollerConstants {
@@ -262,27 +262,28 @@ public final class Constants {
 
         public static final double maxRPM = freeSpeedRPM / gearRatio;
 
-        // Velovity PID
-        public static final double feedForward = 0.00018;
+        // Velocity PID
+        public static final double feedForward = 1 / 565;
 
         public static final double kP = 0.0002; // 0.0002
 
         public static final double kD = 0.0025; // 0.003
 
         // MAXMotion
-        public static final double maxAccelRPMPerSec = 100.0;
+        public static final double maxAccelRPMPerSec = 2000.0;
 
-        public static final double intakeRPM = 500.0; // maximum: 1696.0
+        public static final double intakeRPM = -200.0; // maximum: 1696.0 positive values are out
         
-        public static final double outtakeRPM = 900.0; // maximum: 1696.0
+        public static final double outtakeRPM = 200.0; // maximum: 1696.0 positive values are out
 
-        public static final double idleRPM = 10.0; // maximum: 1696.0
+        public static final double idleRPM = -50.0; // maximum: 1696.0 positive values are out
         
-        public static final double rollerDiameterMeters = Units.inchesToMeters(4.0);
+        // power control
+        public static final double idlePower = -0.1;
 
-        public static final double rollerCircumferenceMeters = rollerDiameterMeters * Math.PI;
+        public static final double intakePower = -0.2;
 
-        public static final double metersPerSecondPerRPM = rollerCircumferenceMeters / 60.0;
+        public static final double outtakePower = 0.5;
     }
 
     public class CoralConstants {
@@ -299,15 +300,19 @@ public final class Constants {
 
         public static final double maxAccelRPMPerSec = 100.0;
 
-        public static final double outtakeRPM = 100.0;
+        public static final double outtakeRPM = 500.0;
+        
+        public static final double intakeRPM = 100.0;
+        
+        public static final double outtakePower = 0.5;
 
-        public static final double intakeRPM = 5250.0;
+        public static final double intakePower = 0.1;
 
-        public static final double feedForward = 0.00018;
+        // public static final double feedForward = 0.00018;
 
-        public static final double kP = 0.0002; // 0.0002
+        // public static final double kP = 0.0002; // 0.0002
 
-        public static final double kD = 0.0025; // 0.003
+        // public static final double kD = 0.0025; // 0.003
     }
 
     public static class ClimberConstants {
@@ -327,13 +332,13 @@ public final class Constants {
 
         public static final double maxAccelDegPerSecSq = 700.0; // 575.0;
 
-        public static final double climbingPresetDeg = 190.0;
-        public static final double outPresetDeg = -130.0;
+        public static final double climbingPresetDeg = 40.0;
+        public static final double outPresetDeg = -95.0;
         public static final double homePresetDeg = 0.0;
 
-        public static final float lowerLimitDeg = -135f;
+        public static final float lowerLimitDeg = -100f;
 
-        public static final float upperLimitDeg = 195f;
+        public static final float upperLimitDeg = 45f;
 
         public static final double toleranceDeg = 0.5;
     }

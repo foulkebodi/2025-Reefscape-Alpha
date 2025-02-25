@@ -7,25 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueInsideToTwentyLeft"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "TestPathOne"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoral"
+            "name": "ElevatorUp"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 2.0
           }
         },
         {
@@ -35,21 +29,15 @@
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "TwentyLeftToChuteThirteen"
+            "waitTime": 2.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ChuteThirteenToNineteenRight"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "NineteenRightToChuteThirteenSPRINT"
+            "pathName": "TestPathTwo"
           }
         }
       ]

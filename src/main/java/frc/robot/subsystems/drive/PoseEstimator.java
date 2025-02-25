@@ -9,7 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.util.LimelightHelpers;
@@ -72,6 +73,8 @@ public class PoseEstimator extends SubsystemBase {
     }   
 
     public void resetHeading() {
-        // poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), new Pose2d());
+        poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), 
+        new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), 
+        DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
     }
 }

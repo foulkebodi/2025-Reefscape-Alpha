@@ -16,7 +16,8 @@ public RollerOuttakeCmd(RollerSys roller){
 
 @Override
 public void initialize() {
-    roller.setRPM(RollerConstants.outtakeRPM);
+    roller.setPower(RollerConstants.outtakePower);
+    // roller.setRPM(RollerConstants.outtakeRPM);
 }
 
 @Override

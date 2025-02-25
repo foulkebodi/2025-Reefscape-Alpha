@@ -1,10 +1,8 @@
 package frc.robot.subsystems; 
 
-import com.revrobotics.spark.SparkClosedLoopController; 
 import com.revrobotics.spark.SparkFlex;
 
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -20,7 +18,9 @@ public class RollerSys extends SubsystemBase {
 
   private final RelativeEncoder rollerEnc;
 
-  private final SparkClosedLoopController rollerController;
+  // private final SparkClosedLoopController rollerController;
+
+  // private double rpm = 0.0;
 
   public RollerSys() {
     rollerMtr = new SparkFlex(CANDevices.rollerMtrID, MotorType.kBrushless);
@@ -39,16 +39,17 @@ public class RollerSys extends SubsystemBase {
     rollerMtrSparkFlexConfig.encoder.positionConversionFactor(RollerConstants.outputRevPerMtrRev);
     rollerMtrSparkFlexConfig.encoder.velocityConversionFactor(RollerConstants.outputRPMPerMtrRPM);
 
-    rollerController = rollerMtr.getClosedLoopController();
+    // rollerController = rollerMtr.getClosedLoopController();
 
     // Velocity PID
-    // algaeRollerMtrSparkFlexConfig.closedLoop.p(AlgaeRollerConstants.kP);
-    // algaeRollerMtrSparkFlexConfig.closedLoop.i(0.0);
-    // algaeRollerMtrSparkFlexConfig.closedLoop.d(AlgaeRollerConstants.kD);
-    // algaeRollerMtrSparkFlexConfig.closedLoop.velocityFF(AlgaeRollerConstants.feedForward);
+    // rollerMtrSparkFlexConfig.closedLoop.p(RollerConstants.kP);
+    // rollerMtrSparkFlexConfig.closedLoop.i(0.0);
+    // rollerMtrSparkFlexConfig.closedLoop.d(RollerConstants.kD);
+    // rollerMtrSparkFlexConfig.closedLoop.velocityFF(RollerConstants.feedForward);
+
     // MAXMotion
-    rollerMtrSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(RollerConstants.maxAccelRPMPerSec); // RPM per sec
-    rollerMtrSparkFlexConfig.closedLoop.velocityFF(RollerConstants.feedForward);
+    // rollerMtrSparkFlexConfig.closedLoop.maxMotion.maxAcceleration(RollerConstants.maxAccelRPMPerSec); // RPM per sec
+    // rollerMtrSparkFlexConfig.closedLoop.velocityFF(RollerConstants.feedForward);
     // algaeRollerMtrSparkFlexConfig.closedLoop.maxMotion.allowedClosedLoopError(0.0); // Rotations * positionconversionfactor
 
     rollerMtr.configure(
@@ -59,16 +60,22 @@ public class RollerSys extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-  }
-
-  public void setRPM(double rpm) {
     // MAXMotion
-    rollerController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
-    rollerController.setReference(rpm, ControlType.kMAXMotionVelocityControl);
+    // rollerController.setReference(rpm, ControlType.kVelocity);
+    // rollerController.setReference(rpm, ControlType.kVelocity);
     // Velocity PID
     // alageRollerController.setReference(rpm, ControlType.kVelocity);
     // alageRollerController.setReference(rpm, ControlType.kVelocity);
+    // SmartDashboard.putNumber("target rpm", rpm);
+    // SmartDashboard.putNumber("roller rpm", getRPM());
+  }
+
+  // public void setRPM(double rpm) {
+    // this.rpm = rpm;
+  // }
+
+  public void setPower(double power) {
+    rollerMtr.set(power);
   }
 
   public double getRPM() {

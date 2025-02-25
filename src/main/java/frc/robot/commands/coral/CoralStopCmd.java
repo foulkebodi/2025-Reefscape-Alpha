@@ -1,6 +1,5 @@
 package frc.robot.commands.coral;
 
-import frc.robot.Constants.CoralConstants;
 import frc.robot.subsystems.CoralSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -16,7 +15,7 @@ public class CoralStopCmd extends Command {
 
     @Override
     public void initialize() {
-        coral.settargetRPM(0.0);
+        coral.setIsOuttaking(false);
     }
 
     @Override

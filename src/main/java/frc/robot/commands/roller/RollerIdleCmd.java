@@ -16,7 +16,8 @@ public RollerIdleCmd(RollerSys roller){
 
 @Override
 public void initialize() {
-    roller.setRPM(RollerConstants.idleRPM);
+    roller.setPower(RollerConstants.idlePower);
+    // roller.setRPM(RollerConstants.idleRPM);
 }
 
 @Override

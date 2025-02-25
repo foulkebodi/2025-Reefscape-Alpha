@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.33,
-        "y": 7.0
+        "x": 1.1720034246575342,
+        "y": 7.067701198630136
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.33,
-        "y": 7.0
+        "x": 1.7660682744956473,
+        "y": 6.581592472961992
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ChuteThirteen"
     },
     {
       "anchor": {
-        "x": 2.5,
-        "y": 7.0
+        "x": 3.6947368421063276,
+        "y": 5.131496710524602
       },
       "prevControl": {
-        "x": 3.5,
-        "y": 7.0
+        "x": 3.0279528952475516,
+        "y": 5.623055463339171
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "NineteenRight"
     }
   ],
   "rotationTargets": [],
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 1.75,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": null,
+  "folder": "TwoPiecePaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -55.0
   },
   "useDefaultConstraints": true
 }

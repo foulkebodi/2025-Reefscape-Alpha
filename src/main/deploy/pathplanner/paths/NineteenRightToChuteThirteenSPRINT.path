@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.168835616438356,
-        "y": 5.144413527397259
+        "x": 3.6947368421063276,
+        "y": 5.131496710524602
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.18610197368421,
-        "y": 5.42014802631579
+        "x": 3.469572130963792,
+        "y": 5.297258507359388
       },
       "isLocked": false,
-      "linkedName": "TwentyLeft"
+      "linkedName": "NineteenRight"
     },
     {
       "anchor": {
@@ -20,8 +20,8 @@
         "y": 7.067701198630136
       },
       "prevControl": {
-        "x": 1.9355987326726907,
-        "y": 6.712216185869399
+        "x": 0.9760593914725935,
+        "y": 7.222962062530923
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,12 +33,12 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 10.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
-    "unlimited": false
+    "unlimited": true
   },
   "goalEndState": {
     "velocity": 0,
@@ -48,7 +48,7 @@
   "folder": "TwoPiecePaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": false
 }
