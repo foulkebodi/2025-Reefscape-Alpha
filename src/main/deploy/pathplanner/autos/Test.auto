@@ -7,43 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TestPathOne"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorDown"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TestPathTwo"
+            "pathName": "BlueInsideToTwentyLeft"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "TestAutos",
   "choreoAuto": false
 }

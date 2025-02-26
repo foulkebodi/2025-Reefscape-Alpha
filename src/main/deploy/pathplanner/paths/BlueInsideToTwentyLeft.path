@@ -39,14 +39,14 @@
   "eventMarkers": [
     {
       "name": "ElevatorUp",
-      "waypointRelativePos": 0.895238095238095,
+      "waypointRelativePos": 0.7037701974865366,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.75,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

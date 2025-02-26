@@ -9,17 +9,11 @@
           "data": {
             "pathName": "TranslationTestOne"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "TranslationTestTwo"
-          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "TestAutos",
   "choreoAuto": false
 }

@@ -77,7 +77,7 @@ public CoralSys() {
     // uncomment for beam breaks
     if (isOuttaking) {
       CoralMtr.set(CoralConstants.outtakePower);
-    } else if (backBeamBreak.get() == false && frontBeamBreak.get() == true) {
+    } else if (frontBeamBreak.get() == false) {
       CoralMtr.set(0.0);
     } else if (DriverStation.isDisabled()) {
       CoralMtr.set(0.0);
@@ -85,6 +85,7 @@ public CoralSys() {
       CoralMtr.set(CoralConstants.intakePower);
     }
     SmartDashboard.putBoolean("IsOuttaking", isOuttaking);
+    SmartDashboard.putBoolean("FrontBeamBreak", frontBeamBreak.get());
     SmartDashboard.putNumber("coral target power", CoralMtr.get());
   }
 

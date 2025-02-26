@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueInsideToTwentyLeft"
+            "pathName": "BlueOutsideToTwentyLeft"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PlaceCoral"
+            "name": null
           }
         },
         {
@@ -35,6 +35,12 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "TwentyLeftToChuteThirteen"
@@ -47,9 +53,39 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorDown"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "NineteenRightToChuteThirteenSPRINT"
+            "pathName": "NineteenRightToChuteThirteen"
           }
         }
       ]

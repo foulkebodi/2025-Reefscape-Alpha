@@ -23,10 +23,10 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
     public static class RobotConstants {
-        // TODO Set to the current the weight of the robot, including the battery and bumpers.
-        public static final double massKg = 45.0; // ~100 lbs
+        // Set to the current the weight of the robot, including the battery and bumpers.
+        public static final double massKg = 49.895; // ~100 lbs
 
-        // TODO Set the frame dimensions of the robot.
+        // Set the frame dimensions of the robot.
         public static final double robotWidthMeters = Units.inchesToMeters(21.75);
         public static final double robotLengthMEters = Units.inchesToMeters(21.75);
 
@@ -74,15 +74,15 @@ public final class Constants {
 
         public static final int CoralMtrID = 19;
 
-        public static final int frontBeamBreakPort = 8;
-        public static final int backBeamBreakPort = 7;
+        public static final int frontBeamBreakPort = 2;
+        public static final int backBeamBreakPort = 0;
        
         public static final int leftClimberMtrID = 20;
         public static final int rightClimberMtrID = 21;
 	}
 
     public static class SwerveModuleConstants {
-        // TODO Tune the below PID and FF values using the SysID routines.
+        // Tune the below PID and FF values using the SysID routines.
         public static final double driveKp = 0.13; // 0.1
         public static final double driveKd = 0.0;
 
@@ -95,13 +95,13 @@ public final class Constants {
 
         public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(driveKsVolts, driveKvVoltSecsPerMeter, driveKaVoldSecsPerMeterSq);
 
-        // TODO You may want to change this value depending on your breakers and the current usage of the rest of your robot.
-        public static final int driveCurrentLimitAmps = 40;
+        // You may want to change this value depending on your breakers and the current usage of the rest of your robot.
+        public static final int driveCurrentLimitAmps = 70;
 
-        // TODO This number may have to be adjusted depending on what wheels you use.
-        public static final double wheelRadiusMeters = Units.inchesToMeters(1.95);
+        // This number may have to be adjusted depending on what wheels you use.
+        public static final double wheelRadiusMeters = Units.inchesToMeters(1.9);
 
-        // TODO Set this value to the coefficient of friction of your wheels.
+        // Set this value to the coefficient of friction of your wheels.
         public static final double wheelCoefficientOfFriction = 1.5;
 
         public static final double driveGearReduction = (16.0 / 50.0) * (27.0 / 17.0) * (15.0 / 45.0);
@@ -137,7 +137,7 @@ public final class Constants {
         public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(71.68);
         public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(116.9);
 
-		// TODO Set these dimensions for the distance between the center of each wheel.
+		// Set these dimensions for the distance between the center of each wheel.
         // Note that these values are different from the robot's overall dimenstions.
 		public static final double chassisLengthMeters = Units.inchesToMeters(21.75);
         public static final double chassisWidthMeters = Units.inchesToMeters(21.75);
@@ -157,7 +157,7 @@ public final class Constants {
         public static final double skewCompensationRatioOmegaPerTheta = 0.1;
 
         // Tune the below PID values using the SysID routines.
-        public static final double autoTranslationKp = 10.0;
+        public static final double autoTranslationKp = 6.0;
         public static final double autoTranslationKd = 0.0;
 
         public static final double autoRotationKp = 10.0;
@@ -173,7 +173,7 @@ public final class Constants {
 
         public static final double gearRatio = 15.0;
         
-        public static final double kP = 0.05; // 
+        public static final double kP = 0.06; // 
         public static final double kD = 0.0; // 
 
         public static final double sprocketToothCount = 20;
@@ -184,7 +184,7 @@ public final class Constants {
 
         public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
 
-        public static final double maxVelInchesPerSec = 50.0; // 400.0
+        public static final double maxVelInchesPerSec = 60.0; // 400.0
 
         public static final double maxAccelInchesPerSecSq = 100.0; // 575.0
 
@@ -194,15 +194,15 @@ public final class Constants {
 
         public static final double coralOnePresetInches = 10.0;
  
-        public static final double coralTwoPresetInches = 20.0;
+        public static final double coralTwoPresetInches = 24.0;
 
-        public static final double coralThreePresetInches = 43.5;
+        public static final double coralThreePresetInches = 45;
 
         public static final double homePresetInches = 0.0;
 
         public static final float lowerLimitInches = 0f;
 
-        public static final float upperLimitInches = 44f; // 47.47
+        public static final float upperLimitInches = 47.7f; // 47.47
 
         public static final double toleranceInches = 0.1;
     }
@@ -213,17 +213,17 @@ public final class Constants {
 
         public static final double gearRatio = 75.0;
 
-        public static final double kP = 0.014; // 0.035;
-        public static final double kD = 0.0002; // 0.00037;
+        public static final double kP = 0.012; // 0.035;
+        public static final double kD = 0.000; // 0.00037;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 100.0;
+        public static final double maxVelDegPerSec = 150.0;
 
-        public static final double maxAccelDegPerSecSq = 50.0;
+        public static final double maxAccelDegPerSecSq = 100.0;
 
         public static final double maxManualDegPerSec = 100.0;
 
@@ -231,13 +231,13 @@ public final class Constants {
 
         public static final double initializepresetDeg = 0.0;
 
-        public static final double stowPresetDeg = 10.0;
+        public static final double stowPresetDeg = 30.0;
 
-        public static final double reefPresetDeg = 50.0;
+        public static final double reefPresetDeg = 60.0;
         
-        public static final double processorPresetDeg = 30.0;
+        public static final double processorPresetDeg = 40.0;
 
-        public static final double groundPresetDeg = 90.0;
+        public static final double groundPresetDeg = 85.0;
 
         public static final float lowerLimitDeg = -5f;
 
@@ -304,7 +304,7 @@ public final class Constants {
         
         public static final double intakeRPM = 100.0;
         
-        public static final double outtakePower = 0.5;
+        public static final double outtakePower = 0.25;
 
         public static final double intakePower = 0.1;
 
@@ -328,9 +328,9 @@ public final class Constants {
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 150.0; // 400.0;
+        public static final double maxVelDegPerSec = 150.0; // 400.0
 
-        public static final double maxAccelDegPerSecSq = 700.0; // 575.0;
+        public static final double maxAccelDegPerSecSq = 700.0; // 575.0
 
         public static final double climbingPresetDeg = 40.0;
         public static final double outPresetDeg = -95.0;

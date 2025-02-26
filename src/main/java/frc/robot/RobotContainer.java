@@ -34,6 +34,7 @@ import frc.robot.subsystems.PivotSys;
 import frc.robot.subsystems.RollerSys;
 import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
+import frc.robot.subsystems.util.LimelightHelpers;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -83,12 +84,15 @@ public class RobotContainer {
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-
+		// register named commands
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
 		NamedCommands.registerCommand("ElevatorUp", new ElevatorCoralThreeCmd(elevatorSys));
 		NamedCommands.registerCommand("ElevatorDown", new ElevatorHomeCmd(elevatorSys));	
-		NamedCommands.registerCommand("PlaceCoral", new AutoPlaceCoralCmd(coralSys));
+		NamedCommands.registerCommand("OuttakeCoral", new CoralOuttakeCmd(coralSys));
+		NamedCommands.registerCommand("StopCoral", new CoralStopCmd(coralSys));
+		NamedCommands.registerCommand("PivotStow", new PivotStowCmd(pivotSys));
 
+		// configure autobuilder
 		AutoBuilder.configure(
 			poseEstimator::get,
 			poseEstimator::resetPose,
@@ -108,7 +112,14 @@ public class RobotContainer {
 			},
 			swerveDrive);
 
-		new PathPlannerAuto("TwoPiece");
+		// competition autos
+		new PathPlannerAuto("TwoPieceInside");
+		new PathPlannerAuto("TwoPieceOutside");
+
+		// test autos
+		new PathPlannerAuto("Test");
+		new PathPlannerAuto("RotationTest");
+		new PathPlannerAuto("TranslationTest2.0");
 
 		// SysID routines
 		// autoChooser.addOption("SysID Quasistatic Forward", SysIDRoutines.quasistaticForward(swerveDrive));
@@ -161,22 +172,23 @@ public class RobotContainer {
 		// operatorController.a().onTrue(new RollerIntakeCmd(rollerSys));
 		// operatorController.b().onTrue(new RollerOuttakeCmd(rollerSys));
 		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
+		// operatorController.x().onTrue(new AutoPlaceCoralCmd(coralSys));
 
 		operatorController.povUp().onTrue(new ClimberOutCmd(climberSys));
 		operatorController.povDown().onTrue(new ClimberClimbCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
 
-		// operatorController.leftBumper()
-		// 	.onTrue(new PivotReefCmd(pivotSys))
-		// 	.onTrue(new RollerIntakeCmd(rollerSys))
-		// 	.onFalse(new PivotStowCmd(pivotSys))
-		// 	.onFalse(new RollerIdleCmd(rollerSys));
+		operatorController.leftBumper()
+			.onTrue(new PivotReefCmd(pivotSys))
+			.onTrue(new RollerIntakeCmd(rollerSys))
+			.onFalse(new PivotStowCmd(pivotSys))
+			.onFalse(new RollerIdleCmd(rollerSys));
 
-		// operatorController.rightBumper()
-		// 	.onTrue(new PivotProcessorCmd(pivotSys))
-		// 	.onTrue(new RollerOuttakeCmd(rollerSys))
-		// 	.onFalse(new PivotStowCmd(pivotSys))
-		// 	.onFalse(new RollerIdleCmd(rollerSys));
+		operatorController.rightBumper()
+			.onTrue(new PivotProcessorCmd(pivotSys))
+			.onTrue(new RollerOuttakeCmd(rollerSys))
+			.onFalse(new PivotStowCmd(pivotSys))
+			.onFalse(new RollerIdleCmd(rollerSys));
 
 		// no beam breaks
 		// operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
@@ -184,15 +196,15 @@ public class RobotContainer {
 		// operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
 		// .onTrue(new CoralIntakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
 
-		// beam breaks
+		// beam breaks  
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
 		.onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
 
-		// driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		// 	.onTrue(new PivotGroundCmd(pivotSys))
-		// 	.onTrue(new RollerIntakeCmd(rollerSys))
-		// 	.onFalse(new PivotStowCmd(pivotSys))
-		// 	.onFalse(new RollerIdleCmd(rollerSys));
+		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+			.onTrue(new PivotGroundCmd(pivotSys))
+			.onTrue(new RollerIntakeCmd(rollerSys))
+			.onFalse(new PivotStowCmd(pivotSys))
+			.onFalse(new RollerIdleCmd(rollerSys));
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 	}
@@ -220,5 +232,6 @@ public class RobotContainer {
 		SmartDashboard.putNumber("climber left position", climberSys.getLeftCurrentPositionDeg());
 		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
 		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
+		SmartDashboard.putNumberArray("limelight pos", LimelightHelpers.getBotPose_wpiBlue("limelight-front"));
 	}
 }

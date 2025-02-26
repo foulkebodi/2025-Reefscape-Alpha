@@ -29,6 +29,7 @@ public class PoseEstimator extends SubsystemBase {
 
     private final Supplier<Rotation2d> gyroHeadingSupplier;
     private final Supplier<SwerveModulePosition[]> modulePositionsSupplier;
+    
 
     public PoseEstimator(
         SwerveDriveKinematics swerveKinematics,
@@ -55,9 +56,10 @@ public class PoseEstimator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose2d_wpiBlue(LimelightConstants.limelightName), 
-        LimelightHelpers.getLatency_Capture(LimelightConstants.limelightName) + LimelightHelpers.getLatency_Pipeline(LimelightConstants.limelightName) * 0.001, VecBuilder.fill(.5,.5,.9999));
-        poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get());
+        // if (LimelightHelpers.getTV("limelight-front")) {
+        // poseEstimator.addVisionMeasurement(getLimelightPose(), getLimelightTimestamp());
+        // }
+        poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get()); 
     }
 
     public Pose2d get() {
@@ -77,4 +79,14 @@ public class PoseEstimator extends SubsystemBase {
         new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), 
         DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
     }
+
+    public Pose2d getLimelightPose() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-front");
+        return limelightMeasurement.pose;
+    }
+    public double getLimelightTimestamp() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-front");
+        return limelightMeasurement.timestampSeconds;
+    }
+
 }
