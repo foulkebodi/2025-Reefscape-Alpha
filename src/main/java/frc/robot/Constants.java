@@ -164,10 +164,6 @@ public final class Constants {
         public static final double autoRotationKd = 0.0;
     }
 
-    public static class LimelightConstants {
-        public static final String limelightName = "limelight-front";
-    }   
-
     public static class ElevatorConstants {
         public static final int maxElevatorCurrentAmps = 50;
 

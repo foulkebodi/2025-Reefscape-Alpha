@@ -12,7 +12,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.LimelightConstants;
 import frc.robot.subsystems.util.LimelightHelpers;
 
 public class PoseEstimator extends SubsystemBase {
@@ -56,19 +55,15 @@ public class PoseEstimator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // if (LimelightHelpers.getTV("limelight-front")) {
-        // poseEstimator.addVisionMeasurement(getLimelightPose(), getLimelightTimestamp());
-        // }
+        if (LimelightHelpers.getTV("limelight-front")) {
+        poseEstimator.addVisionMeasurement(getLimelightPose(), getLimelightTimestamp());
+        }
         poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get()); 
     }
 
     public Pose2d get() {
         return poseEstimator.getEstimatedPosition();
     }
-
-    // public void addVisionMeasurement(Pose2d visionPose, double captureTimestampSecs) {
-        
-    // }
 
     public void resetPose(Pose2d pose) {
         poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), pose);

@@ -11,6 +11,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
@@ -19,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "OuttakeCoral"
           }
         },
         {
@@ -31,13 +37,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ElevatorDown"
+            "name": "StopCoral"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.5
+            "name": "ElevatorDown"
           }
         },
         {
@@ -53,6 +59,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "ElevatorUp"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
@@ -61,7 +73,7 @@
         {
           "type": "named",
           "data": {
-            "name": null
+            "name": "OuttakeCoral"
           }
         },
         {
@@ -73,13 +85,13 @@
         {
           "type": "named",
           "data": {
-            "name": "ElevatorDown"
+            "name": "StopCoral"
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.5
+            "name": "ElevatorDown"
           }
         },
         {

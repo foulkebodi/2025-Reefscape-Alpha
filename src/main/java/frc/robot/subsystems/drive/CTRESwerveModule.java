@@ -29,7 +29,7 @@ public class CTRESwerveModule extends SwerveModule {
     private final VelocityVoltage driveRequest = new VelocityVoltage(0).withSlot(0);
     private final PositionVoltage steerRequest = new PositionVoltage(0).withSlot(0);
 
-    // FIXME This class is currently untested. I am not super familiar with Phoenix6 and have no way to test this currently.
+    // This class is currently untested. I am not super familiar with Phoenix6 and have no way to test this currently.
     public CTRESwerveModule(int canCoderID, int driveMtrID, int steerMtrID, Rotation2d moduleOffset) {
         this.moduleOffset = moduleOffset;
 

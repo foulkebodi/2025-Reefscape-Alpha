@@ -9,7 +9,6 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.ArcadeDriveCmd;
-import frc.robot.commands.automation.AutoPlaceCoralCmd;
 import frc.robot.commands.climber.ClimberClimbCmd;
 import frc.robot.commands.climber.ClimberHomeCmd;
 import frc.robot.commands.climber.ClimberOutCmd;

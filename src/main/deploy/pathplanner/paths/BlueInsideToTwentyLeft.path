@@ -41,7 +41,12 @@
       "name": "ElevatorUp",
       "waypointRelativePos": 0.7037701974865366,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorUp"
+        }
+      }
     }
   ],
   "globalConstraints": {

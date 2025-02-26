@@ -2,6 +2,8 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.drive.PoseEstimator;
@@ -81,12 +83,21 @@ public class ArcadeDriveCmd extends Command {
             rot = Math.copySign(Math.pow(rot, 2.0), rot);
         }
 
-        swerve.driveFieldRelative(
-            -drive * SwerveDriveConstants.maxAttainableSpeedMetersPerSec,
-            -strafe * SwerveDriveConstants.maxAttainableRotationRadPerSec,
-            -rot * SwerveDriveConstants.maxAttainableRotationRadPerSec,
-            poseEstimator.get().getRotation()
-        );
+        if(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+            swerve.driveFieldRelative(
+                drive * SwerveDriveConstants.maxAttainableSpeedMetersPerSec,
+                strafe * SwerveDriveConstants.maxAttainableRotationRadPerSec,
+                rot * SwerveDriveConstants.maxAttainableRotationRadPerSec,
+                poseEstimator.get().getRotation()
+            );
+        } else {
+            swerve.driveFieldRelative(
+                -drive * SwerveDriveConstants.maxAttainableSpeedMetersPerSec,
+                -strafe * SwerveDriveConstants.maxAttainableRotationRadPerSec,
+                -rot * SwerveDriveConstants.maxAttainableRotationRadPerSec,
+                poseEstimator.get().getRotation()
+            );
+        }
     }
     
     // Called once the command ends or is interrupted.

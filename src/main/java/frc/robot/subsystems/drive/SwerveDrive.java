@@ -9,6 +9,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
 import frc.robot.Constants.SwerveDriveConstants;
@@ -172,11 +173,17 @@ public class SwerveDrive extends SubsystemBase {
         skewCompensationThetaShift = Rotation2d.fromRadians(omegaRadPerSec * SwerveDriveConstants.skewCompensationRatioOmegaPerTheta);
 
         thetaRad -= skewCompensationThetaShift.getRadians();
-
-        return new ChassisSpeeds(
-            velMetersPerSec * Math.cos(thetaRad),
-            velMetersPerSec * Math.sin(thetaRad),
-            omegaRadPerSec);
+        if (DriverStation.isAutonomousEnabled()) {
+            return new ChassisSpeeds(
+                chassisSpeeds.vxMetersPerSecond,
+                chassisSpeeds.vyMetersPerSecond,
+                omegaRadPerSec);
+        } else {
+            return new ChassisSpeeds(
+                velMetersPerSec * Math.cos(thetaRad),
+                velMetersPerSec * Math.sin(thetaRad),
+                omegaRadPerSec);
+        }
     }
 
     public void applyCharacterizationVoltage(double volts) {
