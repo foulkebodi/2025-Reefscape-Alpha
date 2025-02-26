@@ -3,35 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1720034246575342,
-        "y": 7.067701198630136
+        "x": 1.4913651315789471,
+        "y": 0.7824835526315792
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7660682744956473,
-        "y": 6.581592472961992
+        "x": 1.7437682906558918,
+        "y": 0.9698688475147215
       },
       "isLocked": false,
-      "linkedName": "ChuteThirteen"
+      "linkedName": "ChuteTwelve"
     },
     {
       "anchor": {
-        "x": 3.8101973684210524,
-        "y": 5.121875
+        "x": 3.7909539473684206,
+        "y": 2.928125
       },
       "prevControl": {
-        "x": 3.1434134215622764,
-        "y": 5.6134337528145695
+        "x": 3.3929217789744732,
+        "y": 2.603724211543109
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "NineteenRight"
+      "linkedName": "SeventeenLeft"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.7484276729559761,
-      "rotationDegrees": -59.99999999999999
+      "waypointRelativePos": 0.6996855345911962,
+      "rotationDegrees": 59.99999999999999
     }
   ],
   "constraintZones": [],
@@ -39,7 +39,7 @@
   "eventMarkers": [
     {
       "name": "ElevatorUp",
-      "waypointRelativePos": 0.7504488330341117,
+      "waypointRelativePos": 0.7504488330341106,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -59,13 +59,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "TwoPieceLeftPaths",
+  "folder": "TwoPieceRightPaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -55.0
+    "rotation": 55.0
   },
   "useDefaultConstraints": true
 }

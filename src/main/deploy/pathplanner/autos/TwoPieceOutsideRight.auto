@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "BlueInsideToTwentyLeft"
+            "pathName": "RedOutsideToTwentyTwoRight"
           }
         },
         {
@@ -55,31 +55,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TwentyLeftToChuteThirteen"
+            "pathName": "TwentyTwoRightToChuteTwelve"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ChuteThirteenToNineteenRight"
+            "pathName": "ChuteTwelveToSeventeenLeft"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
+            "waitTime": 0.5
           }
         },
         {
@@ -115,7 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "NineteenRightToChuteThirteenSPRINT"
+            "pathName": "SeventeenLeftToChuteTwelve"
           }
         }
       ]

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.6947368421063276,
-        "y": 5.131496710524602
+        "x": 3.8101973684210524,
+        "y": 5.121875
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.469572130963792,
-        "y": 5.297258507359388
+        "x": 3.585032657278517,
+        "y": 5.287636796834786
       },
       "isLocked": false,
       "linkedName": "NineteenRight"
@@ -45,7 +45,7 @@
     "rotation": -55.0
   },
   "reversed": false,
-  "folder": "TwoPiecePaths",
+  "folder": "TwoPieceLeftPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -59.99999999999999

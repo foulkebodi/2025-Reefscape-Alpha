@@ -231,6 +231,5 @@ public class RobotContainer {
 		SmartDashboard.putNumber("climber left position", climberSys.getLeftCurrentPositionDeg());
 		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
 		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
-		SmartDashboard.putNumberArray("limelight pos", LimelightHelpers.getBotPose_wpiBlue("limelight-front"));
 	}
 }
