@@ -56,7 +56,10 @@ public class PoseEstimator extends SubsystemBase {
     @Override
     public void periodic() {
         if (LimelightHelpers.getTV("limelight-front")) {
-        poseEstimator.addVisionMeasurement(getLimelightPose(), getLimelightTimestamp());
+       poseEstimator.addVisionMeasurement(getFrontLimelightPose(), getFrontLimelightTimestamp());
+        }
+        if (LimelightHelpers.getTV("limelight-back")) {
+            poseEstimator.addVisionMeasurement(getBackLimelightPose(), getBackLimelightTimestamp());
         }
         poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get()); 
     }
@@ -75,12 +78,20 @@ public class PoseEstimator extends SubsystemBase {
         DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
     }
 
-    public Pose2d getLimelightPose() {
+    public Pose2d getFrontLimelightPose() {
         LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-front");
         return limelightMeasurement.pose;
     }
-    public double getLimelightTimestamp() {
+    public double getFrontLimelightTimestamp() {
         LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-front");
+        return limelightMeasurement.timestampSeconds;
+    }    
+    public Pose2d getBackLimelightPose() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-back");
+        return limelightMeasurement.pose;
+    }
+    public double getBackLimelightTimestamp() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight-back");
         return limelightMeasurement.timestampSeconds;
     }
 

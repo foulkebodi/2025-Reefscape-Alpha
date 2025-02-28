@@ -37,12 +37,13 @@ public class ClimberSys extends SubsystemBase {
         rightClimberEnc = rightClimberMtr.getEncoder();
         
         leftClimberSparkMaxConfig.inverted(true);
-        leftClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
+        // added motor breaking
+        leftClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         leftClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
         leftClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
 
         rightClimberSparkMaxConfig.inverted(false);
-        rightClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kCoast);
+        rightClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         rightClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
         rightClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
 
@@ -83,7 +84,8 @@ public class ClimberSys extends SubsystemBase {
         leftClimberMtr.set(climberController.calculate(getLeftCurrentPositionDeg(), targetDeg));
         rightClimberMtr.set(climberController.calculate(getLeftCurrentPositionDeg(), targetDeg));
         SmartDashboard.putNumber("climber target position", targetDeg);
-        SmartDashboard.putNumber("climber target power", leftClimberMtr.get());
+        SmartDashboard.putNumber("climber left target power", leftClimberMtr.get());
+        SmartDashboard.putNumber("climber right target power", rightClimberMtr.get());
     }
         
     public double getCurrentPositionDeg() {

@@ -112,13 +112,13 @@ public class RobotContainer {
 			swerveDrive);
 
 		// competition autos
-		new PathPlannerAuto("TwoPieceInside");
-		new PathPlannerAuto("TwoPieceOutside");
+		new PathPlannerAuto("TwoPieceInsideLeft");
+		new PathPlannerAuto("TwoPieceInsideRight");
 
 		// test autos
 		new PathPlannerAuto("Test");
 		new PathPlannerAuto("RotationTest");
-		new PathPlannerAuto("TranslationTest2.0");
+		new PathPlannerAuto("TranslationTestOne");
 
 		// SysID routines
 		// autoChooser.addOption("SysID Quasistatic Forward", SysIDRoutines.quasistaticForward(swerveDrive));
@@ -160,7 +160,7 @@ public class RobotContainer {
 		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
 		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
 		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
-
+  
 		// pivot troubleshooting
 		// operatorController.a().onTrue(new PivotGroundCmd(pivotSys));
 		// operatorController.b().onTrue(new PivotProcessorCmd(pivotSys));
@@ -176,6 +176,7 @@ public class RobotContainer {
 		operatorController.povUp().onTrue(new ClimberOutCmd(climberSys));
 		operatorController.povDown().onTrue(new ClimberClimbCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
+		operatorController.povRight().onTrue(new PivotGroundCmd(pivotSys));
 
 		operatorController.leftBumper()
 			.onTrue(new PivotReefCmd(pivotSys))

@@ -169,21 +169,18 @@ public class SwerveDrive extends SubsystemBase {
         double omegaRadPerSec = chassisSpeeds.omegaRadiansPerSecond;
         double thetaRad = Math.atan2(chassisSpeeds.vyMetersPerSecond, chassisSpeeds.vxMetersPerSecond);
         double velMetersPerSec = Math.hypot(chassisSpeeds.vxMetersPerSecond, chassisSpeeds.vyMetersPerSecond);
-
-        skewCompensationThetaShift = Rotation2d.fromRadians(omegaRadPerSec * SwerveDriveConstants.skewCompensationRatioOmegaPerTheta);
+        
+        if (DriverStation.isAutonomous()) {
+            skewCompensationThetaShift = Rotation2d.fromRadians(omegaRadPerSec * SwerveDriveConstants.skewCompensationRatioOmegaPerTheta);
+        } else {
+            skewCompensationThetaShift = Rotation2d.fromRadians(omegaRadPerSec * 0.0);
+        }
 
         thetaRad -= skewCompensationThetaShift.getRadians();
-        if (DriverStation.isAutonomousEnabled()) {
-            return new ChassisSpeeds(
-                chassisSpeeds.vxMetersPerSecond,
-                chassisSpeeds.vyMetersPerSecond,
-                omegaRadPerSec);
-        } else {
             return new ChassisSpeeds(
                 velMetersPerSec * Math.cos(thetaRad),
                 velMetersPerSec * Math.sin(thetaRad),
                 omegaRadPerSec);
-        }
     }
 
     public void applyCharacterizationVoltage(double volts) {

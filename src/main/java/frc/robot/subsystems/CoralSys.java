@@ -81,9 +81,9 @@ public CoralSys() {
       CoralMtr.set(0.0);
     } else if (DriverStation.isDisabled()) {
       CoralMtr.set(0.0);
-    } else {
+    }  else {
       CoralMtr.set(CoralConstants.intakePower);
-    }
+   }
     SmartDashboard.putBoolean("IsOuttaking", isOuttaking);
     SmartDashboard.putBoolean("FrontBeamBreak", frontBeamBreak.get());
     SmartDashboard.putBoolean("BackBeamBreak", backBeamBreak.get());

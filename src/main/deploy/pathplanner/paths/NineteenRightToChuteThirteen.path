@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.8101973684210524,
-        "y": 5.121875
+        "x": 3.7761270491803276,
+        "y": 4.97202868852459
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.604772331305956,
-        "y": 5.310686976424143
+        "x": 3.5707020120652313,
+        "y": 5.160840664948733
       },
       "isLocked": false,
       "linkedName": "NineteenRight"
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 2.0,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
