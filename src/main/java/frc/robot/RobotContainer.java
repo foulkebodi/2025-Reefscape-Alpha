@@ -33,7 +33,6 @@ import frc.robot.subsystems.PivotSys;
 import frc.robot.subsystems.RollerSys;
 import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
-import frc.robot.subsystems.util.LimelightHelpers;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
@@ -173,10 +172,11 @@ public class RobotContainer {
 		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
 		// operatorController.x().onTrue(new AutoPlaceCoralCmd(coralSys));
 
-		operatorController.povUp().onTrue(new ClimberOutCmd(climberSys));
+		operatorController.povUp()
+			.onTrue(new ClimberOutCmd(climberSys))
+			.onTrue(new PivotGroundCmd(pivotSys));
 		operatorController.povDown().onTrue(new ClimberClimbCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
-		operatorController.povRight().onTrue(new PivotGroundCmd(pivotSys));
 
 		operatorController.leftBumper()
 			.onTrue(new PivotReefCmd(pivotSys))
@@ -190,13 +190,6 @@ public class RobotContainer {
 			.onFalse(new PivotStowCmd(pivotSys))
 			.onFalse(new RollerIdleCmd(rollerSys));
 
-		// no beam breaks
-		// operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		// .onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));		
-		// operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		// .onTrue(new CoralIntakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
-
-		// beam breaks  
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
 		.onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
 
@@ -219,18 +212,38 @@ public class RobotContainer {
 	}
 
 	public void updateDashboard() {
+		// drive base and pose information
 		SmartDashboard.putNumber("FL CANcoder", swerveDrive.getCanCoderAngles()[0].getDegrees());
 		SmartDashboard.putNumber("FR CANcoder", swerveDrive.getCanCoderAngles()[1].getDegrees());
 		SmartDashboard.putNumber("BL CANcoder", swerveDrive.getCanCoderAngles()[2].getDegrees());
 		SmartDashboard.putNumber("BR CANcoder", swerveDrive.getCanCoderAngles()[3].getDegrees());
 		SmartDashboard.putNumber("pos-x", poseEstimator.get().getX());
 		SmartDashboard.putNumber("pos-y", poseEstimator.get().getY());
-		SmartDashboard.putNumber("left elevator enc", elevatorSys.getLeftCurrentPositionInches());
-		SmartDashboard.putNumber("right elevator enc", elevatorSys.getRightCurrentPositionInches());
+
+		//  elevator info
+		SmartDashboard.putNumber("left elevator position", elevatorSys.getLeftCurrentPositionInches());
+		SmartDashboard.putNumber("right elevator position", elevatorSys.getRightCurrentPositionInches());
 		SmartDashboard.putNumber("elevator position", elevatorSys.getCurrentPositionInches());
+		SmartDashboard.putBoolean("elevator at target", elevatorSys.isAtTarget());
+		SmartDashboard.putNumber("elevator position", elevatorSys.getTargetInches());
+
+		// climber info
 		SmartDashboard.putNumber("climber position", climberSys.getCurrentPositionDeg());
 		SmartDashboard.putNumber("climber left position", climberSys.getLeftCurrentPositionDeg());
 		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
-		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
+		SmartDashboard.putNumber("climber target position", climberSys.getTargetDeg());
+		SmartDashboard.putNumber("climber left power", climberSys.getLeftPower());
+		SmartDashboard.putNumber("climber right power", climberSys.getRightPower());
+
+		// pivot info
+		SmartDashboard.putNumber("algae pivot deg", pivotSys.getCurrentPositionDeg());
+		SmartDashboard.putNumber("pivot target deg", pivotSys.getTargetDeg());
+
+		// coral info
+		SmartDashboard.putBoolean("IsOuttaking", coralSys.getIsOuttaking());
+		SmartDashboard.putBoolean("front beam break", coralSys.getFrontBeamBreak());
+		SmartDashboard.putBoolean("back beam break", coralSys.getBackBeamBreak());
+		SmartDashboard.putNumber("coral target power", coralSys.getTargetPower());
+
 	}
 }

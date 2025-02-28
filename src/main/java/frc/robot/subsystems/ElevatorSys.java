@@ -10,7 +10,6 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
 import frc.robot.Constants.ElevatorConstants;
@@ -95,7 +94,6 @@ public class ElevatorSys extends SubsystemBase {
             targetInches = getCurrentPositionInches();
             elevatorController.reset(targetInches);
         }
-        SmartDashboard.putNumber("elevator target", targetInches);
     }
 
     public double getCurrentPositionInches() {
@@ -112,6 +110,10 @@ public class ElevatorSys extends SubsystemBase {
 
     public void setTargetInches(double inches){
         targetInches = inches;
+    }
+
+    public double getTargetInches(){
+        return targetInches;
     }
 
     public void setManualSpeedInchesPerSec (double inchesPersec){
