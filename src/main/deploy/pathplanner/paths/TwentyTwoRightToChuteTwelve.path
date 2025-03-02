@@ -1,0 +1,63 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.105744949494949,
+        "y": 2.886616161616162
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.557307449494949,
+        "y": 2.3478003721424776
+      },
+      "isLocked": false,
+      "linkedName": "TwentyTwoRight"
+    },
+    {
+      "anchor": {
+        "x": 1.3145202020202018,
+        "y": 0.8639520202020197
+      },
+      "prevControl": {
+        "x": 1.5261201113866438,
+        "y": 0.9970890862509363
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ChuteTwelve"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.24528301886792442,
+      "rotationDegrees": 119.99999999999999
+    },
+    {
+      "waypointRelativePos": 0.9025157232704408,
+      "rotationDegrees": 55.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 1.6,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 55.0
+  },
+  "reversed": false,
+  "folder": "TwoPieceRightPaths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "useDefaultConstraints": true
+}

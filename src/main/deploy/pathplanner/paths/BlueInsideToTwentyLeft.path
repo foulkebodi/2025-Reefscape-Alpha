@@ -1,0 +1,71 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.575,
+        "y": 5.044901315789473
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.542763157894736,
+        "y": 5.275822368421052
+      },
+      "isLocked": false,
+      "linkedName": "BlueInside"
+    },
+    {
+      "anchor": {
+        "x": 5.075252525252525,
+        "y": 5.092234848484848
+      },
+      "prevControl": {
+        "x": 6.035446514077326,
+        "y": 5.348725926350747
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "TwentyLeft"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.895791583166333,
+      "rotationDegrees": -119.99999999999999
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorUp",
+      "waypointRelativePos": 0.7037701974865366,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorUp"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 1.6,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "reversed": false,
+  "folder": "TwoPieceLeftPaths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.075252525252525,
+        "y": 5.092234848484848
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.092518882498379,
+        "y": 5.3679693474033785
+      },
+      "isLocked": false,
+      "linkedName": "TwentyLeft"
+    },
+    {
+      "anchor": {
+        "x": 1.385669191919192,
+        "y": 7.277525252525253
+      },
+      "prevControl": {
+        "x": 2.1492644999343478,
+        "y": 6.922040239764516
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ChuteThirteen"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 1.5,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -55.0
+  },
+  "reversed": false,
+  "folder": "TwoPieceLeftPaths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "useDefaultConstraints": false
+}
