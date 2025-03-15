@@ -3,6 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
+
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -21,10 +24,13 @@ public class ClimberSys extends SubsystemBase {
     private final RelativeEncoder rightClimberEnc;
 
     private final ProfiledPIDController climberController;
+    private final ProfiledPIDController winchController;
 
     private double climberTargetDeg = 0.0;
 
     private double winchTargetDeg = 0.0;
+
+    private double manualPower = 0.0;
 
     public ClimberSys() {
         winchClimberMtr = new SparkMax(CANDevices.leftClimberMtrID, MotorType.kBrushless);
@@ -47,7 +53,7 @@ public class ClimberSys extends SubsystemBase {
         rightClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
         
         winchClimberSparkMaxConfig.smartCurrentLimit(ClimberConstants.maxClimberCurrentAmps);
-        rightClimberSparkMaxConfig.smartCurrentLimit(ClimberConstants.maxClimberCurrentAmps);
+        rightClimberSparkMaxConfig.smartCurrentLimit(40);
 
         winchClimberMtr.configure(
             winchClimberSparkMaxConfig,
@@ -65,11 +71,15 @@ public class ClimberSys extends SubsystemBase {
         climberController = new ProfiledPIDController(
         ClimberConstants.kP, 0.0, ClimberConstants.kD, 
         new Constraints(ClimberConstants.maxVelDegPerSec, ClimberConstants.maxAccelDegPerSecSq));
+
+        winchController = new ProfiledPIDController(
+            ClimberConstants.kP, 0.0, ClimberConstants.kD, 
+            new Constraints(ClimberConstants.maxVelDegPerSec, ClimberConstants.maxAccelDegPerSecSq));
     }
 
     @Override
     public void periodic() {
-        winchClimberMtr.set(climberController.calculate(getWinchCurrentPositionDeg(), winchTargetDeg));
+        winchClimberMtr.set(winchController.calculate(getWinchCurrentPositionDeg(), winchTargetDeg));
         rightClimberMtr.set(climberController.calculate(getRightCurrentPositionDeg(), climberTargetDeg));
     }
 
@@ -99,5 +109,10 @@ public class ClimberSys extends SubsystemBase {
 
     public double getRightPower() {
         return rightClimberMtr.get();
+    }
+
+    public void winchManual(double power) {
+        manualPower = power;
+        winchClimberMtr.set(manualPower);
     }
 }

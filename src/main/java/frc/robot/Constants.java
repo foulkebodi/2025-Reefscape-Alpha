@@ -95,7 +95,7 @@ public final class Constants {
         public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(driveKsVolts, driveKvVoltSecsPerMeter, driveKaVoldSecsPerMeterSq);
 
         // You may want to change this value depending on your breakers and the current usage of the rest of your robot.
-        public static final int driveCurrentLimitAmps = 40;
+        public static final int driveCurrentLimitAmps = 80;
 
         // This number may have to be adjusted depending on what wheels you use.
         public static final double wheelRadiusMeters = Units.inchesToMeters(1.9);
@@ -278,13 +278,13 @@ public final class Constants {
 
         public static final double maxAccelDegPerSecSq = 150.0; 
 
-        public static final double climbingPresetDeg = 55.0;
+        public static final double climbingPresetDeg = 41.0;
 
         public static final double outPresetDeg = -95.0;
 
         public static final double homePresetDeg = 0.0;
 
-        public static final double winchPresetInches = 5.0;
+        public static final double winchPresetInches = 900.0;
 
         public static final float lowerLimitDeg = -100f;
 

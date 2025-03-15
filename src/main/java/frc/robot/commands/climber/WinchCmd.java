@@ -16,7 +16,7 @@ public WinchCmd(ClimberSys climber){
 
 @Override
 public void initialize() {
-    climber.setWinchTargetDeg(ClimberConstants.outPresetDeg);
+    climber.setWinchTargetDeg(ClimberConstants.winchPresetInches);
 }
 
 @Override

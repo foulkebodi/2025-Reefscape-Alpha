@@ -12,6 +12,8 @@ import frc.robot.commands.ArcadeDriveCmd;
 import frc.robot.commands.climber.ClimberClimbCmd;
 import frc.robot.commands.climber.ClimberHomeCmd;
 import frc.robot.commands.climber.ClimberOutCmd;
+import frc.robot.commands.climber.WinchCmd;
+import frc.robot.commands.climber.WinchManualCmd;
 import frc.robot.commands.coral.CoralOuttakeCmd;
 import frc.robot.commands.coral.CoralStopCmd;
 import frc.robot.commands.elevator.ElevatorCoralOneCmd;
@@ -156,6 +158,10 @@ public class RobotContainer {
 			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
 			elevatorSys));
 		
+		climberSys.setDefaultCommand(new WinchManualCmd(
+			() -> MathUtil.applyDeadband((operatorController.getRightY()), ControllerConstants.joystickDeadband), 
+			climberSys));
+
 		operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
 		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
 		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
@@ -176,7 +182,9 @@ public class RobotContainer {
 		operatorController.povUp()
 			.onTrue(new ClimberOutCmd(climberSys))
 			.onTrue(new PivotGroundCmd(pivotSys));
-		operatorController.povDown().onTrue(new ClimberClimbCmd(climberSys));
+		operatorController.povDown()
+			.onTrue(new ClimberClimbCmd(climberSys))
+			.onTrue(new WinchCmd(climberSys));
 		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
 
 		operatorController.leftBumper()
