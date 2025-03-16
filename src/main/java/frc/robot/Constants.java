@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-import org.opencv.video.SparseOpticalFlow;
-
-import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
 import com.pathplanner.lib.config.ModuleConfig;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -37,7 +34,6 @@ public final class Constants {
         // This should be a reasonable approximation of the robot's MOI
         public static final double momentOfInertiaKgMetersSq = massKg * (Math.pow(robotWidthMeters, 2) + Math.pow(robotLengthMeters, 2)) / 12;
     }
-
 
 	public static class ControllerConstants {
 		public static final int kDriverControllerPort = 0;
@@ -198,7 +194,7 @@ public final class Constants {
 
         public static final float lowerLimitInches = 0f;
 
-        public static final float upperLimitInches = 47.7f; // 47.47 theoretical max
+        public static final float upperLimitInches = 47.7f; // 47.7 theoretical max
 
         public static final double toleranceInches = 0.5;
     }
@@ -278,22 +274,18 @@ public final class Constants {
         public static final double absPivotEncOffsetDeg = 142.0;
     }
 
-    public class RollerConstants {
-        public static final int maxRollerCurrentAmps = 50;
-
-        public static final double idlePower = -0.2;
+    public class IntakeConstants {
+        public static final int maxIntakeCurrentAmps = 25;
+        
+        public static final double outtakePower = 1.0;
 
         public static final double intakePower = -0.5;
 
-        public static final double outtakePower = 0.9;
-    }
+        public static final double idlePower = -0.1;
 
-    public class CoralConstants {
-        public static final int maxCoralCurrentAmps = 50;
-        
-        public static final double outtakePower = 0.4;
+        public static final double idleOutPower = 0.1;
 
-        public static final double intakePower = 0.08;
+        public static final double WaitSeconds = 0.5;
     }
 
     public static class ClimberConstants {
@@ -331,5 +323,20 @@ public final class Constants {
         public static final String frontLimelightName = "limelight-front";
 
         public static final String backLimelightName = "limelight-back";
+    }
+
+    public enum State {
+        INTAKING,
+        CH,
+        AH,
+        CL1,
+        CL2,
+        CL3,
+        CL4,
+        AL1,
+        AL2,
+        PROCESSOR,
+        GROUND,
+        BARGE
     }
 }

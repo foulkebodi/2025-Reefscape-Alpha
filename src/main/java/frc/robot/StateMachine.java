@@ -1,13 +1,14 @@
 package frc.robot;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.winch.WinchCmd;
-import frc.robot.subsystems.WinchSys;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.State;
 
 public class StateMachine {
-    private WinchSys winch;
-    
-    public Command getCSG() {
-        return new WinchCmd(winch);
+    public SequentialCommandGroup getSequence(State currentState, State targetState) {
+        if(currentState == State.INTAKING && targetState == State.AH) {
+            return new SequentialCommandGroup(null);
+        } else {
+            return null;
+        }
     }
 }

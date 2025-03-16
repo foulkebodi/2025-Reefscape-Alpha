@@ -1,14 +1,13 @@
-package frc.robot.commands.roller;
+package frc.robot.commands.intake;
 
-import frc.robot.Constants.RollerConstants;
 import frc.robot.subsystems.IntakeSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class RollerIdleCmd extends Command {
+public class IntakeIntakeCmd extends Command {
 
 private final IntakeSys intake;   
 
-public RollerIdleCmd(IntakeSys intake){
+public IntakeIntakeCmd(IntakeSys intake){
     this.intake = intake;
 
     addRequirements(intake);
@@ -16,8 +15,6 @@ public RollerIdleCmd(IntakeSys intake){
 
 @Override
 public void initialize() {
-    intake.setPower(RollerConstants.idlePower);
-    // roller.setRPM(RollerConstants.idleRPM);
 }
 
 @Override
