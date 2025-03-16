@@ -1,22 +1,22 @@
-package frc.robot.commands.climber;
+package frc.robot.commands.winch;
 
 import frc.robot.Constants.ClimberConstants;
-import frc.robot.subsystems.ClimberSys;
+import frc.robot.subsystems.WinchSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class WinchCmd extends Command {
 
-private final ClimberSys climber;   
+private final WinchSys winch;   
 
-public WinchCmd(ClimberSys climber){
-    this.climber = climber;
+public WinchCmd(WinchSys winch){
+    this.winch = winch;
 
-    addRequirements(climber);
+    addRequirements(winch);
 }
 
 @Override
 public void initialize() {
-    climber.setWinchTargetDeg(ClimberConstants.winchPresetInches);
+    winch.setWinchTargetDeg(ClimberConstants.winchPresetInches);
 }
 
 @Override

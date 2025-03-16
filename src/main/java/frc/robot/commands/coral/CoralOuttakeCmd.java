@@ -1,13 +1,13 @@
 package frc.robot.commands.coral;
 
-import frc.robot.subsystems.CoralSys;
+import frc.robot.subsystems.IntakeSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class CoralOuttakeCmd extends Command {
 
-    private final CoralSys coral;   
+    private final IntakeSys coral;   
 
-    public CoralOuttakeCmd(CoralSys coral){
+    public CoralOuttakeCmd(IntakeSys coral){
         this.coral = coral;
 
         addRequirements(coral);

@@ -75,8 +75,8 @@ public class PoseEstimator extends SubsystemBase {
 
     public void resetHeading() {
         poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), 
-        new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), 
-        DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
+        new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), Rotation2d.fromDegrees(180)));
+        // DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
     }
 
     public Pose2d getFrontLimelightPose() {

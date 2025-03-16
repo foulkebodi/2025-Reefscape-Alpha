@@ -46,8 +46,8 @@ public class ElevatorSys extends SubsystemBase {
         rightElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         rightElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
 
-        leftElevatorMtrSparkFlexConfig.voltageCompensation(10); 
-        rightElevatorMtrSparkFlexConfig.voltageCompensation(10);
+        leftElevatorMtrSparkFlexConfig.voltageCompensation(11);
+        rightElevatorMtrSparkFlexConfig.voltageCompensation(11);
         
         leftElevatorMtrSparkFlexConfig.smartCurrentLimit(ElevatorConstants.maxElevatorCurrentAmps);
         rightElevatorMtrSparkFlexConfig.smartCurrentLimit(ElevatorConstants.maxElevatorCurrentAmps);
@@ -123,5 +123,9 @@ public class ElevatorSys extends SubsystemBase {
 
     public boolean isAtTarget(){
         return Math.abs(getCurrentPositionInches() - targetInches) < ElevatorConstants.toleranceInches;
+    }
+
+    public double getErrorInches(){
+        return Math.abs(getCurrentPositionInches() - targetInches);
     }
 }

@@ -9,11 +9,6 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.ArcadeDriveCmd;
-import frc.robot.commands.climber.ClimberClimbCmd;
-import frc.robot.commands.climber.ClimberHomeCmd;
-import frc.robot.commands.climber.ClimberOutCmd;
-import frc.robot.commands.climber.WinchCmd;
-import frc.robot.commands.climber.WinchManualCmd;
 import frc.robot.commands.coral.CoralOuttakeCmd;
 import frc.robot.commands.coral.CoralStopCmd;
 import frc.robot.commands.elevator.ElevatorCoralOneCmd;
@@ -28,11 +23,11 @@ import frc.robot.commands.pivot.PivotStowCmd;
 import frc.robot.commands.roller.RollerIdleCmd;
 import frc.robot.commands.roller.RollerIntakeCmd;
 import frc.robot.commands.roller.RollerOuttakeCmd;
-import frc.robot.subsystems.ClimberSys;
-import frc.robot.subsystems.CoralSys;
+import frc.robot.commands.winch.WinchCmd;
+import frc.robot.subsystems.WinchSys;
+import frc.robot.subsystems.IntakeSys;
 import frc.robot.subsystems.ElevatorSys;
 import frc.robot.subsystems.PivotSys;
-import frc.robot.subsystems.RollerSys;
 import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
 
@@ -67,9 +62,9 @@ public class RobotContainer {
 	private final SwerveDrive swerveDrive = new SwerveDrive();
 	private final ElevatorSys elevatorSys = new ElevatorSys();
 	private final PivotSys pivotSys = new PivotSys();
-	private final ClimberSys climberSys = new ClimberSys();
-	private final CoralSys coralSys = new CoralSys();
-	private final RollerSys rollerSys = new RollerSys();
+	private final WinchSys winchSys = new WinchSys();
+	private final IntakeSys intakeSys = new IntakeSys();
+	private final StateMachine stateMachine = new StateMachine();
 
 	private final PoseEstimator poseEstimator = new PoseEstimator(
 		SwerveDriveConstants.kinematics,
@@ -89,8 +84,8 @@ public class RobotContainer {
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
 		NamedCommands.registerCommand("ElevatorUp", new ElevatorCoralThreeCmd(elevatorSys));
 		NamedCommands.registerCommand("ElevatorDown", new ElevatorHomeCmd(elevatorSys));	
-		NamedCommands.registerCommand("OuttakeCoral", new CoralOuttakeCmd(coralSys));
-		NamedCommands.registerCommand("StopCoral", new CoralStopCmd(coralSys));
+		NamedCommands.registerCommand("OuttakeCoral", new CoralOuttakeCmd(intakeSys));
+		NamedCommands.registerCommand("StopCoral", new CoralStopCmd(intakeSys));
 		NamedCommands.registerCommand("PivotStow", new PivotStowCmd(pivotSys));
 
 		// configure autobuilder
@@ -157,10 +152,6 @@ public class RobotContainer {
 		elevatorSys.setDefaultCommand(new ElevatorManualCmd(
 			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
 			elevatorSys));
-		
-		climberSys.setDefaultCommand(new WinchManualCmd(
-			() -> MathUtil.applyDeadband((operatorController.getRightY()), ControllerConstants.joystickDeadband), 
-			climberSys));
 
 		operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
 		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
@@ -179,34 +170,15 @@ public class RobotContainer {
 		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
 		// operatorController.x().onTrue(new AutoPlaceCoralCmd(coralSys));
 
-		operatorController.povUp()
-			.onTrue(new ClimberOutCmd(climberSys))
-			.onTrue(new PivotGroundCmd(pivotSys));
-		operatorController.povDown()
-			.onTrue(new ClimberClimbCmd(climberSys))
-			.onTrue(new WinchCmd(climberSys));
-		operatorController.povLeft().onTrue(new ClimberHomeCmd(climberSys));
+		operatorController.povDown().onTrue(new WinchCmd(winchSys));
 
-		operatorController.leftBumper()
-			.onTrue(new PivotReefCmd(pivotSys))
-			.onTrue(new RollerIntakeCmd(rollerSys))
-			.onFalse(new PivotStowCmd(pivotSys))
-			.onFalse(new RollerIdleCmd(rollerSys));
+		operatorController.leftBumper().onTrue(stateMachine.getCSG());
 
-		operatorController.rightBumper()
-			.onTrue(new PivotProcessorCmd(pivotSys))
-			.onTrue(new RollerOuttakeCmd(rollerSys))
-			.onFalse(new PivotStowCmd(pivotSys))
-			.onFalse(new RollerIdleCmd(rollerSys));
+		operatorController.rightBumper();
 
-		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		.onTrue(new CoralOuttakeCmd(coralSys)).onFalse(new CoralStopCmd(coralSys));
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold);
 
-		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-			.onTrue(new PivotGroundCmd(pivotSys))
-			.onTrue(new RollerIntakeCmd(rollerSys))
-			.onFalse(new PivotStowCmd(pivotSys))
-			.onFalse(new RollerIdleCmd(rollerSys));
+		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold);
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 	}
@@ -237,21 +209,17 @@ public class RobotContainer {
 		SmartDashboard.putNumber("elevator position", elevatorSys.getTargetInches());
 
 		// climber info
-		SmartDashboard.putNumber("climber left position", climberSys.getWinchCurrentPositionDeg());
-		SmartDashboard.putNumber("climber right position", climberSys.getRightCurrentPositionDeg());
-		SmartDashboard.putNumber("climber target position", climberSys.getClimberTargetDeg());
-		SmartDashboard.putNumber("climber left power", climberSys.getWinchPower());
-		SmartDashboard.putNumber("climber right power", climberSys.getRightPower());
+		SmartDashboard.putNumber("winch position", winchSys.getWinchCurrentPositionDeg());
+		SmartDashboard.putNumber("winch power", winchSys.getWinchPower());
 
 		// pivot info
 		SmartDashboard.putNumber("algae pivot deg", pivotSys.getCurrentPositionDeg());
 		SmartDashboard.putNumber("pivot target deg", pivotSys.getTargetDeg());
 
 		// coral info
-		SmartDashboard.putBoolean("IsOuttaking", coralSys.getIsOuttaking());
-		SmartDashboard.putBoolean("front beam break", coralSys.getFrontBeamBreak());
-		SmartDashboard.putBoolean("back beam break", coralSys.getBackBeamBreak());
-		SmartDashboard.putNumber("coral target power", coralSys.getTargetPower());
+		SmartDashboard.putBoolean("IsOuttaking", intakeSys.getIsOuttaking());
+		SmartDashboard.putBoolean("front beam break", intakeSys.getBeamBreak());
+		SmartDashboard.putNumber("coral target power", intakeSys.getTargetPower());
 
 		SmartDashboard.putBoolean("is autonomous", DriverStation.isAutonomous());
 	}

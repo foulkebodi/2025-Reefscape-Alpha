@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import org.opencv.video.SparseOpticalFlow;
+
+import com.ctre.phoenix6.swerve.SwerveRequest.ApplyRobotSpeeds;
 import com.pathplanner.lib.config.ModuleConfig;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -24,7 +27,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
     public static class RobotConstants {
         // Set to the current the weight of the robot, including the battery and bumpers.
-        public static final double massKg = 52.41; // 110lbs
+        public static final double massKg = 52.41;
 
         // Set the frame dimensions of the robot.
         public static final double robotWidthMeters = Units.inchesToMeters(27.0);
@@ -40,7 +43,7 @@ public final class Constants {
 		public static final int kDriverControllerPort = 0;
         public static final int kOperatorControllerPort = 1;
 
-		public static final double joystickDeadband = 0.1;
+		public static final double joystickDeadband = 0.075;
         public static final double tiggerPressedThreshold = 0.25;
 	}
 
@@ -67,17 +70,15 @@ public final class Constants {
         public static final int rightElevatorMtrID = 16;
 
         public static final int pivotMtrID = 17;
-        public static final int rollerMtrID = 18;
+        public static final int pivotEncPortID = 3; // RIO DIO
 
-        public static final int pivotEncPortID = 3;
+        public static final int extenderMtrID = 18;
 
-        public static final int CoralMtrID = 19;
+        public static final int intakeMtrID = 19;
 
-        public static final int frontBeamBreakPort = 2;
-        public static final int backBeamBreakPort = 0;
+        public static final int beamBreakPort = 0;
        
-        public static final int leftClimberMtrID = 20;
-        public static final int rightClimberMtrID = 21;
+        public static final int winchMtrID = 20;
 	}
 
     public static class SwerveModuleConstants {
@@ -167,12 +168,12 @@ public final class Constants {
         public static final int maxElevatorCurrentAmps = 50;
 
         public static final double gearRatio = 15.0;
-        
+
         public static final double kP = 0.065;
         public static final double kD = 0.0;
 
         public static final double sprocketToothCount = 20; 
-        public static final double chainPitch = 0.25; // inches    
+        public static final double chainPitch = 0.25; // inches
 
         public static final double inchesPerMtrRev = ((sprocketToothCount * chainPitch * 2.0) / gearRatio);
         public static final double inchesPerSecPerRPM = ((sprocketToothCount * chainPitch * 2.0) / gearRatio * 60.0);
@@ -200,6 +201,41 @@ public final class Constants {
         public static final float upperLimitInches = 47.7f; // 47.47 theoretical max
 
         public static final double toleranceInches = 0.5;
+    }
+
+    public static class ExtenderConstants {
+        public static final int maxExtenderCurrentAmps = 20;
+
+        public static final double gearRatio = 9.0;
+
+        public static final double kP = 0.065;
+        public static final double kD = 0.0;
+
+        public static final double sprocketToothCount = 14; 
+        public static final double chainPitch = 0.375; // inches  
+
+        public static final double inchesPerMtrRev = chainPitch * sprocketToothCount / gearRatio;
+        public static final double inchesPerSecPerRPM = chainPitch * sprocketToothCount / gearRatio * 60.0;
+
+        public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
+
+        public static final double maxVelInchesPerSec = 10.0;
+
+        public static final double maxAccelInchesPerSecSq = 100.0;
+
+        public static final double coralOnePresetInches = 10.0;
+
+        public static final double coralTwoPresetInches = 24.0;
+
+        public static final double coralThreePresetInches = 46.5;
+
+        public static final double homePresetInches = 0.0;
+
+        public static final float lowerLimitInches = 0f;
+
+        public static final float upperLimitInches = 15f;
+
+        public static final double toleranceInches = 0.1;
     }
 
     public class PivotConstants {

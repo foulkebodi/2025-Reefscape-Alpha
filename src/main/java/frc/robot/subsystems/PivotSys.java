@@ -8,6 +8,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -49,19 +50,22 @@ public class PivotSys extends SubsystemBase {
             PersistMode.kPersistParameters);
 
         absPivotEnc = new DutyCycleEncoder(CANDevices.pivotEncPortID, 360.0, PivotConstants.absPivotEncOffsetDeg);
+        absPivotEnc.setInverted(false);
 
         pivotController = new ProfiledPIDController(
         PivotConstants.kP, 0.0, PivotConstants.kD, 
         new Constraints(PivotConstants.maxVelDegPerSec, PivotConstants.maxAccelDegPerSecSq));
     }
  
-    // This method will be called once per scheduler run
     @Override
     public void periodic() {
         pivotMtr.set(pivotController.calculate(getCurrentPositionDeg(), targetDeg));
+        if(DriverStation.isDisabled()){
+            targetDeg = getCurrentPositionDeg();
+            pivotController.reset(targetDeg);
+        }
     }
 
-    // Put methods for controlling this subsystem here. Call these from Commands.
     public double getCurrentPositionDeg() {
         return absPivotEnc.get();
     }
@@ -76,5 +80,9 @@ public class PivotSys extends SubsystemBase {
 
     public boolean isAtTarget() {
         return Math.abs(getCurrentPositionDeg() - targetDeg) < PivotConstants.toleranceDeg;
+    }
+
+    public double getErrorDeg(){
+        return Math.abs(getCurrentPositionDeg() - targetDeg);
     }
 }
