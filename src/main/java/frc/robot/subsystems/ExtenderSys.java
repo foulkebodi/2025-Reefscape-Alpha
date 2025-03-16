@@ -48,7 +48,7 @@ public class ExtenderSys extends SubsystemBase {
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
 
-        extenderSys.setPosition(ExtenderConstants.homePresetInches);
+        extenderSys.setPosition(ExtenderConstants.homeInches);
 
         extenderController = new ProfiledPIDController(
         ExtenderConstants.kP, 0.0, ExtenderConstants.kD, 

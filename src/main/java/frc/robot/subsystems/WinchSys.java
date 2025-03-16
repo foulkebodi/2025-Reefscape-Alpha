@@ -12,7 +12,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
-import frc.robot.Constants.ClimberConstants;
+import frc.robot.Constants.WinchConstants;
 
 public class WinchSys extends SubsystemBase {
     private final SparkMax winchMtr;
@@ -31,21 +31,21 @@ public class WinchSys extends SubsystemBase {
         
         winchClimberSparkMaxConfig.inverted(false);
         winchClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
-        winchClimberSparkMaxConfig.encoder.positionConversionFactor(ClimberConstants.degPerEncRev);
-        winchClimberSparkMaxConfig.encoder.velocityConversionFactor(ClimberConstants.degPerSecPerRPM);
+        winchClimberSparkMaxConfig.encoder.positionConversionFactor(WinchConstants.degPerEncRev);
+        winchClimberSparkMaxConfig.encoder.velocityConversionFactor(WinchConstants.degPerSecPerRPM);
         
-        winchClimberSparkMaxConfig.smartCurrentLimit(ClimberConstants.maxClimberCurrentAmps);
+        winchClimberSparkMaxConfig.smartCurrentLimit(WinchConstants.maxWinchCurrentAmps);
 
         winchMtr.configure(
             winchClimberSparkMaxConfig,
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
 
-        winchEnc.setPosition(ClimberConstants.homePresetDeg);
+        winchEnc.setPosition(0.0);
 
         winchController = new ProfiledPIDController(
-            ClimberConstants.kP, 0.0, ClimberConstants.kD, 
-            new Constraints(ClimberConstants.maxVelDegPerSec, ClimberConstants.maxAccelDegPerSecSq));
+            WinchConstants.kP, 0.0, WinchConstants.kD, 
+            new Constraints(WinchConstants.maxVelDegPerSec, WinchConstants.maxAccelDegPerSecSq));
     }
 
     @Override

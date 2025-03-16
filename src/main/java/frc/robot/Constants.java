@@ -184,13 +184,11 @@ public final class Constants {
 
         public static final double maxManualInchesPerSecSq = 100.0;
 
-        public static final double coralOnePresetInches = 10.0;
- 
-        public static final double coralTwoPresetInches = 24.0;
-
-        public static final double coralThreePresetInches = 46.5;
-
-        public static final double homePresetInches = 0.0;
+        public static final double homeInches = 0.0;
+        public static final double CL2Inches = 10.0;
+        public static final double CL3Inches = 20.0;
+        public static final double CL4Inches = 30.0;
+        public static final double bargeInches = 47.0;
 
         public static final float lowerLimitInches = 0f;
 
@@ -219,13 +217,12 @@ public final class Constants {
 
         public static final double maxAccelInchesPerSecSq = 100.0;
 
-        public static final double coralOnePresetInches = 10.0;
-
-        public static final double coralTwoPresetInches = 24.0;
-
-        public static final double coralThreePresetInches = 46.5;
-
-        public static final double homePresetInches = 0.0;
+        public static final double homeInches = 0.0;
+        public static final double CL1Inches = 5.0;
+        public static final double CL23Inches = 2.0;
+        public static final double CL4Inches = 0.0;
+        public static final double ALInches = 0.0;
+        public static final double bargeInches = 15.0;
 
         public static final float lowerLimitInches = 0f;
 
@@ -255,23 +252,24 @@ public final class Constants {
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double initializepresetDeg = 0.0;
+        public static final double homeDeg = 5.0;
+        public static final double coralHomeDeg = 10.0;
+        public static final double algaeHomeDeg = 15.0;
+        public static final double CL1Deg = 55.0;
+        public static final double CL23Deg = 45.0;
+        public static final double CL4Deg = 70.0;
+        public static final double ALDeg = 85.0;
+        public static final double processorDeg = 70.0;
+        public static final double groundDeg = 85.0;
+        public static final double bargeDeg = 60.0;
 
-        public static final double stowPresetDeg = 30.0;
+        public static final float lowerLimitDeg = 5f;
 
-        public static final double reefPresetDeg = 60.0;
-        
-        public static final double processorPresetDeg = 40.0;
-
-        public static final double groundPresetDeg = 85.0;
-
-        public static final float lowerLimitDeg = -5f;
-
-        public static final float upperLimitDeg = 100f;
+        public static final float upperLimitDeg = 90f;
 
         public static final double toleranceDeg = 1.0;
 
-        public static final double absPivotEncOffsetDeg = 142.0;
+        public static final double absPivotEncOffsetDeg = 0.0 + homeDeg;
     }
 
     public class IntakeConstants {
@@ -288,8 +286,8 @@ public final class Constants {
         public static final double WaitSeconds = 0.5;
     }
 
-    public static class ClimberConstants {
-        public static final int maxClimberCurrentAmps = 100;
+    public static class WinchConstants {
+        public static final int maxWinchCurrentAmps = 100;
 
         public static final double gearRatio = 125.0;
 
@@ -298,25 +296,18 @@ public final class Constants {
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
-
-        public static final double inchesPerEncRev = 1.0;
-        public static final double inchesPerSecPerRPM = 1.0;
         
-        public static final double maxVelDegPerSec = 150.0; // 50.0
+        public static final double maxVelDegPerSec = 150.0;
 
         public static final double maxAccelDegPerSecSq = 150.0; 
 
-        public static final double climbingPresetDeg = 41.0;
+        public static final double inPresetDeg = -1000;
 
-        public static final double outPresetDeg = -95.0;
+        public static final double outPresetDeg = 5000;
 
-        public static final double homePresetDeg = 0.0;
+        public static final float lowerLimitDeg = -1000f;
 
-        public static final double winchPresetInches = 900.0;
-
-        public static final float lowerLimitDeg = -100f;
-
-        public static final float upperLimitDeg = 55f;
+        public static final float upperLimitDeg = 5000f;
     }
 
     public class VisionConstants {

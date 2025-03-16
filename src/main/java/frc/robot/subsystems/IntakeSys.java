@@ -12,14 +12,12 @@ import frc.robot.Constants.IntakeConstants;
 
 public class IntakeSys extends SubsystemBase {
   private final SparkFlex intakeMtr;
-
   private final DigitalInput beamBreak;
 
-  private boolean isIntaking = false;
-  private boolean isOuttaking = false;
-
-  
+  private boolean intaking = false;
+  private boolean outtaking = false;
   private double startTime = 0.0;
+
 public IntakeSys() {
     intakeMtr = new SparkFlex(CANDevices.intakeMtrID, MotorType.kBrushless);
     SparkFlexConfig intakeSparkFlexConfig = new SparkFlexConfig();
@@ -43,16 +41,16 @@ public IntakeSys() {
 
   @Override
   public void periodic() {
-    if(isOuttaking) {
+    if(outtaking) {
       intakeMtr.set(IntakeConstants.outtakePower);
-    } else if(isIntaking && getBeamBreak()) {
+    } else if(intaking && getBeamBreak()) {
       intakeMtr.set(IntakeConstants.idleOutPower);
       startTime = System.currentTimeMillis();
-    } else if(isIntaking && !getBeamBreak()) {
+    } else if(intaking && !getBeamBreak()) {
       if((System.currentTimeMillis() - startTime) > (IntakeConstants.WaitSeconds * 1000)) {
         intakeMtr.set(IntakeConstants.intakePower);
         if(intakeMtr.getOutputCurrent() > 10) {
-          isIntaking = false;
+          intaking = false;
         }
       }
     } else {
@@ -61,7 +59,7 @@ public IntakeSys() {
   }
 
   public void setIsIntaking(boolean isIntaking) {
-    this.isIntaking = isIntaking;
+    this.intaking = isIntaking;
   }
 
   public boolean getBeamBreak() {
@@ -75,7 +73,6 @@ public IntakeSys() {
   public double getOutputCurrent() {
     return intakeMtr.getOutputCurrent();
   }
-
 
   public double getCurrentTimeMillis() {
     return System.currentTimeMillis() - startTime;

@@ -10,13 +10,9 @@ import frc.robot.Constants.State;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.ArcadeDriveCmd;
-import frc.robot.commands.elevator.ElevatorCoralOneCmd;
-import frc.robot.commands.elevator.ElevatorCoralThreeCmd;
-import frc.robot.commands.elevator.ElevatorCoralTwoCmd;
-import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
-import frc.robot.commands.pivot.PivotStowCmd;
-import frc.robot.commands.winch.WinchCmd;
+import frc.robot.commands.winch.WinchInCmd;
+import frc.robot.commands.winch.WinchOutCmd;
 import frc.robot.subsystems.WinchSys;
 import frc.robot.subsystems.IntakeSys;
 import frc.robot.subsystems.ElevatorSys;
@@ -26,16 +22,13 @@ import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,8 +44,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
-	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-
 	private final SwerveDrive swerveDrive = new SwerveDrive();
 	private final ElevatorSys elevatorSys = new ElevatorSys();
 	private final ExtenderSys extenderSys = new ExtenderSys();
@@ -77,9 +68,6 @@ public class RobotContainer {
 	public RobotContainer() {
 		// register named commands
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
-		NamedCommands.registerCommand("ElevatorUp", new ElevatorCoralThreeCmd(elevatorSys));
-		NamedCommands.registerCommand("ElevatorDown", new ElevatorHomeCmd(elevatorSys));	
-		NamedCommands.registerCommand("PivotStow", new PivotStowCmd(pivotSys));
 
 		// configure autobuilder
 		AutoBuilder.configure(
@@ -119,7 +107,9 @@ public class RobotContainer {
 		autoChooser = AutoBuilder.buildAutoChooser("Do Nothing");
 
 		SmartDashboard.putData("auto chooser", autoChooser);
-		CameraServer.startAutomaticCapture("climber", 0);
+
+		// CameraServer.startAutomaticCapture("climber", 0);
+
 		// Configure the trigger bindings
 		configureBindings();
 	}
@@ -147,11 +137,11 @@ public class RobotContainer {
 			elevatorSys));
 
 		// elevator troubleshooting
-		operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
-		operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
-		operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
-		operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
-		operatorController.
+		// operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
+		// operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
+		// operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
+		// operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
+
 		// pivot troubleshooting
 		// operatorController.a().onTrue(new PivotGroundCmd(pivotSys));
 		// operatorController.b().onTrue(new PivotProcessorCmd(pivotSys));
@@ -164,15 +154,10 @@ public class RobotContainer {
 		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
 		// operatorController.x().onTrue(new AutoPlaceCoralCmd(coralSys));
 
-		operatorController.povDown().onTrue(new WinchCmd(winchSys));
+		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
+		operatorController.povUp().onTrue(new WinchOutCmd(winchSys));
 
-		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.INTAKING, State.AH));
-
-		operatorController.rightBumper();
-
-		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold);
-
-		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold);
+		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.AH));
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 	}
@@ -220,5 +205,8 @@ public class RobotContainer {
 		// extender info
 		SmartDashboard.putNumber("extender position inches", extenderSys.getCurrentPositionInches());
 		SmartDashboard.putNumber("extender error inches", extenderSys.getErrorInches());
+
+		// state info
+
 	}
 }

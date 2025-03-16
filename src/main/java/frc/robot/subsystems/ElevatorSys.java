@@ -70,8 +70,8 @@ public class ElevatorSys extends SubsystemBase {
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
 
-        leftElevatorEnc.setPosition(ElevatorConstants.homePresetInches);
-        rightElevatorEnc.setPosition(ElevatorConstants.homePresetInches);
+        leftElevatorEnc.setPosition(ElevatorConstants.homeInches);
+        rightElevatorEnc.setPosition(ElevatorConstants.homeInches);
 
         elevatorController = new ProfiledPIDController(
         ElevatorConstants.kP, 0.0, ElevatorConstants.kD, 
