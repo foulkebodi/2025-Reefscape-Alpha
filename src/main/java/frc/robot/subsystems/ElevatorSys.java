@@ -27,16 +27,16 @@ public class ElevatorSys extends SubsystemBase {
     private double manualPower = 0.0;
 
     public ElevatorSys() {
-        leftElevatorMtr = new SparkFlex(CANDevices.leftElevatorMtrID, MotorType.kBrushless);
+        leftElevatorMtr = new SparkFlex(CANDevices.topElevatorMtrID, MotorType.kBrushless);
         SparkFlexConfig leftElevatorMtrSparkFlexConfig = new SparkFlexConfig();
 
-        rightElevatorMtr = new SparkFlex(CANDevices.rightElevatorMtrID, MotorType.kBrushless);
+        rightElevatorMtr = new SparkFlex(CANDevices.bottomElevatorMtrID, MotorType.kBrushless);
         SparkFlexConfig rightElevatorMtrSparkFlexConfig = new SparkFlexConfig();
 
         leftElevatorEnc = leftElevatorMtr.getEncoder();
         rightElevatorEnc = rightElevatorMtr.getEncoder();
         
-        leftElevatorMtrSparkFlexConfig.inverted(true);
+        leftElevatorMtrSparkFlexConfig.inverted(false);
         leftElevatorMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         leftElevatorMtrSparkFlexConfig.encoder.positionConversionFactor(ElevatorConstants.inchesPerMtrRev);
         leftElevatorMtrSparkFlexConfig.encoder.velocityConversionFactor(ElevatorConstants.inchesPerSecPerRPM);
@@ -79,17 +79,9 @@ public class ElevatorSys extends SubsystemBase {
     }
 
     @Override
-    public void periodic(){
-        if(manualPower == 0.0){
+    public void periodic() {
             leftElevatorMtr.set(elevatorController.calculate(leftElevatorEnc.getPosition(),targetInches));
             rightElevatorMtr.set(elevatorController.calculate(rightElevatorEnc.getPosition(),targetInches));
-        }
-        else {
-            leftElevatorMtr.set(manualPower);
-            rightElevatorMtr.set(manualPower);
-            targetInches = getCurrentPositionInches();
-            elevatorController.reset(targetInches);
-        }
         if(DriverStation.isDisabled()){
             targetInches = getCurrentPositionInches();
             elevatorController.reset(targetInches);

@@ -15,7 +15,7 @@ public IntakeOuttakeCmd(IntakeSys Intake){
 
 @Override
 public void initialize() {
-    
+    Intake.setIsOuttaking(true);
 }
 
 @Override

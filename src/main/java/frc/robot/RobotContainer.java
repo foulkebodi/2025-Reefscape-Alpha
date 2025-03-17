@@ -9,8 +9,25 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.State;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
+import frc.robot.commands.AlgaeMode;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.elevator.ElevatorBargeCmd;
+import frc.robot.commands.elevator.ElevatorCL2Cmd;
+import frc.robot.commands.elevator.ElevatorCL4Cmd;
+import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
+import frc.robot.commands.extender.ExtenderBargeCmd;
+import frc.robot.commands.extender.ExtenderCL1Cmd;
+import frc.robot.commands.extender.ExtenderCL23Cmd;
+import frc.robot.commands.extender.ExtenderHomeCmd;
+import frc.robot.commands.intake.IntakeIdleCmd;
+import frc.robot.commands.intake.IntakeIntakeCmd;
+import frc.robot.commands.intake.IntakeOuttakeCmd;
+import frc.robot.commands.pivot.PivotBargeCmd;
+import frc.robot.commands.pivot.PivotCL23Cmd;
+import frc.robot.commands.pivot.PivotCL4Cmd;
+import frc.robot.commands.pivot.PivotGroundCmd;
+import frc.robot.commands.pivot.PivotIntakingCmd;
 import frc.robot.commands.winch.WinchInCmd;
 import frc.robot.commands.winch.WinchOutCmd;
 import frc.robot.subsystems.WinchSys;
@@ -29,6 +46,7 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -138,28 +156,52 @@ public class RobotContainer {
 
 		// elevator troubleshooting
 		// operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
-		// operatorController.a().onTrue(new ElevatorCoralOneCmd(elevatorSys));
-		// operatorController.b().onTrue(new ElevatorCoralTwoCmd(elevatorSys));
-		// operatorController.y().onTrue(new ElevatorCoralThreeCmd(elevatorSys));
+		// operatorController.a().onTrue(new ElevatorCL2Cmd(elevatorSys));
+		// operatorController.b().onTrue(new ElevatorCL4Cmd(elevatorSys));
+		// operatorController.y().onTrue(new ElevatorBargeCmd(elevatorSys));
 
 		// pivot troubleshooting
 		// operatorController.a().onTrue(new PivotGroundCmd(pivotSys));
-		// operatorController.b().onTrue(new PivotProcessorCmd(pivotSys));
-		// operatorController.x().onTrue(new PivotStowCmd(pivotSys));
-		// operatorController.y().onTrue(new PivotReefCmd(pivotSys));
+		// operatorController.b().onTrue(new PivotCL23Cmd(pivotSys));
+		// operatorController.x().onTrue(new PivotIntakingCmd(pivotSys));
+		// operatorController.y().onTrue(new PivotBargeCmd(pivotSys));
 
-		// roller troubleshooting
-		// operatorController.a().onTrue(new RollerIntakeCmd(rollerSys));
-		// operatorController.b().onTrue(new RollerOuttakeCmd(rollerSys));
-		// operatorController.x().onTrue(new RollerIdleCmd(rollerSys));
-		// operatorController.x().onTrue(new AutoPlaceCoralCmd(coralSys));
+		// extender troubleshooting
+		// operatorController.a().onTrue(new ExtenderCL1Cmd(extenderSys));
+		// operatorController.b().onTrue(new ExtenderCL23Cmd(extenderSys));
+		// operatorController.y().onTrue(new ExtenderBargeCmd(extenderSys));
+		// operatorController.x().onTrue(new ExtenderHomeCmd(extenderSys));
+
+		// competition setup
+		operatorController.a().onTrue(stateMachine.getSequence(State.CL2));
+		operatorController.b().onTrue(stateMachine.getSequence(State.CL3));
+		operatorController.y().onTrue(stateMachine.getSequence(State.CL4));
+		operatorController.x().onTrue(stateMachine.getSequence(State.CH));
+
+		operatorController.povRight().onTrue(stateMachine.getSequence(State.CL1));
+		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.BARGE));
+		operatorController.rightBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
 
 		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
 		operatorController.povUp().onTrue(new WinchOutCmd(winchSys));
 
-		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.AH));
+		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		.onTrue(stateMachine.getSequence(State.INTAKING))	
+		.onTrue(new IntakeIntakeCmd(intakeSys))
+		.onFalse(stateMachine.getSequence(State.CH));
+		
+		operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
+			.onTrue(new IntakeOuttakeCmd(intakeSys))
+			.onFalse(new IntakeIdleCmd(intakeSys));
+
+		operatorController.start().toggleOnTrue(new AlgaeMode());
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
+
+		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
+		.onTrue(stateMachine.getSequence(State.GROUND))
+		.onTrue(new IntakeIntakeCmd(intakeSys))
+		.onFalse(new IntakeIdleCmd(intakeSys));
 	}
 
 	/**
@@ -186,14 +228,16 @@ public class RobotContainer {
 		SmartDashboard.putNumber("right elevator position", elevatorSys.getRightCurrentPositionInches());
 		SmartDashboard.putNumber("elevator position", elevatorSys.getCurrentPositionInches());
 		SmartDashboard.putBoolean("elevator at target", elevatorSys.isAtTarget());
-		SmartDashboard.putNumber("elevator position", elevatorSys.getTargetInches());
+		SmartDashboard.putNumber("elevator error inches", elevatorSys.getErrorInches());
+
+		SmartDashboard.putNumber("elevator target position", elevatorSys.getTargetInches());
 
 		// climber/winch info
 		SmartDashboard.putNumber("winch position", winchSys.getWinchCurrentPositionDeg());
 		SmartDashboard.putNumber("winch power", winchSys.getWinchPower());
 
 		// pivot info
-		SmartDashboard.putNumber("algae pivot deg", pivotSys.getCurrentPositionDeg());
+		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
 		SmartDashboard.putNumber("pivot target deg", pivotSys.getTargetDeg());
 
 		// intake info
@@ -201,10 +245,17 @@ public class RobotContainer {
 		SmartDashboard.putNumber("intake target power", intakeSys.getTargetPower());
 		SmartDashboard.putNumber("intake output current amps", intakeSys.getOutputCurrent());
 		SmartDashboard.putNumber("intake time millis", intakeSys.getCurrentTimeMillis());
+		SmartDashboard.putBoolean("intaking", intakeSys.getIntaking());
+		SmartDashboard.putBoolean("outtaking", intakeSys.getOuttaking());
+
 
 		// extender info
 		SmartDashboard.putNumber("extender position inches", extenderSys.getCurrentPositionInches());
+		SmartDashboard.putNumber("extender target position inches", extenderSys.getTargetInches());
+		SmartDashboard.putBoolean("extender at target", extenderSys.isAtTarget());
 		SmartDashboard.putNumber("extender error inches", extenderSys.getErrorInches());
+		SmartDashboard.putNumber("extender target power", extenderSys.getTargetPower());
+
 
 		// state info
 

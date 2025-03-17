@@ -4,11 +4,11 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.PivotSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PivotHomeCmd extends Command {
+public class PivotALCmd extends Command {
 
     private final PivotSys pivot;   
 
-    public PivotHomeCmd(PivotSys pivot){
+    public PivotALCmd(PivotSys pivot){
         this.pivot = pivot;
 
         addRequirements(pivot);
@@ -16,7 +16,7 @@ public class PivotHomeCmd extends Command {
 
     @Override
     public void initialize() {
-        pivot.setTargetDeg(PivotConstants.intakingDeg);
+        pivot.setTargetDeg(PivotConstants.ALDeg);
     }
 
     @Override

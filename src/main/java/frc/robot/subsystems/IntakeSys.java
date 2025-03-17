@@ -22,7 +22,7 @@ public IntakeSys() {
     intakeMtr = new SparkFlex(CANDevices.intakeMtrID, MotorType.kBrushless);
     SparkFlexConfig intakeSparkFlexConfig = new SparkFlexConfig();
 
-    intakeSparkFlexConfig.inverted(false);
+    intakeSparkFlexConfig.inverted(true);
 
     intakeSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
@@ -43,13 +43,13 @@ public IntakeSys() {
   public void periodic() {
     if(outtaking) {
       intakeMtr.set(IntakeConstants.outtakePower);
-    } else if(intaking && getBeamBreak()) {
+    } else if(intaking && !getBeamBreak()) {
       intakeMtr.set(IntakeConstants.idleOutPower);
       startTime = System.currentTimeMillis();
-    } else if(intaking && !getBeamBreak()) {
-      if((System.currentTimeMillis() - startTime) > (IntakeConstants.WaitSeconds * 1000)) {
+    } else if(intaking && getBeamBreak()) {
+      if((System.currentTimeMillis() - startTime) > (IntakeConstants.WaitSeconds * 1000.0)) {
         intakeMtr.set(IntakeConstants.intakePower);
-        if(intakeMtr.getOutputCurrent() > 10) {
+        if(intakeMtr.getOutputCurrent() > IntakeConstants.CurrentThreshold) {
           intaking = false;
         }
       }
@@ -59,7 +59,11 @@ public IntakeSys() {
   }
 
   public void setIsIntaking(boolean isIntaking) {
-    this.intaking = isIntaking;
+    intaking = isIntaking;
+  }
+
+  public void setIsOuttaking(boolean isOuttaking) {
+    outtaking = isOuttaking;
   }
 
   public boolean getBeamBreak() {
@@ -77,4 +81,11 @@ public IntakeSys() {
   public double getCurrentTimeMillis() {
     return System.currentTimeMillis() - startTime;
   }
+
+  public boolean getIntaking() {
+    return intaking;
+  }   
+  public boolean getOuttaking() {
+    return outtaking;
+  } 
 }

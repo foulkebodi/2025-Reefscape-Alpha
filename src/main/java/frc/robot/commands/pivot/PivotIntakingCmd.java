@@ -4,11 +4,11 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.PivotSys;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PivotHomeCmd extends Command {
+public class PivotIntakingCmd extends Command {
 
     private final PivotSys pivot;   
 
-    public PivotHomeCmd(PivotSys pivot){
+    public PivotIntakingCmd(PivotSys pivot){
         this.pivot = pivot;
 
         addRequirements(pivot);

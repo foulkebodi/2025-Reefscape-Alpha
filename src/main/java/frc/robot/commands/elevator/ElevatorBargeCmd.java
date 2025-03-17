@@ -4,11 +4,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.ElevatorSys;
 
-public class ElevatorHomeCmd extends Command {
+public class ElevatorBargeCmd extends Command {
 
     private final ElevatorSys elevator;   
 
-    public ElevatorHomeCmd(ElevatorSys elevator){
+    public ElevatorBargeCmd(ElevatorSys elevator){
         this.elevator = elevator;
 
         addRequirements(elevator);
@@ -16,7 +16,7 @@ public class ElevatorHomeCmd extends Command {
 
     @Override
     public void initialize() {
-        elevator.setTargetInches(ElevatorConstants.homeInches);
+        elevator.setTargetInches(ElevatorConstants.bargeInches);
     }
 
     @Override

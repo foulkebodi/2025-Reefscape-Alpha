@@ -17,24 +17,24 @@ import frc.robot.Constants.ExtenderConstants;
 public class ExtenderSys extends SubsystemBase {
     private final SparkFlex extenderMtr;
 
-    private final RelativeEncoder extenderSys;
+    private final RelativeEncoder extenderEnc;
 
     private final ProfiledPIDController extenderController;
 
     private double targetInches = 0.0;
 
     public ExtenderSys() {
-        extenderMtr = new SparkFlex(CANDevices.leftElevatorMtrID, MotorType.kBrushless);
+        extenderMtr = new SparkFlex(CANDevices.extenderMtrID, MotorType.kBrushless);
         SparkFlexConfig extenderMtrSparkFlexConfig = new SparkFlexConfig();
 
-        extenderSys = extenderMtr.getEncoder();
+        extenderEnc = extenderMtr.getEncoder();
         
-        extenderMtrSparkFlexConfig.inverted(false);
+        extenderMtrSparkFlexConfig.inverted(true);
         extenderMtrSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         extenderMtrSparkFlexConfig.encoder.positionConversionFactor(ExtenderConstants.inchesPerMtrRev);
         extenderMtrSparkFlexConfig.encoder.velocityConversionFactor(ExtenderConstants.inchesPerSecPerRPM);
 
-        extenderMtrSparkFlexConfig.voltageCompensation(11);
+        extenderMtrSparkFlexConfig.voltageCompensation(12);
         
         extenderMtrSparkFlexConfig.smartCurrentLimit(ExtenderConstants.maxExtenderCurrentAmps);
 
@@ -48,24 +48,18 @@ public class ExtenderSys extends SubsystemBase {
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters);
 
-        extenderSys.setPosition(ExtenderConstants.homeInches);
-
         extenderController = new ProfiledPIDController(
         ExtenderConstants.kP, 0.0, ExtenderConstants.kD, 
         new Constraints(ExtenderConstants.maxVelInchesPerSec, ExtenderConstants.maxAccelInchesPerSecSq));
     }
 
     @Override
-    public void periodic(){
-            extenderMtr.set(extenderController.calculate(extenderSys.getPosition(), targetInches));
+    public void periodic() {
+        extenderMtr.set(extenderController.calculate(getCurrentPositionInches(), targetInches));
         if(DriverStation.isDisabled()){
             targetInches = getCurrentPositionInches();
             extenderController.reset(targetInches);
         }
-    }
-
-    public double getCurrentPositionInches() {
-        return extenderSys.getPosition();
     }
 
     public void setTargetInches(double inches){
@@ -76,11 +70,19 @@ public class ExtenderSys extends SubsystemBase {
         return targetInches;
     }
 
+    public double getCurrentPositionInches() {
+        return extenderEnc.getPosition();
+    }
+
     public boolean isAtTarget(){
         return Math.abs(getCurrentPositionInches() - targetInches) < ExtenderConstants.toleranceInches;
     }
 
     public double getErrorInches(){
         return Math.abs(getCurrentPositionInches() - targetInches);
+    }
+
+    public double getTargetPower() {
+        return extenderMtr.get();
     }
 }

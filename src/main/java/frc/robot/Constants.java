@@ -62,17 +62,17 @@ public final class Constants {
 		public static final int brModuleDriveMtrID = 9;
 		public static final int brModuleSteerMtrID = 13;
 
-        public static final int leftElevatorMtrID = 15;
-        public static final int rightElevatorMtrID = 16;
+        public static final int topElevatorMtrID = 15;
+        public static final int bottomElevatorMtrID = 16;
 
         public static final int pivotMtrID = 17;
-        public static final int pivotEncPortID = 3; // RIO DIO
+        public static final int pivotEncPortID = 0; // RIO DIO
 
-        public static final int extenderMtrID = 18;
+        public static final int extenderMtrID = 19;
 
-        public static final int intakeMtrID = 19;
+        public static final int intakeMtrID = 18;
 
-        public static final int beamBreakPort = 0;
+        public static final int beamBreakPort = 1;
        
         public static final int winchMtrID = 20;
 	}
@@ -163,12 +163,12 @@ public final class Constants {
     public static class ElevatorConstants {
         public static final int maxElevatorCurrentAmps = 50;
 
-        public static final double gearRatio = 15.0;
+        public static final double gearRatio = 6.0;
 
         public static final double kP = 0.065;
         public static final double kD = 0.0;
 
-        public static final double sprocketToothCount = 20; 
+        public static final double sprocketToothCount = 22.5; 
         public static final double chainPitch = 0.25; // inches
 
         public static final double inchesPerMtrRev = ((sprocketToothCount * chainPitch * 2.0) / gearRatio);
@@ -198,12 +198,12 @@ public final class Constants {
     }
 
     public static class ExtenderConstants {
-        public static final int maxExtenderCurrentAmps = 20;
+        public static final int maxExtenderCurrentAmps = 40;
 
-        public static final double gearRatio = 9.0;
+        public static final double gearRatio = 15.0;
 
-        public static final double kP = 0.065;
-        public static final double kD = 0.0;
+        public static final double kP = 0.425;
+        public static final double kD = 0.0045;
 
         public static final double sprocketToothCount = 14; 
         public static final double chainPitch = 0.375; // inches  
@@ -213,20 +213,20 @@ public final class Constants {
 
         public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
 
-        public static final double maxVelInchesPerSec = 10.0;
+        public static final double maxVelInchesPerSec = freeSpeedInchesPerSec;
 
-        public static final double maxAccelInchesPerSecSq = 100.0;
+        public static final double maxAccelInchesPerSecSq = 200.0;
 
         public static final double homeInches = 0.0;
         public static final double CL1Inches = 5.0;
-        public static final double CL23Inches = 2.0;
+        public static final double CL23Inches = 10.0;
         public static final double CL4Inches = 0.0;
         public static final double ALInches = 0.0;
-        public static final double bargeInches = 15.0;
+        public static final double bargeInches = 13.0;
 
         public static final float lowerLimitInches = 0f;
 
-        public static final float upperLimitInches = 15f;
+        public static final float upperLimitInches = 13f;
 
         public static final double toleranceInches = 0.1;
     }
@@ -252,7 +252,7 @@ public final class Constants {
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double homeDeg = 5.0;
+        public static final double intakingDeg = 5.0;
         public static final double coralHomeDeg = 10.0;
         public static final double algaeHomeDeg = 15.0;
         public static final double CL1Deg = 55.0;
@@ -269,21 +269,23 @@ public final class Constants {
 
         public static final double toleranceDeg = 1.0;
 
-        public static final double absPivotEncOffsetDeg = 0.0 + homeDeg;
+        public static final double absPivotEncOffsetDeg = 0.0 + intakingDeg;
     }
 
     public class IntakeConstants {
-        public static final int maxIntakeCurrentAmps = 25;
+        public static final int maxIntakeCurrentAmps = 35;
         
         public static final double outtakePower = 1.0;
 
-        public static final double intakePower = -0.5;
+        public static final double intakePower = -0.3;
 
         public static final double idlePower = -0.1;
 
-        public static final double idleOutPower = 0.1;
+        public static final double idleOutPower = 0.07;
 
         public static final double WaitSeconds = 0.5;
+
+        public static final double CurrentThreshold = 37;
     }
 
     public static class WinchConstants {
@@ -324,8 +326,8 @@ public final class Constants {
         CL2,
         CL3,
         CL4,
-        AL1,
         AL2,
+        AL3,
         PROCESSOR,
         GROUND,
         BARGE
