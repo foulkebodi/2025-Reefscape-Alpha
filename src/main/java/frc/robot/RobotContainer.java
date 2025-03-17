@@ -150,9 +150,10 @@ public class RobotContainer {
 			swerveDrive,
 			poseEstimator));
 		
-		elevatorSys.setDefaultCommand(new ElevatorManualCmd(
-			() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
-			elevatorSys));
+		// elevator maunal control
+		// elevatorSys.setDefaultCommand(new ElevatorManualCmd(
+		// 	() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
+		// 	elevatorSys));
 
 		// elevator troubleshooting
 		// operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
@@ -229,7 +230,6 @@ public class RobotContainer {
 		SmartDashboard.putNumber("elevator position", elevatorSys.getCurrentPositionInches());
 		SmartDashboard.putBoolean("elevator at target", elevatorSys.isAtTarget());
 		SmartDashboard.putNumber("elevator error inches", elevatorSys.getErrorInches());
-
 		SmartDashboard.putNumber("elevator target position", elevatorSys.getTargetInches());
 
 		// climber/winch info
@@ -248,7 +248,6 @@ public class RobotContainer {
 		SmartDashboard.putBoolean("intaking", intakeSys.getIntaking());
 		SmartDashboard.putBoolean("outtaking", intakeSys.getOuttaking());
 
-
 		// extender info
 		SmartDashboard.putNumber("extender position inches", extenderSys.getCurrentPositionInches());
 		SmartDashboard.putNumber("extender target position inches", extenderSys.getTargetInches());
@@ -256,8 +255,7 @@ public class RobotContainer {
 		SmartDashboard.putNumber("extender error inches", extenderSys.getErrorInches());
 		SmartDashboard.putNumber("extender target power", extenderSys.getTargetPower());
 
-
 		// state info
-
+		SmartDashboard.putString("current state", stateMachine.getCurrentStateAsString());
 	}
 }
