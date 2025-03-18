@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0299242424242423,
-        "y": 0.4878787878787875
+        "x": 1.1449835526315788,
+        "y": 1.0422697368421052
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4948261666390874,
-        "y": 0.8687267778353791
+        "x": 1.609885476846424,
+        "y": 1.4231177267986967
       },
       "isLocked": false,
       "linkedName": "ChuteTwelve"
@@ -45,7 +45,7 @@
     "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "TwoPieceRightPaths",
+  "folder": "ThreePieceRightPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 55.0

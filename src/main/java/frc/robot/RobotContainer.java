@@ -27,6 +27,11 @@ import frc.robot.commands.pivot.PivotBargeCmd;
 import frc.robot.commands.pivot.PivotCL23Cmd;
 import frc.robot.commands.pivot.PivotCL4Cmd;
 import frc.robot.commands.pivot.PivotGroundCmd;
+import frc.robot.commands.transitions.CL4ToCoralHome;
+import frc.robot.commands.transitions.ChuteToCoralHome;
+import frc.robot.commands.transitions.CoralHomeToCL1;
+import frc.robot.commands.transitions.CoralHomeToCL4;
+import frc.robot.commands.transitions.CoralHomeToChute;
 import frc.robot.commands.pivot.PivotChuteCmd;
 import frc.robot.commands.winch.WinchInCmd;
 import frc.robot.commands.winch.WinchOutCmd;
@@ -39,6 +44,7 @@ import frc.robot.subsystems.drive.PoseEstimator;
 import frc.robot.subsystems.drive.SwerveDrive;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -89,6 +95,14 @@ public class RobotContainer {
 	public RobotContainer() {
 		// register named commands
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
+		NamedCommands.registerCommand("CoralHomeToCL4", new CoralHomeToCL4(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CL4ToCoralHome", new CL4ToCoralHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CoralHomeToChute", new CoralHomeToChute(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("ChuteToCoralHome", new ChuteToCoralHome(pivotSys, elevatorSys, extenderSys));
+
+		NamedCommands.registerCommand("IntakeIntakeCmd", new IntakeIntakeCmd(intakeSys));
+		NamedCommands.registerCommand("IntakeIdleCmd", new IntakeIdleCmd(intakeSys));
+		NamedCommands.registerCommand("IntakeOuttakeCmd", new IntakeOuttakeCmd(intakeSys));
 
 		// configure autobuilder
 		AutoBuilder.configure(
@@ -188,7 +202,9 @@ public class RobotContainer {
 		operatorController.rightBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
 
 		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
-		operatorController.povUp().onTrue(new WinchOutCmd(winchSys));
+		operatorController.povUp()
+			.onTrue(new WinchOutCmd(winchSys))
+			.onTrue(stateMachine.getSequence(State.CLIMB));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
 			.onTrue(stateMachine.getSequence(State.CHUTE))	
@@ -251,7 +267,7 @@ public class RobotContainer {
 		SmartDashboard.putBoolean("beam break", intakeSys.getFilteredBeamBreak());
 		SmartDashboard.putNumber("intake target power", intakeSys.getTargetPower());
 		SmartDashboard.putNumber("intake output current amps", intakeSys.getFilteredOutputCurrent());
-		SmartDashboard.putNumber("intake time millis", intakeSys.getCurrentTimeMillis());
+		SmartDashboard.putNumber("intake time millis", intakeSys.getIntakeCurrentTimeMillis());
 		SmartDashboard.putBoolean("intaking", intakeSys.getIntaking());
 		SmartDashboard.putBoolean("outtaking", intakeSys.getOuttaking());
 

@@ -285,11 +285,10 @@ public final class Constants {
 
         public static final double waitSeconds = 0.5;
 
-        public static final double currentThreshold = 37;
+        public static final double currentThreshold = 35;
 
-        public static final double currentDebounceTime = 0.25;
+        public static final double currentDebounceTime = 0.33;
         public static final double beamBreakDebounceTime = 0.1;
-
 
         public static final int filterSize = 5;
     }

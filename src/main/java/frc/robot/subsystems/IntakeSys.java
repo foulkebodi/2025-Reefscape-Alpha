@@ -34,7 +34,7 @@ public IntakeSys() {
     intakeSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
     intakeSparkFlexConfig.smartCurrentLimit(IntakeConstants.maxIntakeCurrentAmps);
-    
+
     intakeSparkFlexConfig.voltageCompensation(9);
 
     intakeSparkFlexConfig.softLimit.forwardSoftLimitEnabled(false);
@@ -92,7 +92,7 @@ public IntakeSys() {
     return filter.calculate(intakeMtr.getOutputCurrent());
   }
 
-  public double getCurrentTimeMillis() {
+  public double getIntakeCurrentTimeMillis() {
     return System.currentTimeMillis() - startTime;
   }
 
