@@ -27,7 +27,7 @@ import frc.robot.commands.pivot.PivotBargeCmd;
 import frc.robot.commands.pivot.PivotCL23Cmd;
 import frc.robot.commands.pivot.PivotCL4Cmd;
 import frc.robot.commands.pivot.PivotGroundCmd;
-import frc.robot.commands.pivot.PivotIntakingCmd;
+import frc.robot.commands.pivot.PivotChuteCmd;
 import frc.robot.commands.winch.WinchInCmd;
 import frc.robot.commands.winch.WinchOutCmd;
 import frc.robot.subsystems.WinchSys;
@@ -177,32 +177,36 @@ public class RobotContainer {
 		operatorController.a().onTrue(stateMachine.getSequence(State.CL2));
 		operatorController.b().onTrue(stateMachine.getSequence(State.CL3));
 		operatorController.y().onTrue(stateMachine.getSequence(State.CL4));
-		operatorController.x().onTrue(stateMachine.getSequence(State.CH));
+		operatorController.x().onTrue(stateMachine.getSequence(State.HOME));
 
 		operatorController.povRight().onTrue(stateMachine.getSequence(State.CL1));
-		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.BARGE));
+
+		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
 		operatorController.rightBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
 
 		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
 		operatorController.povUp().onTrue(new WinchOutCmd(winchSys));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		.onTrue(stateMachine.getSequence(State.INTAKING))	
-		.onTrue(new IntakeIntakeCmd(intakeSys))
-		.onFalse(stateMachine.getSequence(State.CH));
+			.onTrue(stateMachine.getSequence(State.CHUTE))	
+			.onTrue(new IntakeIntakeCmd(intakeSys))
+			.onFalse(stateMachine.getSequence(State.HOME))
+			.onFalse(new IntakeIdleCmd(intakeSys));
 		
 		operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
 			.onTrue(new IntakeOuttakeCmd(intakeSys))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 
-		operatorController.start().toggleOnTrue(new AlgaeMode());
+		operatorController.start().toggleOnTrue(new AlgaeMode()).onTrue(stateMachine.getSequence(State.HOME));
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 
 		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
 		.onTrue(stateMachine.getSequence(State.GROUND))
 		.onTrue(new IntakeIntakeCmd(intakeSys))
-		.onFalse(new IntakeIdleCmd(intakeSys));
+		.onFalse(new IntakeIdleCmd(intakeSys))
+		.onTrue(stateMachine.getSequence(State.HOME));
+
 	}
 
 	/**
@@ -257,5 +261,7 @@ public class RobotContainer {
 
 		// state info
 		SmartDashboard.putString("current state", stateMachine.getCurrentStateAsString());
+		SmartDashboard.putBoolean("algae mode", StateMachine.algaeMode);
+
 	}
 }

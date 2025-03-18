@@ -283,9 +283,11 @@ public final class Constants {
 
         public static final double idleOutPower = 0.07;
 
-        public static final double WaitSeconds = 0.5;
+        public static final double waitSeconds = 0.5;
 
-        public static final double CurrentThreshold = 37;
+        public static final double currentThreshold = 37;
+
+        public static final double debounceTime = 0.25;
     }
 
     public static class WinchConstants {
@@ -319,9 +321,8 @@ public final class Constants {
     }
 
     public enum State {
-        INTAKING,
-        CH,
-        AH,
+        CHUTE,
+        HOME,
         CL1,
         CL2,
         CL3,

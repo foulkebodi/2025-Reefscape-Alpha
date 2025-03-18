@@ -5,6 +5,9 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
+
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANDevices;
@@ -13,6 +16,7 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSys extends SubsystemBase {
   private final SparkFlex intakeMtr;
   private final DigitalInput beamBreak;
+  private final Debouncer debouncer;
 
   private boolean intaking = false;
   private boolean outtaking = false;
@@ -37,6 +41,8 @@ public IntakeSys() {
       PersistMode.kPersistParameters);
 
     beamBreak = new DigitalInput(CANDevices.beamBreakPort);
+
+    debouncer = new Debouncer(IntakeConstants.debounceTime, DebounceType.kRising);
   }
 
   @Override
@@ -47,9 +53,9 @@ public IntakeSys() {
       intakeMtr.set(IntakeConstants.idleOutPower);
       startTime = System.currentTimeMillis();
     } else if(intaking && getBeamBreak()) {
-      if((System.currentTimeMillis() - startTime) > (IntakeConstants.WaitSeconds * 1000.0)) {
+      if((System.currentTimeMillis() - startTime) > (IntakeConstants.waitSeconds * 1000.0)) {
         intakeMtr.set(IntakeConstants.intakePower);
-        if(intakeMtr.getOutputCurrent() > IntakeConstants.CurrentThreshold) {
+        if(debouncer.calculate(intakeMtr.getOutputCurrent() > IntakeConstants.currentThreshold)) {
           intaking = false;
         }
       }
