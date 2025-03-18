@@ -7,6 +7,7 @@ import frc.robot.commands.transitions.AL3ToAlgaeHome;
 import frc.robot.commands.transitions.AlgaeHomeToAL2;
 import frc.robot.commands.transitions.AlgaeHomeToAL3;
 import frc.robot.commands.transitions.AlgaeHomeToBarge;
+import frc.robot.commands.transitions.AlgaeHomeToClimb;
 import frc.robot.commands.transitions.AlgaeHomeToCoralHome;
 import frc.robot.commands.transitions.AlgaeHomeToGround;
 import frc.robot.commands.transitions.AlgaeHomeToProcessor;
@@ -15,12 +16,15 @@ import frc.robot.commands.transitions.CL1ToCoralHome;
 import frc.robot.commands.transitions.CL23ToCoralHome;
 import frc.robot.commands.transitions.CL4ToCoralHome;
 import frc.robot.commands.transitions.ChuteToCoralHome;
+import frc.robot.commands.transitions.ClimbToAlgaeHome;
+import frc.robot.commands.transitions.ClimbToCoralHome;
 import frc.robot.commands.transitions.CoralHomeToAlgaeHome;
 import frc.robot.commands.transitions.CoralHomeToCL1;
 import frc.robot.commands.transitions.CoralHomeToCL2;
 import frc.robot.commands.transitions.CoralHomeToCL3;
 import frc.robot.commands.transitions.CoralHomeToCL4;
 import frc.robot.commands.transitions.CoralHomeToChute;
+import frc.robot.commands.transitions.CoralHomeToClimb;
 import frc.robot.commands.transitions.GroundToAlgaeHome;
 import frc.robot.commands.transitions.ProcessorToAlgaeHome;
 import frc.robot.subsystems.ElevatorSys;
@@ -102,6 +106,18 @@ public class StateMachine {
         } else if (currentState == State.CHUTE && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
             return new ChuteToCoralHome(pivot, elevator, extender); // chute to coral home
+        } else if (currentState == State.HOME && targetState == State.CLIMB && algaeMode) {
+            currentState = State.HOME;
+            return new AlgaeHomeToClimb(pivot, elevator, extender); // algae home to climb
+        } else if (currentState == State.HOME && targetState == State.CLIMB && !algaeMode) {
+            currentState = State.HOME;
+            return new CoralHomeToClimb(pivot, elevator, extender); // coral home to climb
+        } else if (currentState == State.CLIMB && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new ClimbToCoralHome(pivot, elevator, extender); // climb to coral home
+        } else if (currentState == State.CLIMB && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new ClimbToAlgaeHome(pivot, elevator, extender); // climb to algae home
         } else {
             return null;
         }

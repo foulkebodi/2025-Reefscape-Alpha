@@ -54,12 +54,15 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
+@SuppressWarnings("unused")
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
+
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	private final SwerveDrive swerveDrive = new SwerveDrive();
@@ -245,9 +248,9 @@ public class RobotContainer {
 		SmartDashboard.putNumber("pivot target deg", pivotSys.getTargetDeg());
 
 		// intake info
-		SmartDashboard.putBoolean("beam break", intakeSys.getBeamBreak());
+		SmartDashboard.putBoolean("beam break", intakeSys.getFilteredBeamBreak());
 		SmartDashboard.putNumber("intake target power", intakeSys.getTargetPower());
-		SmartDashboard.putNumber("intake output current amps", intakeSys.getOutputCurrent());
+		SmartDashboard.putNumber("intake output current amps", intakeSys.getFilteredOutputCurrent());
 		SmartDashboard.putNumber("intake time millis", intakeSys.getCurrentTimeMillis());
 		SmartDashboard.putBoolean("intaking", intakeSys.getIntaking());
 		SmartDashboard.putBoolean("outtaking", intakeSys.getOuttaking());

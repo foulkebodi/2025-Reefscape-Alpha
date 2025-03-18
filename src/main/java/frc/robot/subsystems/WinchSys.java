@@ -36,6 +36,8 @@ public class WinchSys extends SubsystemBase {
         
         winchClimberSparkMaxConfig.smartCurrentLimit(WinchConstants.maxWinchCurrentAmps);
 
+        winchClimberSparkMaxConfig.disableVoltageCompensation();
+
         winchMtr.configure(
             winchClimberSparkMaxConfig,
             ResetMode.kResetSafeParameters,

@@ -24,6 +24,7 @@ public class ElevatorSys extends SubsystemBase {
     private final ProfiledPIDController elevatorController;
 
     private double targetInches = 0.0;
+    @SuppressWarnings("unused")
     private double manualPower = 0.0;
 
     public ElevatorSys() {

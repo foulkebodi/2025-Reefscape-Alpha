@@ -15,8 +15,9 @@ public class AlgaeHomeToAL2 extends SequentialCommandGroup {
     super(
       new ElevatorCL2Cmd(elevator),
       new WaitCommand(0.2),
-      new ExtenderALCmd(extender),
-      new PivotALCmd(pivot)
+      new PivotALCmd(pivot),
+      new WaitCommand(0.1),
+      new ExtenderALCmd(extender)
     );
   }
 }

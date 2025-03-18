@@ -252,7 +252,7 @@ public final class Constants {
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double intakingDeg = 5.0;
+        public static final double chuteDeg = 5.0;
         public static final double coralHomeDeg = 10.0;
         public static final double algaeHomeDeg = 15.0;
         public static final double CL1Deg = 55.0;
@@ -269,7 +269,7 @@ public final class Constants {
 
         public static final double toleranceDeg = 1.0;
 
-        public static final double absPivotEncOffsetDeg = 0.0 + intakingDeg;
+        public static final double absPivotEncOffsetDeg = 0.0 + chuteDeg;
     }
 
     public class IntakeConstants {
@@ -287,7 +287,11 @@ public final class Constants {
 
         public static final double currentThreshold = 37;
 
-        public static final double debounceTime = 0.25;
+        public static final double currentDebounceTime = 0.25;
+        public static final double beamBreakDebounceTime = 0.1;
+
+
+        public static final int filterSize = 5;
     }
 
     public static class WinchConstants {
@@ -331,6 +335,7 @@ public final class Constants {
         AL3,
         PROCESSOR,
         GROUND,
-        BARGE
+        BARGE,
+        CLIMB
     }
 }

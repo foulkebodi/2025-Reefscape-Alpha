@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,7 +17,9 @@ import frc.robot.Constants.IntakeConstants;
 public class IntakeSys extends SubsystemBase {
   private final SparkFlex intakeMtr;
   private final DigitalInput beamBreak;
-  private final Debouncer debouncer;
+  private final Debouncer currentDebouncer;
+  private final Debouncer beamBreakDebouncer;
+  private final MedianFilter filter;
 
   private boolean intaking = false;
   private boolean outtaking = false;
@@ -31,7 +34,9 @@ public IntakeSys() {
     intakeSparkFlexConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
 
     intakeSparkFlexConfig.smartCurrentLimit(IntakeConstants.maxIntakeCurrentAmps);
- 
+    
+    intakeSparkFlexConfig.voltageCompensation(9);
+
     intakeSparkFlexConfig.softLimit.forwardSoftLimitEnabled(false);
     intakeSparkFlexConfig.softLimit.reverseSoftLimitEnabled(false);
 
@@ -42,20 +47,23 @@ public IntakeSys() {
 
     beamBreak = new DigitalInput(CANDevices.beamBreakPort);
 
-    debouncer = new Debouncer(IntakeConstants.debounceTime, DebounceType.kRising);
+    currentDebouncer = new Debouncer(IntakeConstants.currentDebounceTime, DebounceType.kRising);
+    beamBreakDebouncer = new Debouncer(IntakeConstants.beamBreakDebounceTime, DebounceType.kBoth);
+
+    filter = new MedianFilter(IntakeConstants.filterSize);
   }
 
   @Override
   public void periodic() {
     if(outtaking) {
       intakeMtr.set(IntakeConstants.outtakePower);
-    } else if(intaking && !getBeamBreak()) {
+    } else if(intaking && !getFilteredBeamBreak()) {
       intakeMtr.set(IntakeConstants.idleOutPower);
       startTime = System.currentTimeMillis();
-    } else if(intaking && getBeamBreak()) {
+    } else if(intaking && getFilteredBeamBreak()) {
       if((System.currentTimeMillis() - startTime) > (IntakeConstants.waitSeconds * 1000.0)) {
         intakeMtr.set(IntakeConstants.intakePower);
-        if(debouncer.calculate(intakeMtr.getOutputCurrent() > IntakeConstants.currentThreshold)) {
+        if(currentDebouncer.calculate(getFilteredOutputCurrent() >= IntakeConstants.currentThreshold)) {
           intaking = false;
         }
       }
@@ -72,16 +80,16 @@ public IntakeSys() {
     outtaking = isOuttaking;
   }
 
-  public boolean getBeamBreak() {
-    return beamBreak.get();
-  } 
+  public boolean getFilteredBeamBreak() {
+    return beamBreakDebouncer.calculate(beamBreak.get());
+  }
 
   public double getTargetPower() {
     return intakeMtr.get();
   }
 
-  public double getOutputCurrent() {
-    return intakeMtr.getOutputCurrent();
+  public double getFilteredOutputCurrent() {
+    return filter.calculate(intakeMtr.getOutputCurrent());
   }
 
   public double getCurrentTimeMillis() {

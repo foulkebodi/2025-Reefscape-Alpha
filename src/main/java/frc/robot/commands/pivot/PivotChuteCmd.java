@@ -16,7 +16,7 @@ public class PivotChuteCmd extends Command {
 
     @Override
     public void initialize() {
-        pivot.setTargetDeg(PivotConstants.intakingDeg);
+        pivot.setTargetDeg(PivotConstants.chuteDeg);
     }
 
     @Override
