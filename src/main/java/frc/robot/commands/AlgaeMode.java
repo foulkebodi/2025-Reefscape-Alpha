@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import frc.robot.RobotContainer;
 import frc.robot.StateMachine;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -11,7 +12,7 @@ public class AlgaeMode extends Command {
 
     @Override
     public void initialize() {
-        StateMachine.algaeMode = true;
+        RobotContainer.algaeMode = true;
     }
 
     @Override
@@ -21,7 +22,7 @@ public class AlgaeMode extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        StateMachine.algaeMode = false;
+        RobotContainer.algaeMode = false;
     }
 
     @Override 

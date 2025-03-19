@@ -65,7 +65,7 @@ public final class Constants {
         public static final int topElevatorMtrID = 15;
         public static final int bottomElevatorMtrID = 16;
 
-        public static final int pivotMtrID = 17;
+        public static final int pivotMtrID = 28;
         public static final int pivotEncPortID = 0; // RIO DIO
 
         public static final int extenderMtrID = 19;
@@ -161,12 +161,12 @@ public final class Constants {
     }
 
     public static class ElevatorConstants {
-        public static final int maxElevatorCurrentAmps = 50;
+        public static final int maxElevatorCurrentAmps = 55;
 
         public static final double gearRatio = 6.0;
 
-        public static final double kP = 0.065;
-        public static final double kD = 0.0;
+        public static final double kP = 0.05;
+        public static final double kD = 0.002;
 
         public static final double sprocketToothCount = 22.5; 
         public static final double chainPitch = 0.25; // inches
@@ -176,9 +176,9 @@ public final class Constants {
 
         public static final double freeSpeedInchesPerSec = inchesPerMtrRev * 6784.0 / 60.0;
 
-        public static final double maxVelInchesPerSec = 60.0;
+        public static final double maxVelInchesPerSec = 50.0;
 
-        public static final double maxAccelInchesPerSecSq = 100.0;
+        public static final double maxAccelInchesPerSecSq = 80.0;
 
         public static final double maxManualInchesPerSec = 100.0;
 
@@ -188,11 +188,11 @@ public final class Constants {
         public static final double CL2Inches = 10.0;
         public static final double CL3Inches = 20.0;
         public static final double CL4Inches = 30.0;
-        public static final double bargeInches = 47.0;
+        public static final double bargeInches = 54.5;
 
         public static final float lowerLimitInches = 0f;
 
-        public static final float upperLimitInches = 47.7f; // 47.7 theoretical max
+        public static final float upperLimitInches = 54f; // 47.7 theoretical max
 
         public static final double toleranceInches = 0.5;
     }
@@ -232,44 +232,44 @@ public final class Constants {
     }
 
     public class PivotConstants {
-        public static final int maxPivotCurrentAmps = 50;
+        public static final int maxPivotCurrentAmps = 60;
 
-        public static final double gearRatio = 75.0;
+        public static final double gearRatio = 88.88;
 
-        public static final double kP = 0.012;
-        public static final double kD = 0.000;
+        public static final double kP = 0.025;
+        public static final double kD = 0.0035;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
 
         public static final double freeSpeedRPM = 6784.0 / gearRatio;
 
-        public static final double maxVelDegPerSec = 150.0;
+        public static final double maxVelDegPerSec = 300.0;
 
-        public static final double maxAccelDegPerSecSq = 100.0;
+        public static final double maxAccelDegPerSecSq = 290.0;
 
         public static final double maxManualDegPerSec = 100.0;
 
         public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double chuteDeg = 5.0;
-        public static final double coralHomeDeg = 10.0;
+        public static final double chuteDeg = 3.0;
+        public static final double coralHomeDeg = 5.0;
         public static final double algaeHomeDeg = 15.0;
         public static final double CL1Deg = 55.0;
         public static final double CL23Deg = 45.0;
         public static final double CL4Deg = 70.0;
         public static final double ALDeg = 85.0;
         public static final double processorDeg = 70.0;
-        public static final double groundDeg = 85.0;
+        public static final double groundDeg = 88.0;
         public static final double bargeDeg = 60.0;
 
         public static final float lowerLimitDeg = 5f;
 
-        public static final float upperLimitDeg = 90f;
+        public static final float upperLimitDeg = 88f;
 
         public static final double toleranceDeg = 1.0;
 
-        public static final double absPivotEncOffsetDeg = 0.0 + chuteDeg;
+        public static final double absPivotEncOffsetDeg = 166.0;
     }
 
     public class IntakeConstants {
@@ -277,20 +277,20 @@ public final class Constants {
         
         public static final double outtakePower = 1.0;
 
-        public static final double intakePower = -0.3;
+        public static final double intakePower = -0.35;
 
         public static final double idlePower = -0.1;
 
-        public static final double idleOutPower = 0.07;
+        public static final double idleOutPower = 0.10;
 
-        public static final double waitSeconds = 0.5;
+        public static final double waitSeconds = 0.3;
 
-        public static final double currentThreshold = 35;
+        public static final double currentThreshold = 30;
 
         public static final double currentDebounceTime = 0.33;
         public static final double beamBreakDebounceTime = 0.1;
 
-        public static final int filterSize = 5;
+        public static final int filterSize = 3;
     }
 
     public static class WinchConstants {

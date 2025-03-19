@@ -29,7 +29,7 @@ public class WinchSys extends SubsystemBase {
 
         winchEnc = winchMtr.getEncoder();
         
-        winchClimberSparkMaxConfig.inverted(false);
+        winchClimberSparkMaxConfig.inverted(true);
         winchClimberSparkMaxConfig.idleMode(com.revrobotics.spark.config.SparkBaseConfig.IdleMode.kBrake);
         winchClimberSparkMaxConfig.encoder.positionConversionFactor(WinchConstants.degPerEncRev);
         winchClimberSparkMaxConfig.encoder.velocityConversionFactor(WinchConstants.degPerSecPerRPM);

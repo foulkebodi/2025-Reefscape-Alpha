@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.385669191919192,
-        "y": 7.277525252525253
+        "x": 1.2604440789473683,
+        "y": 7.0943256578947365
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0239433617474685,
-        "y": 6.835205538580389
+        "x": 1.8987182487756449,
+        "y": 6.652005943949873
       },
       "isLocked": false,
       "linkedName": "ChuteThirteen"
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.25,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -22,10 +23,12 @@ public class PivotSys extends SubsystemBase {
 
     private final DutyCycleEncoder absPivotEnc;
 
+    private final MedianFilter encoderFilter;
+
     private double targetDeg = 0.0;
     
     public PivotSys() {
-        pivotMtr = new SparkFlex(CANDevices.pivotMtrID, MotorType.kBrushless);
+        pivotMtr = new SparkFlex(28, MotorType.kBrushless);
         SparkFlexConfig pivotMtrSparkFlexConfig = new SparkFlexConfig();
 
         pivotMtrSparkFlexConfig.inverted(false);
@@ -36,10 +39,10 @@ public class PivotSys extends SubsystemBase {
 
         pivotMtrSparkFlexConfig.smartCurrentLimit(PivotConstants.maxPivotCurrentAmps);
 
-        pivotMtrSparkFlexConfig.softLimit.forwardSoftLimitEnabled(true);
-        pivotMtrSparkFlexConfig.softLimit.reverseSoftLimitEnabled(true);
-        pivotMtrSparkFlexConfig.softLimit.forwardSoftLimit(PivotConstants.upperLimitDeg);
-        pivotMtrSparkFlexConfig.softLimit.reverseSoftLimit(PivotConstants.lowerLimitDeg);
+        pivotMtrSparkFlexConfig.softLimit.forwardSoftLimitEnabled(false);
+        pivotMtrSparkFlexConfig.softLimit.reverseSoftLimitEnabled(false);
+        // pivotMtrSparkFlexConfig.softLimit.forwardSoftLimit(PivotConstants.upperLimitDeg);
+        // pivotMtrSparkFlexConfig.softLimit.reverseSoftLimit(PivotConstants.lowerLimitDeg);
 
         pivotMtrSparkFlexConfig.encoder.positionConversionFactor(PivotConstants.degPerEncRev);
         pivotMtrSparkFlexConfig.encoder.velocityConversionFactor(PivotConstants.degPerSecPerRPM);
@@ -50,11 +53,13 @@ public class PivotSys extends SubsystemBase {
             PersistMode.kPersistParameters);
 
         absPivotEnc = new DutyCycleEncoder(CANDevices.pivotEncPortID, 360.0, PivotConstants.absPivotEncOffsetDeg);
-        absPivotEnc.setInverted(false);
+        absPivotEnc.setInverted(true);
 
         pivotController = new ProfiledPIDController(
         PivotConstants.kP, 0.0, PivotConstants.kD, 
         new Constraints(PivotConstants.maxVelDegPerSec, PivotConstants.maxAccelDegPerSecSq));
+
+        encoderFilter = new MedianFilter(2);
     }
  
     @Override

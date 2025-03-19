@@ -27,12 +27,36 @@ import frc.robot.commands.pivot.PivotBargeCmd;
 import frc.robot.commands.pivot.PivotCL23Cmd;
 import frc.robot.commands.pivot.PivotCL4Cmd;
 import frc.robot.commands.pivot.PivotGroundCmd;
+import frc.robot.commands.transitions.AL2ToAlgaeHome;
+import frc.robot.commands.transitions.AL3ToAlgaeHome;
+import frc.robot.commands.transitions.AlgaeHomeToAL2;
+import frc.robot.commands.transitions.AlgaeHomeToAL3;
+import frc.robot.commands.transitions.AlgaeHomeToBarge;
+import frc.robot.commands.transitions.AlgaeHomeToClimb;
+import frc.robot.commands.transitions.AlgaeHomeToCoralHome;
+import frc.robot.commands.transitions.AlgaeHomeToGround;
+import frc.robot.commands.transitions.AlgaeHomeToProcessor;
+import frc.robot.commands.transitions.BargeToAlgaeHome;
+import frc.robot.commands.transitions.CL1ToCoralHome;
+import frc.robot.commands.transitions.CL23ToCoralHome;
 import frc.robot.commands.transitions.CL4ToCoralHome;
 import frc.robot.commands.transitions.ChuteToCoralHome;
+import frc.robot.commands.transitions.ClimbToAlgaeHome;
+import frc.robot.commands.transitions.ClimbToCoralHome;
+import frc.robot.commands.transitions.CoralHomeToAlgaeHome;
 import frc.robot.commands.transitions.CoralHomeToCL1;
+import frc.robot.commands.transitions.CoralHomeToCL2;
+import frc.robot.commands.transitions.CoralHomeToCL3;
 import frc.robot.commands.transitions.CoralHomeToCL4;
 import frc.robot.commands.transitions.CoralHomeToChute;
+import frc.robot.commands.transitions.CoralHomeToClimb;
+import frc.robot.commands.transitions.DoNothings;
+import frc.robot.commands.transitions.GroundToAlgaeHome;
+import frc.robot.commands.transitions.ProcessorToAlgaeHome;
+import frc.robot.commands.util.ExampleCommand;
 import frc.robot.commands.pivot.PivotChuteCmd;
+import frc.robot.commands.pivot.PivotCoralHomeCmd;
+import frc.robot.commands.winch.DoNothing;
 import frc.robot.commands.winch.WinchInCmd;
 import frc.robot.commands.winch.WinchOutCmd;
 import frc.robot.subsystems.WinchSys;
@@ -56,7 +80,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.ScheduleCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -86,6 +115,8 @@ public class RobotContainer {
 
 	private final CommandXboxController driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
 	private final CommandXboxController operatorController = new CommandXboxController(ControllerConstants.kOperatorControllerPort);
+	public static State currentState = State.CHUTE;
+    public static boolean algaeMode = false;
 
 	// Initializes and populates the auto chooser with all the PathPlanner autos in the project.
 	// The deafulat auto is "Do Nothing" and runs Commands.none(), which does nothing.
@@ -167,65 +198,67 @@ public class RobotContainer {
 			swerveDrive,
 			poseEstimator));
 		
-		// elevator maunal control
+		// elevatorSys maunal control
 		// elevatorSys.setDefaultCommand(new ElevatorManualCmd(
 		// 	() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
 		// 	elevatorSys));
 
-		// elevator troubleshooting
+		// elevatorSys troubleshooting
 		// operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
 		// operatorController.a().onTrue(new ElevatorCL2Cmd(elevatorSys));
 		// operatorController.b().onTrue(new ElevatorCL4Cmd(elevatorSys));
 		// operatorController.y().onTrue(new ElevatorBargeCmd(elevatorSys));
 
-		// pivot troubleshooting
-		// operatorController.a().onTrue(new PivotGroundCmd(pivotSys));
+		// pivotSys troubleshooting
+		// operatorController.a().onTrue(new PivotCoralHomeCmd(pivotSys));
 		// operatorController.b().onTrue(new PivotCL23Cmd(pivotSys));
-		// operatorController.x().onTrue(new PivotIntakingCmd(pivotSys));
+		// operatorController.x().onTrue(new PivotChuteCmd(pivotSys));
 		// operatorController.y().onTrue(new PivotBargeCmd(pivotSys));
 
-		// extender troubleshooting
+		// extenderSys troubleshooting
 		// operatorController.a().onTrue(new ExtenderCL1Cmd(extenderSys));
 		// operatorController.b().onTrue(new ExtenderCL23Cmd(extenderSys));
 		// operatorController.y().onTrue(new ExtenderBargeCmd(extenderSys));
 		// operatorController.x().onTrue(new ExtenderHomeCmd(extenderSys));
 
 		// competition setup
-		operatorController.a().onTrue(stateMachine.getSequence(State.CL2));
-		operatorController.b().onTrue(stateMachine.getSequence(State.CL3));
-		operatorController.y().onTrue(stateMachine.getSequence(State.CL4));
-		operatorController.x().onTrue(stateMachine.getSequence(State.HOME));
+		operatorController.a().onTrue(new InstantCommand( () -> {
+			System.out.print("running");
+			getSequence(State.CL2);
+		}, elevatorSys, extenderSys, pivotSys));
 
-		operatorController.povRight().onTrue(stateMachine.getSequence(State.CL1));
+		operatorController.b().onTrue(getSequence(State.CL3));
+		operatorController.y().onTrue(getSequence(State.CL4));
+		operatorController.x().onTrue(getSequence(State.HOME));
+		operatorController.povRight().onTrue(getSequence(State.CL1));
 
-		operatorController.leftBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
-		operatorController.rightBumper().onTrue(stateMachine.getSequence(State.PROCESSOR));
+		operatorController.leftBumper().onTrue(getSequence(State.PROCESSOR));
+		operatorController.rightBumper().onTrue(getSequence(State.PROCESSOR));
 
 		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
 		operatorController.povUp()
 			.onTrue(new WinchOutCmd(winchSys))
-			.onTrue(stateMachine.getSequence(State.CLIMB));
+			.onTrue(getSequence(State.CLIMB));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-			.onTrue(stateMachine.getSequence(State.CHUTE))	
+			// .onTrue(getSequence(State.CHUTE))	
 			.onTrue(new IntakeIntakeCmd(intakeSys))
-			.onFalse(stateMachine.getSequence(State.HOME))
+			// .onFalse(getSequence(State.HOME))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 		
 		operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
 			.onTrue(new IntakeOuttakeCmd(intakeSys))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 
-		operatorController.start().toggleOnTrue(new AlgaeMode()).onTrue(stateMachine.getSequence(State.HOME));
+		operatorController.start().toggleOnTrue(new AlgaeMode()).onTrue(getSequence(State.HOME));
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 
 		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		.onTrue(stateMachine.getSequence(State.GROUND))
+		.onTrue(getSequence(State.GROUND))
 		.onTrue(new IntakeIntakeCmd(intakeSys))
 		.onFalse(new IntakeIdleCmd(intakeSys))
-		.onTrue(stateMachine.getSequence(State.HOME));
-
+		.onTrue(getSequence(State.HOME));
 	}
 
 	/**
@@ -247,7 +280,7 @@ public class RobotContainer {
 		SmartDashboard.putNumber("pos-y", poseEstimator.get().getY());
 		SmartDashboard.putBoolean("is autonomous", DriverStation.isAutonomous());
 
-		// elevator info
+		// elevatorSys info
 		SmartDashboard.putNumber("left elevator position", elevatorSys.getLeftCurrentPositionInches());
 		SmartDashboard.putNumber("right elevator position", elevatorSys.getRightCurrentPositionInches());
 		SmartDashboard.putNumber("elevator position", elevatorSys.getCurrentPositionInches());
@@ -259,9 +292,11 @@ public class RobotContainer {
 		SmartDashboard.putNumber("winch position", winchSys.getWinchCurrentPositionDeg());
 		SmartDashboard.putNumber("winch power", winchSys.getWinchPower());
 
-		// pivot info
+		// pivotSys info
 		SmartDashboard.putNumber("pivot deg", pivotSys.getCurrentPositionDeg());
 		SmartDashboard.putNumber("pivot target deg", pivotSys.getTargetDeg());
+		SmartDashboard.putNumber("pivot error deg", pivotSys.getErrorDeg());
+		SmartDashboard.putBoolean("pivot at target", pivotSys.isAtTarget());
 
 		// intake info
 		SmartDashboard.putBoolean("beam break", intakeSys.getFilteredBeamBreak());
@@ -271,7 +306,7 @@ public class RobotContainer {
 		SmartDashboard.putBoolean("intaking", intakeSys.getIntaking());
 		SmartDashboard.putBoolean("outtaking", intakeSys.getOuttaking());
 
-		// extender info
+		// extenderSys info
 		SmartDashboard.putNumber("extender position inches", extenderSys.getCurrentPositionInches());
 		SmartDashboard.putNumber("extender target position inches", extenderSys.getTargetInches());
 		SmartDashboard.putBoolean("extender at target", extenderSys.isAtTarget());
@@ -279,8 +314,122 @@ public class RobotContainer {
 		SmartDashboard.putNumber("extender target power", extenderSys.getTargetPower());
 
 		// state info
-		SmartDashboard.putString("current state", stateMachine.getCurrentStateAsString());
-		SmartDashboard.putBoolean("algae mode", StateMachine.algaeMode);
+		SmartDashboard.putString("current state", getStateAsString(currentState));
+		SmartDashboard.putBoolean("algae mode", algaeMode);
 
 	}
+
+	public SequentialCommandGroup getSequence(State targetState) {
+        if(currentState == State.HOME && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new AlgaeHomeToCoralHome(pivotSys, elevatorSys, extenderSys); // algae home to coral home
+        } else if (currentState == State.HOME && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new CoralHomeToAlgaeHome(pivotSys, elevatorSys, extenderSys); // coral home to algae home
+        } else if (currentState == State.HOME && targetState == State.CHUTE && !algaeMode) {
+			currentState = State.HOME;
+            return new CoralHomeToChute(pivotSys, elevatorSys, extenderSys); // coral home to chute
+        } else if (currentState == State.HOME && targetState == State.CL1 && !algaeMode) {
+            currentState = State.CL1;
+            return new CoralHomeToCL1(pivotSys, elevatorSys, extenderSys); // coral home to cl1
+        } else if (currentState == State.HOME && targetState == State.CL2 && !algaeMode) {
+            currentState = State.CL2;
+            return new CoralHomeToCL2(pivotSys, elevatorSys, extenderSys); // coral home to cl2
+        } else if (currentState == State.HOME && targetState == State.CL3 && !algaeMode) {
+            currentState = State.CL3;
+            return new CoralHomeToCL3(pivotSys, elevatorSys, extenderSys); // coral home to cl3
+        } else if (currentState == State.HOME && targetState == State.CL4 && !algaeMode) {
+            currentState = State.CL4;
+            return new CoralHomeToCL4(pivotSys, elevatorSys, extenderSys); // coral home to cl4
+        } else if (currentState == State.HOME && targetState == State.CL2 && algaeMode) {
+            currentState = State.CL2;
+            return new AlgaeHomeToAL2(pivotSys, elevatorSys, extenderSys); // algae home to al2
+        } else if (currentState == State.HOME && targetState == State.CL3 && algaeMode) {
+            currentState = State.CL3;
+            return new AlgaeHomeToAL3(pivotSys, elevatorSys, extenderSys); // algae home to al3
+        } else if (currentState == State.HOME && targetState == State.CL4 && algaeMode) {
+            currentState = State.CL4;
+            return new AlgaeHomeToBarge(pivotSys, elevatorSys, extenderSys); // algae home to barge
+        } else if (currentState == State.HOME && targetState == State.PROCESSOR && algaeMode) {
+            currentState = State.PROCESSOR;
+            return new AlgaeHomeToProcessor(pivotSys, elevatorSys, extenderSys); // algae home to processor
+        } else if (currentState == State.HOME && targetState == State.GROUND && algaeMode) {
+            currentState = State.GROUND;
+            return new AlgaeHomeToGround(pivotSys, elevatorSys, extenderSys); // algae home to ground
+        } else if (currentState == State.CL1 && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new CL1ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl1 to  coral home
+        } else if (currentState == State.CL2 && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new CL23ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl2 to coral home
+        } else if (currentState == State.CL3 && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new CL23ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl3 to coral home
+        } else if (currentState == State.CL4 && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME; 
+            return new CL4ToCoralHome(pivotSys, elevatorSys, extenderSys);// cl4 to coral home
+        } else if (currentState == State.GROUND && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new GroundToAlgaeHome(pivotSys, elevatorSys, extenderSys); // ground to algae home
+        } else if (currentState == State.PROCESSOR && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new ProcessorToAlgaeHome(pivotSys, elevatorSys, extenderSys); // processor to algae home
+        } else if (currentState == State.CL4 && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new BargeToAlgaeHome(pivotSys, elevatorSys, extenderSys); // barge to algae home
+        } else if (currentState == State.CL2 && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new AL2ToAlgaeHome(pivotSys, elevatorSys, extenderSys); // al2 to algae home
+        } else if (currentState == State.CL3 && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new AL3ToAlgaeHome(pivotSys, elevatorSys, extenderSys); // al3 to algae home
+        } else if (currentState == State.CHUTE && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new ChuteToCoralHome(pivotSys, elevatorSys, extenderSys); // chute to coral home
+        } else if (currentState == State.HOME && targetState == State.CLIMB && algaeMode) {
+            currentState = State.HOME;
+            return new AlgaeHomeToClimb(pivotSys, elevatorSys, extenderSys); // algae home to climb
+        } else if (currentState == State.HOME && targetState == State.CLIMB && !algaeMode) {
+            currentState = State.HOME;
+            return new CoralHomeToClimb(pivotSys, elevatorSys, extenderSys); // coral home to climb
+        } else if (currentState == State.CLIMB && targetState == State.HOME && !algaeMode) {
+            currentState = State.HOME;
+            return new ClimbToCoralHome(pivotSys, elevatorSys, extenderSys); // climb to coral home
+        } else if (currentState == State.CLIMB && targetState == State.HOME && algaeMode) {
+            currentState = State.HOME;
+            return new ClimbToAlgaeHome(pivotSys, elevatorSys, extenderSys); // climb to algae home
+        } else {
+            return new DoNothings(winchSys);
+        }
+    }
+
+	public String getStateAsString(State state) {
+		if(currentState == State.HOME && algaeMode) {
+            return "AH";
+        } else if(state == State.AL2) {
+            return "AL2";
+        } else if(state == State.AL3) {
+            return "AL3";
+        } else if(state == State.BARGE) {
+            return "BARGE";
+        } else if(state == State.HOME && !algaeMode) {
+            return "CH";
+        } else if(state == State.CL1) {
+            return "CL1";
+        } else if(state == State.CL2) {
+            return "CL2";
+        } else if(state == State.CL3) {
+            return "CL3";
+        } else if(state == State.CL4) {
+            return "CL4";
+        } else if(state == State.GROUND) {
+            return "GROUND";
+        } else if(state == State.CHUTE) {
+            return "INTAKING";
+        } else if(state == State.PROCESSOR) {
+            return "PROCESSOR";
+        } else {
+            return "null";
+        }
+    }
 }
