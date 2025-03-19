@@ -7,7 +7,6 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkFlexConfig;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
@@ -22,8 +21,6 @@ public class PivotSys extends SubsystemBase {
     private final ProfiledPIDController pivotController;
 
     private final DutyCycleEncoder absPivotEnc;
-
-    private final MedianFilter encoderFilter;
 
     private double targetDeg = 0.0;
     
@@ -58,8 +55,6 @@ public class PivotSys extends SubsystemBase {
         pivotController = new ProfiledPIDController(
         PivotConstants.kP, 0.0, PivotConstants.kD, 
         new Constraints(PivotConstants.maxVelDegPerSec, PivotConstants.maxAccelDegPerSecSq));
-
-        encoderFilter = new MedianFilter(2);
     }
  
     @Override

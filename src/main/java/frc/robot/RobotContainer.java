@@ -9,7 +9,8 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.State;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.Constants.SwerveModuleConstants;
-import frc.robot.commands.AlgaeMode;
+import frc.robot.commands.AlgaeModeFalse;
+import frc.robot.commands.AlgaeModeTrue;
 import frc.robot.commands.ArcadeDriveCmd;
 import frc.robot.commands.elevator.ElevatorBargeCmd;
 import frc.robot.commands.elevator.ElevatorCL2Cmd;
@@ -223,14 +224,23 @@ public class RobotContainer {
 
 		// competition setup
 		operatorController.a().onTrue(new InstantCommand( () -> {
-			System.out.print("running");
+			System.out.println("running - a");
 			getSequence(State.CL2);
 		}, elevatorSys, extenderSys, pivotSys));
-
-		operatorController.b().onTrue(getSequence(State.CL3));
-		operatorController.y().onTrue(getSequence(State.CL4));
-		operatorController.x().onTrue(getSequence(State.HOME));
-		operatorController.povRight().onTrue(getSequence(State.CL1));
+		operatorController.b().onTrue(new InstantCommand( () -> {
+			System.out.println("running - b");
+			getSequence(State.CL3);
+		}, elevatorSys, extenderSys, pivotSys));
+		operatorController.y().onTrue(new InstantCommand( () -> {
+			System.out.println("running - y");
+			getSequence(State.CL4);
+		}, elevatorSys, extenderSys, pivotSys));
+		operatorController.x().onTrue(new InstantCommand( () -> {
+			System.out.println("running - x");
+			getSequence(State.HOME);
+		}, elevatorSys, extenderSys, pivotSys));
+		
+		operatorController.start().onTrue(getSequence(State.CL1));
 
 		operatorController.leftBumper().onTrue(getSequence(State.PROCESSOR));
 		operatorController.rightBumper().onTrue(getSequence(State.PROCESSOR));
@@ -241,16 +251,17 @@ public class RobotContainer {
 			.onTrue(getSequence(State.CLIMB));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-			// .onTrue(getSequence(State.CHUTE))	
+			.onTrue(getSequence(State.CHUTE))	
 			.onTrue(new IntakeIntakeCmd(intakeSys))
-			// .onFalse(getSequence(State.HOME))
+			.onFalse(getSequence(State.HOME))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 		
 		operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
 			.onTrue(new IntakeOuttakeCmd(intakeSys))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 
-		operatorController.start().toggleOnTrue(new AlgaeMode()).onTrue(getSequence(State.HOME));
+		operatorController.povLeft().onTrue(new AlgaeModeFalse());
+		operatorController.povRight().onTrue(new AlgaeModeTrue());
 
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 
@@ -322,18 +333,23 @@ public class RobotContainer {
 	public SequentialCommandGroup getSequence(State targetState) {
         if(currentState == State.HOME && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
+			System.out.println("running - algae home to coral home");
             return new AlgaeHomeToCoralHome(pivotSys, elevatorSys, extenderSys); // algae home to coral home
         } else if (currentState == State.HOME && targetState == State.HOME && algaeMode) {
             currentState = State.HOME;
+			System.out.println("running - coral home to algae home");
             return new CoralHomeToAlgaeHome(pivotSys, elevatorSys, extenderSys); // coral home to algae home
         } else if (currentState == State.HOME && targetState == State.CHUTE && !algaeMode) {
 			currentState = State.HOME;
+			System.out.println("running - coral home to chute");
             return new CoralHomeToChute(pivotSys, elevatorSys, extenderSys); // coral home to chute
         } else if (currentState == State.HOME && targetState == State.CL1 && !algaeMode) {
             currentState = State.CL1;
+			System.out.println("running - coral home to cl1");
             return new CoralHomeToCL1(pivotSys, elevatorSys, extenderSys); // coral home to cl1
         } else if (currentState == State.HOME && targetState == State.CL2 && !algaeMode) {
             currentState = State.CL2;
+			System.out.println("running - coral home to cl2");
             return new CoralHomeToCL2(pivotSys, elevatorSys, extenderSys); // coral home to cl2
         } else if (currentState == State.HOME && targetState == State.CL3 && !algaeMode) {
             currentState = State.CL3;
