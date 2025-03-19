@@ -13,50 +13,40 @@ import frc.robot.commands.AlgaeModeFalse;
 import frc.robot.commands.AlgaeModeTrue;
 import frc.robot.commands.ArcadeDriveCmd;
 import frc.robot.commands.elevator.ElevatorBargeCmd;
-import frc.robot.commands.elevator.ElevatorCL2Cmd;
-import frc.robot.commands.elevator.ElevatorCL4Cmd;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
 import frc.robot.commands.extender.ExtenderBargeCmd;
-import frc.robot.commands.extender.ExtenderCL1Cmd;
-import frc.robot.commands.extender.ExtenderCL23Cmd;
 import frc.robot.commands.extender.ExtenderHomeCmd;
 import frc.robot.commands.intake.IntakeIdleCmd;
 import frc.robot.commands.intake.IntakeIntakeCmd;
 import frc.robot.commands.intake.IntakeOuttakeCmd;
-import frc.robot.commands.pivot.PivotBargeCmd;
 import frc.robot.commands.pivot.PivotCL23Cmd;
-import frc.robot.commands.pivot.PivotCL4Cmd;
 import frc.robot.commands.pivot.PivotGroundCmd;
-import frc.robot.commands.transitions.AL2ToAlgaeHome;
-import frc.robot.commands.transitions.AL3ToAlgaeHome;
-import frc.robot.commands.transitions.AlgaeHomeToAL2;
-import frc.robot.commands.transitions.AlgaeHomeToAL3;
-import frc.robot.commands.transitions.AlgaeHomeToBarge;
-import frc.robot.commands.transitions.AlgaeHomeToClimb;
-import frc.robot.commands.transitions.AlgaeHomeToCoralHome;
-import frc.robot.commands.transitions.AlgaeHomeToGround;
-import frc.robot.commands.transitions.AlgaeHomeToProcessor;
-import frc.robot.commands.transitions.BargeToAlgaeHome;
-import frc.robot.commands.transitions.CL1ToCoralHome;
-import frc.robot.commands.transitions.CL23ToCoralHome;
-import frc.robot.commands.transitions.CL4ToCoralHome;
-import frc.robot.commands.transitions.ChuteToCoralHome;
-import frc.robot.commands.transitions.ClimbToAlgaeHome;
-import frc.robot.commands.transitions.ClimbToCoralHome;
-import frc.robot.commands.transitions.CoralHomeToAlgaeHome;
-import frc.robot.commands.transitions.CoralHomeToCL1;
-import frc.robot.commands.transitions.CoralHomeToCL2;
-import frc.robot.commands.transitions.CoralHomeToCL3;
-import frc.robot.commands.transitions.CoralHomeToCL4;
-import frc.robot.commands.transitions.CoralHomeToChute;
-import frc.robot.commands.transitions.CoralHomeToClimb;
-import frc.robot.commands.transitions.DoNothings;
-import frc.robot.commands.transitions.GroundToAlgaeHome;
-import frc.robot.commands.transitions.ProcessorToAlgaeHome;
+import frc.robot.commands.transitions.AL2ToHome;
+import frc.robot.commands.transitions.AL3ToHome;
+import frc.robot.commands.transitions.BargeToHome;
+import frc.robot.commands.transitions.CL1ToHome;
+import frc.robot.commands.transitions.CL2ToHome;
+import frc.robot.commands.transitions.CL3ToHome;
+import frc.robot.commands.transitions.CL4ToHome;
+import frc.robot.commands.transitions.ChuteToHome;
+import frc.robot.commands.transitions.ClimbToHome;
+import frc.robot.commands.transitions.GroundToHome;
+import frc.robot.commands.transitions.HomeToAL2;
+import frc.robot.commands.transitions.HomeToAL3;
+import frc.robot.commands.transitions.HomeToBarge;
+import frc.robot.commands.transitions.HomeToCL1;
+import frc.robot.commands.transitions.HomeToCL2;
+import frc.robot.commands.transitions.HomeToCL3;
+import frc.robot.commands.transitions.HomeToCL4;
+import frc.robot.commands.transitions.HomeToChute;
+import frc.robot.commands.transitions.HomeToClimb;
+import frc.robot.commands.transitions.HomeToGround;
+import frc.robot.commands.transitions.HomeToProcessor;
+import frc.robot.commands.transitions.ProcessorToHome;
+import frc.robot.commands.util.DoNothings;
 import frc.robot.commands.util.ExampleCommand;
 import frc.robot.commands.pivot.PivotChuteCmd;
-import frc.robot.commands.pivot.PivotCoralHomeCmd;
 import frc.robot.commands.winch.DoNothing;
 import frc.robot.commands.winch.WinchInCmd;
 import frc.robot.commands.winch.WinchOutCmd;
@@ -127,10 +117,10 @@ public class RobotContainer {
 	public RobotContainer() {
 		// register named commands
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
-		NamedCommands.registerCommand("CoralHomeToCL4", new CoralHomeToCL4(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("CL4ToCoralHome", new CL4ToCoralHome(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("CoralHomeToChute", new CoralHomeToChute(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("ChuteToCoralHome", new ChuteToCoralHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CoralHomeToCL4", new HomeToCL4(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CL4ToCoralHome", new CL4ToHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CoralHomeToChute", new HomeToChute(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("ChuteToCoralHome", new ChuteToHome(pivotSys, elevatorSys, extenderSys));
 
 		NamedCommands.registerCommand("IntakeIntakeCmd", new IntakeIntakeCmd(intakeSys));
 		NamedCommands.registerCommand("IntakeIdleCmd", new IntakeIdleCmd(intakeSys));
@@ -331,89 +321,75 @@ public class RobotContainer {
 	}
 
 	public SequentialCommandGroup getSequence(State targetState) {
-        if(currentState == State.HOME && targetState == State.HOME && !algaeMode) {
+        if(currentState == State.HOME && targetState == State.CHUTE) {
+            currentState = State.CHUTE;
+			System.out.println("running - home to chute");
+            return new HomeToChute(pivotSys, elevatorSys, extenderSys); // home to chute
+        }  else if (currentState == State.CHUTE && targetState == State.HOME) {
             currentState = State.HOME;
-			System.out.println("running - algae home to coral home");
-            return new AlgaeHomeToCoralHome(pivotSys, elevatorSys, extenderSys); // algae home to coral home
-        } else if (currentState == State.HOME && targetState == State.HOME && algaeMode) {
-            currentState = State.HOME;
-			System.out.println("running - coral home to algae home");
-            return new CoralHomeToAlgaeHome(pivotSys, elevatorSys, extenderSys); // coral home to algae home
-        } else if (currentState == State.HOME && targetState == State.CHUTE && !algaeMode) {
-			currentState = State.HOME;
-			System.out.println("running - coral home to chute");
-            return new CoralHomeToChute(pivotSys, elevatorSys, extenderSys); // coral home to chute
+            return new ChuteToHome(pivotSys, elevatorSys, extenderSys); // chute to home
         } else if (currentState == State.HOME && targetState == State.CL1 && !algaeMode) {
             currentState = State.CL1;
-			System.out.println("running - coral home to cl1");
-            return new CoralHomeToCL1(pivotSys, elevatorSys, extenderSys); // coral home to cl1
+			System.out.println("running - home to cl1");
+            return new HomeToCL1(pivotSys, elevatorSys, extenderSys); // home to cl1
         } else if (currentState == State.HOME && targetState == State.CL2 && !algaeMode) {
             currentState = State.CL2;
-			System.out.println("running - coral home to cl2");
-            return new CoralHomeToCL2(pivotSys, elevatorSys, extenderSys); // coral home to cl2
+			System.out.println("running - home to cl2");
+            return new HomeToCL2(pivotSys, elevatorSys, extenderSys); // home to cl2
         } else if (currentState == State.HOME && targetState == State.CL3 && !algaeMode) {
             currentState = State.CL3;
-            return new CoralHomeToCL3(pivotSys, elevatorSys, extenderSys); // coral home to cl3
+            return new HomeToCL3(pivotSys, elevatorSys, extenderSys); // home to cl3
         } else if (currentState == State.HOME && targetState == State.CL4 && !algaeMode) {
             currentState = State.CL4;
-            return new CoralHomeToCL4(pivotSys, elevatorSys, extenderSys); // coral home to cl4
+            return new HomeToCL4(pivotSys, elevatorSys, extenderSys); // home to cl4
         } else if (currentState == State.HOME && targetState == State.CL2 && algaeMode) {
             currentState = State.CL2;
-            return new AlgaeHomeToAL2(pivotSys, elevatorSys, extenderSys); // algae home to al2
+            return new HomeToAL2(pivotSys, elevatorSys, extenderSys); // home to al2
         } else if (currentState == State.HOME && targetState == State.CL3 && algaeMode) {
             currentState = State.CL3;
-            return new AlgaeHomeToAL3(pivotSys, elevatorSys, extenderSys); // algae home to al3
+            return new HomeToAL3(pivotSys, elevatorSys, extenderSys); // home to al3
         } else if (currentState == State.HOME && targetState == State.CL4 && algaeMode) {
             currentState = State.CL4;
-            return new AlgaeHomeToBarge(pivotSys, elevatorSys, extenderSys); // algae home to barge
-        } else if (currentState == State.HOME && targetState == State.PROCESSOR && algaeMode) {
+            return new HomeToBarge(pivotSys, elevatorSys, extenderSys); // home to barge
+        } else if (currentState == State.HOME && targetState == State.PROCESSOR) {
             currentState = State.PROCESSOR;
-            return new AlgaeHomeToProcessor(pivotSys, elevatorSys, extenderSys); // algae home to processor
-        } else if (currentState == State.HOME && targetState == State.GROUND && algaeMode) {
+            return new HomeToProcessor(pivotSys, elevatorSys, extenderSys); // home to processor
+        } else if (currentState == State.HOME && targetState == State.GROUND) {
             currentState = State.GROUND;
-            return new AlgaeHomeToGround(pivotSys, elevatorSys, extenderSys); // algae home to ground
+            return new HomeToGround(pivotSys, elevatorSys, extenderSys); // home to ground
         } else if (currentState == State.CL1 && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
-            return new CL1ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl1 to  coral home
+            return new CL1ToHome(pivotSys, elevatorSys, extenderSys); // cl1 to home
         } else if (currentState == State.CL2 && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
-            return new CL23ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl2 to coral home
+            return new CL2ToHome(pivotSys, elevatorSys, extenderSys); // cl2 to home
         } else if (currentState == State.CL3 && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
-            return new CL23ToCoralHome(pivotSys, elevatorSys, extenderSys); // cl3 to coral home
+            return new CL3ToHome(pivotSys, elevatorSys, extenderSys); // cl3 to home
         } else if (currentState == State.CL4 && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME; 
-            return new CL4ToCoralHome(pivotSys, elevatorSys, extenderSys);// cl4 to coral home
-        } else if (currentState == State.GROUND && targetState == State.HOME && algaeMode) {
+            return new CL4ToHome(pivotSys, elevatorSys, extenderSys);// cl4 to home
+        } else if (currentState == State.GROUND && targetState == State.HOME) {
             currentState = State.HOME;
-            return new GroundToAlgaeHome(pivotSys, elevatorSys, extenderSys); // ground to algae home
-        } else if (currentState == State.PROCESSOR && targetState == State.HOME && algaeMode) {
+            return new GroundToHome(pivotSys, elevatorSys, extenderSys); // ground to home
+        } else if (currentState == State.PROCESSOR && targetState == State.HOME) {
             currentState = State.HOME;
-            return new ProcessorToAlgaeHome(pivotSys, elevatorSys, extenderSys); // processor to algae home
-        } else if (currentState == State.CL4 && targetState == State.HOME && algaeMode) {
-            currentState = State.HOME;
-            return new BargeToAlgaeHome(pivotSys, elevatorSys, extenderSys); // barge to algae home
+            return new ProcessorToHome(pivotSys, elevatorSys, extenderSys); // processor to home
         } else if (currentState == State.CL2 && targetState == State.HOME && algaeMode) {
             currentState = State.HOME;
-            return new AL2ToAlgaeHome(pivotSys, elevatorSys, extenderSys); // al2 to algae home
+            return new AL2ToHome(pivotSys, elevatorSys, extenderSys); // al2 to home
         } else if (currentState == State.CL3 && targetState == State.HOME && algaeMode) {
             currentState = State.HOME;
-            return new AL3ToAlgaeHome(pivotSys, elevatorSys, extenderSys); // al3 to algae home
-        } else if (currentState == State.CHUTE && targetState == State.HOME && !algaeMode) {
+            return new AL3ToHome(pivotSys, elevatorSys, extenderSys); // al3 to home
+        } else if (currentState == State.CL4 && targetState == State.HOME && algaeMode) {
             currentState = State.HOME;
-            return new ChuteToCoralHome(pivotSys, elevatorSys, extenderSys); // chute to coral home
-        } else if (currentState == State.HOME && targetState == State.CLIMB && algaeMode) {
-            currentState = State.HOME;
-            return new AlgaeHomeToClimb(pivotSys, elevatorSys, extenderSys); // algae home to climb
-        } else if (currentState == State.HOME && targetState == State.CLIMB && !algaeMode) {
-            currentState = State.HOME;
-            return new CoralHomeToClimb(pivotSys, elevatorSys, extenderSys); // coral home to climb
+            return new BargeToHome(pivotSys, elevatorSys, extenderSys); // barge to home
         } else if (currentState == State.CLIMB && targetState == State.HOME && !algaeMode) {
             currentState = State.HOME;
-            return new ClimbToCoralHome(pivotSys, elevatorSys, extenderSys); // climb to coral home
-        } else if (currentState == State.CLIMB && targetState == State.HOME && algaeMode) {
-            currentState = State.HOME;
-            return new ClimbToAlgaeHome(pivotSys, elevatorSys, extenderSys); // climb to algae home
+            return new ClimbToHome(pivotSys, elevatorSys, extenderSys); // climb to home
+        } else if (currentState == State.HOME && targetState == State.CLIMB && algaeMode) {
+            currentState = State.CLIMB;
+            return new HomeToClimb(pivotSys, elevatorSys, extenderSys); // home to climb
         } else {
             return new DoNothings(winchSys);
         }

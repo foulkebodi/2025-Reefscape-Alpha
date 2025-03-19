@@ -185,9 +185,9 @@ public final class Constants {
         public static final double maxManualInchesPerSecSq = 100.0;
 
         public static final double homeInches = 0.0;
-        public static final double CL2Inches = 10.0;
-        public static final double CL3Inches = 20.0;
-        public static final double CL4Inches = 30.0;
+        public static final double CL3Inches = 10.0;
+        public static final double AL2Inches = 20.0;
+        public static final double AL3Inches = 30.0;
         public static final double bargeInches = 54.5;
 
         public static final float lowerLimitInches = 0f;
@@ -218,10 +218,7 @@ public final class Constants {
         public static final double maxAccelInchesPerSecSq = 200.0;
 
         public static final double homeInches = 0.0;
-        public static final double CL1Inches = 5.0;
-        public static final double CL23Inches = 10.0;
-        public static final double CL4Inches = 0.0;
-        public static final double ALInches = 0.0;
+        public static final double CL2Inches = 10.0;
         public static final double bargeInches = 13.0;
 
         public static final float lowerLimitInches = 0f;
@@ -253,19 +250,12 @@ public final class Constants {
         public static final double maxManualDegPerSecSq = 375.0;
 
         public static final double chuteDeg = 3.0;
-        public static final double coralHomeDeg = 5.0;
-        public static final double algaeHomeDeg = 15.0;
-        public static final double CL1Deg = 55.0;
-        public static final double CL23Deg = 45.0;
-        public static final double CL4Deg = 70.0;
-        public static final double ALDeg = 85.0;
+        public static final double homeDeg = 22.0;
+        public static final double CL1Deg = 36.0;
+        public static final double CL23Deg = 50.0;
+        public static final double CL23PrepDeg = 35.0;
         public static final double processorDeg = 70.0;
         public static final double groundDeg = 88.0;
-        public static final double bargeDeg = 60.0;
-
-        public static final float lowerLimitDeg = 5f;
-
-        public static final float upperLimitDeg = 88f;
 
         public static final double toleranceDeg = 1.0;
 

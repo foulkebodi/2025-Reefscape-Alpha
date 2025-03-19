@@ -33,6 +33,12 @@
           "data": {
             "pathName": "ChuteThirteenToNineteenLeft"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": null
+          }
         }
       ]
     }
