@@ -12,6 +12,11 @@ import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.AlgaeModeFalse;
 import frc.robot.commands.AlgaeModeTrue;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.StateCL1;
+import frc.robot.commands.StateCL2;
+import frc.robot.commands.StateCL3;
+import frc.robot.commands.StateCL4;
+import frc.robot.commands.StateHOME;
 import frc.robot.commands.elevator.ElevatorBargeCmd;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
@@ -216,7 +221,8 @@ public class RobotContainer {
 		operatorController.a().onTrue(getSequence(State.CL2));
 		operatorController.b().onTrue(getSequence(State.CL3));
 		operatorController.y().onTrue(getSequence(State.CL4));
-		operatorController.x().onTrue(getSequence(State.HOME));
+		operatorController.x().onTrue(getSequence(State.HOME));		
+
 
 		operatorController.start().onTrue(getSequence(State.CL1));
 
@@ -308,71 +314,71 @@ public class RobotContainer {
 	}
 
 	public Command getSequence(State targetState) {
-        if(currentState == State.HOME && targetState == State.CHUTE) {
-            // currentState = State.CHUTE;
+        if(getCurrentState() == State.HOME && targetState == State.CHUTE) {
+            // getCurrentState() = State.CHUTE;
             return new HomeToChute(pivotSys, elevatorSys, extenderSys); // home to chute
-        }  else if (currentState == State.CHUTE && targetState == State.HOME) {
-            // currentState = State.HOME;
+        }  else if (getCurrentState() == State.CHUTE && targetState == State.HOME) {
+            // getCurrentState() = State.HOME;
             return new ChuteToHome(pivotSys, elevatorSys, extenderSys); // chute to home
-        } else if (currentState == State.HOME && targetState == State.CL1 && !algaeMode) {
-            // currentState = State.CL1;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL1 && !algaeMode) {
+            // getCurrentState() = State.CL1;
             return new HomeToCL1(pivotSys, elevatorSys, extenderSys); // home to cl1
-        } else if (currentState == State.HOME && targetState == State.CL2 && !algaeMode) {
-            // currentState = State.CL2;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL2 && !algaeMode) {
+            // getCurrentState() = State.CL2;
             return new HomeToCL2(pivotSys, elevatorSys, extenderSys); // home to cl2
-        } else if (currentState == State.HOME && targetState == State.CL3 && !algaeMode) {
-            // currentState = State.CL3;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL3 && !algaeMode) {
+            // getCurrentState() = State.CL3;
             return new HomeToCL3(pivotSys, elevatorSys, extenderSys); // home to cl3
-        } else if (currentState == State.HOME && targetState == State.CL4 && !algaeMode) {
-            // currentState = State.CL4;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL4 && !algaeMode) {
+            // getCurrentState() = State.CL4;
             return new HomeToCL4(pivotSys, elevatorSys, extenderSys); // home to cl4
-        } else if (currentState == State.HOME && targetState == State.CL2 && algaeMode) {
-            // currentState = State.CL2;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL2 && algaeMode) {
+            // getCurrentState() = State.CL2;
             return new HomeToAL2(pivotSys, elevatorSys, extenderSys); // home to al2
-        } else if (currentState == State.HOME && targetState == State.CL3 && algaeMode) {
-            // currentState = State.CL3;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL3 && algaeMode) {
+            // getCurrentState() = State.CL3;
             return new HomeToAL3(pivotSys, elevatorSys, extenderSys); // home to al3
-        } else if (currentState == State.HOME && targetState == State.CL4 && algaeMode) {
-            // currentState = State.CL4;
+        } else if (getCurrentState() == State.HOME && targetState == State.CL4 && algaeMode) {
+            // getCurrentState() = State.CL4;
             return new HomeToBarge(pivotSys, elevatorSys, extenderSys); // home to barge
-        } else if (currentState == State.HOME && targetState == State.PROCESSOR) {
-            // currentState = State.PROCESSOR;
+        } else if (getCurrentState() == State.HOME && targetState == State.PROCESSOR) {
+            // getCurrentState() = State.PROCESSOR;
             return new HomeToProcessor(pivotSys, elevatorSys, extenderSys); // home to processor
-        } else if (currentState == State.HOME && targetState == State.GROUND) {
-            // currentState = State.GROUND;
+        } else if (getCurrentState() == State.HOME && targetState == State.GROUND) {
+            // getCurrentState() = State.GROUND;
             return new HomeToGround(pivotSys, elevatorSys, extenderSys); // home to ground
-        } else if (currentState == State.CL1 && targetState == State.HOME && !algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL1 && targetState == State.HOME && !algaeMode) {
+            // getCurrentState() = State.HOME;
             return new CL1ToHome(pivotSys, elevatorSys, extenderSys); // cl1 to home
-        } else if (currentState == State.CL2 && targetState == State.HOME && !algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL2 && targetState == State.HOME && !algaeMode) {
+            // getCurrentState() = State.HOME;
             return new CL2ToHome(pivotSys, elevatorSys, extenderSys); // cl2 to home
-        } else if (currentState == State.CL3 && targetState == State.HOME && !algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL3 && targetState == State.HOME && !algaeMode) {
+            // getCurrentState() = State.HOME;
             return new CL3ToHome(pivotSys, elevatorSys, extenderSys); // cl3 to home
-        } else if (currentState == State.CL4 && targetState == State.HOME && !algaeMode) {
-            // currentState = State.HOME; 
+        } else if (getCurrentState() == State.CL4 && targetState == State.HOME && !algaeMode) {
+            // getCurrentState() = State.HOME; 
             return new CL4ToHome(pivotSys, elevatorSys, extenderSys);// cl4 to home
-        } else if (currentState == State.GROUND && targetState == State.HOME) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.GROUND && targetState == State.HOME) {
+            // getCurrentState() = State.HOME;
             return new GroundToHome(pivotSys, elevatorSys, extenderSys); // ground to home
-        } else if (currentState == State.PROCESSOR && targetState == State.HOME) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.PROCESSOR && targetState == State.HOME) {
+            // getCurrentState() = State.HOME;
             return new ProcessorToHome(pivotSys, elevatorSys, extenderSys); // processor to home
-        } else if (currentState == State.CL2 && targetState == State.HOME && algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL2 && targetState == State.HOME && algaeMode) {
+            // getCurrentState() = State.HOME;
             return new AL2ToHome(pivotSys, elevatorSys, extenderSys); // al2 to home
-        } else if (currentState == State.CL3 && targetState == State.HOME && algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL3 && targetState == State.HOME && algaeMode) {
+            // getCurrentState() = State.HOME;
             return new AL3ToHome(pivotSys, elevatorSys, extenderSys); // al3 to home
-        } else if (currentState == State.CL4 && targetState == State.HOME && algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CL4 && targetState == State.HOME && algaeMode) {
+            // getCurrentState() = State.HOME;
             return new BargeToHome(pivotSys, elevatorSys, extenderSys); // barge to home
-        } else if (currentState == State.CLIMB && targetState == State.HOME && !algaeMode) {
-            // currentState = State.HOME;
+        } else if (getCurrentState() == State.CLIMB && targetState == State.HOME && !algaeMode) {
+            // getCurrentState() = State.HOME;
             return new ClimbToHome(pivotSys, elevatorSys, extenderSys); // climb to home
-        } else if (currentState == State.HOME && targetState == State.CLIMB && algaeMode) {
-            // currentState = State.CLIMB;
+        } else if (getCurrentState() == State.HOME && targetState == State.CLIMB && algaeMode) {
+            // getCurrentState() = State.CLIMB;
             return new HomeToClimb(pivotSys, elevatorSys, extenderSys); // home to climb
         } else {
             return new DoNothings(winchSys);
@@ -382,7 +388,7 @@ public class RobotContainer {
 	public String getStateAsString(State state) {
 		if(currentState == State.HOME && algaeMode) {
             return "AH";
-        } else if(state == State.AL2) {
+        } else if(state == State.CL2 && algaeMode) {
             return "AL2";
         } else if(state == State.AL3) {
             return "AL3";
@@ -408,4 +414,8 @@ public class RobotContainer {
             return "null";
         }
     }
+
+	public State getCurrentState() {
+		return currentState;
+	}
 }
