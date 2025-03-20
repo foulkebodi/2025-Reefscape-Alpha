@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.7139802631578944,
-        "y": 5.083388157894737
+        "x": 3.8555555555555556,
+        "y": 5.112563131313131
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.525915973195924,
-        "y": 5.291843125083866
+        "x": 3.6674912655935854,
+        "y": 5.32101809850226
       },
       "isLocked": false,
       "linkedName": "NineteenRight"
     },
     {
       "anchor": {
-        "x": 1.2604440789473683,
-        "y": 7.0943256578947365
+        "x": 1.385669191919192,
+        "y": 7.277525252525253
       },
       "prevControl": {
-        "x": 1.9296817584313486,
-        "y": 6.453601242168097
+        "x": 2.054906871403172,
+        "y": 6.6368008367986135
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.5,
+    "maxAcceleration": 1.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -45,7 +45,7 @@
     "rotation": -55.0
   },
   "reversed": false,
-  "folder": "ThreePieceLeftPaths",
+  "folder": "TwoPieceLeftPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -59.99999999999999

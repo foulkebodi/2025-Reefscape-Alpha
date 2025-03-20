@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.694736842105263,
-        "y": 2.966611842105263
+        "x": 3.8555555555555556,
+        "y": 2.9069444444444446
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.112320665316881,
-        "y": 2.408855570183786
+        "x": 3.2731393787671736,
+        "y": 2.3491881725229673
       },
       "isLocked": false,
       "linkedName": "SeventeenLeft"
     },
     {
       "anchor": {
-        "x": 1.1449835526315788,
-        "y": 1.0422697368421052
+        "x": 1.0299242424242423,
+        "y": 0.4878787878787875
       },
       "prevControl": {
-        "x": 1.9968401080825833,
-        "y": 1.832107203113981
+        "x": 1.8817807978752468,
+        "y": 1.2777162541506624
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.5,
+    "maxAcceleration": 1.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -45,7 +45,7 @@
     "rotation": 55.0
   },
   "reversed": false,
-  "folder": "ThreePieceRightPaths",
+  "folder": "TwoPieceRightPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 59.99999999999999

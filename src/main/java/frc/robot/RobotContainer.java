@@ -224,7 +224,6 @@ public class RobotContainer {
 		operatorController.y().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL4, winchSys));
 		operatorController.x().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys));		
 
-
 		operatorController.start().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL1, winchSys));
 
 		operatorController.leftBumper().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.PROCESSOR, winchSys));
@@ -254,7 +253,7 @@ public class RobotContainer {
 		.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.GROUND, winchSys))
 		.onTrue(new IntakeIntakeCmd(intakeSys))
 		.onFalse(new IntakeIdleCmd(intakeSys))
-		.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys));
+		.onFalse(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys));
 	}
 
 	/**

@@ -16,7 +16,7 @@ public class PivotHomeCmd extends Command {
 
     @Override
     public void initialize() {
-        pivot.setTargetDeg(PivotConstants.chuteDeg);
+        pivot.setTargetDeg(PivotConstants.homeDeg);
     }
 
     @Override

@@ -263,19 +263,19 @@ public final class Constants {
     }
 
     public class IntakeConstants {
-        public static final int maxIntakeCurrentAmps = 35;
+        public static final int maxIntakeCurrentAmps = 45;
         
         public static final double outtakePower = 1.0;
 
         public static final double intakePower = -0.35;
 
-        public static final double idlePower = -0.1;
+        public static final double idlePower = -0.15;
 
         public static final double idleOutPower = 0.10;
 
         public static final double waitSeconds = 0.3;
 
-        public static final double currentThreshold = 30;
+        public static final double currentThreshold = 35;
 
         public static final double currentDebounceTime = 0.33;
         public static final double beamBreakDebounceTime = 0.1;

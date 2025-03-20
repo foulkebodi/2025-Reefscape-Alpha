@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 4.9936677631578945,
-        "y": 5.2662006578947365
+        "x": 5.075252525252525,
+        "y": 5.092234848484848
       },
       "prevControl": {
-        "x": 5.9538617519826955,
-        "y": 5.5226917357606355
+        "x": 6.035446514077326,
+        "y": 5.348725926350747
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,10 +36,22 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorUp",
+      "waypointRelativePos": 0.7037701974865366,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorUp"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.5,
+    "maxAcceleration": 1.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -50,7 +62,7 @@
     "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "ThreePieceLeftPaths",
+  "folder": "TwoPieceLeftPaths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
