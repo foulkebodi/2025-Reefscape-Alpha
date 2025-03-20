@@ -3,52 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.2508223684210527,
-        "y": 0.9652960526315791
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 1.672864918410512,
-        "y": 1.3919843742428442
-      },
-      "isLocked": false,
-      "linkedName": "ChuteTwelve"
-    },
-    {
-      "anchor": {
         "x": 3.7236019736842105,
         "y": 2.9762335526315784
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.9346217105263155,
+        "y": 2.5143914473684212
+      },
+      "isLocked": false,
+      "linkedName": "SeventeenLeft"
+    },
+    {
+      "anchor": {
+        "x": 1.4625,
+        "y": 3.620888157894737
+      },
       "prevControl": {
-        "x": 3.5094993448006306,
-        "y": 2.7599457088229067
+        "x": 1.7607730263157892,
+        "y": 2.9762335526315784
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "SeventeenLeft"
+      "linkedName": "RedMiddleLollipop"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6996855345911962,
-      "rotationDegrees": 59.99999999999999
+      "waypointRelativePos": 0.7666263603385655,
+      "rotationDegrees": 119.99999999999999
     }
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "HomeToCL4",
-      "waypointRelativePos": 0.7504488330341106,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "HomeToCL4"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
     "maxAcceleration": 1.5,
@@ -59,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.99999999999999
+    "rotation": 119.99999999999999
   },
   "reversed": false,
   "folder": "TwoPieceRightPaths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

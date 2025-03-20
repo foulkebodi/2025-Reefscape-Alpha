@@ -1,0 +1,73 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedInsideToTwentyTwoRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CL4ToHome"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "TwentyTwoRightToRedLollipop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RedLollipopToSeventeenLeft"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CL4ToHome"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SeventeenLeftToMiddleLollipop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleLollipopToSeventeenRight"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CL4ToHome"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

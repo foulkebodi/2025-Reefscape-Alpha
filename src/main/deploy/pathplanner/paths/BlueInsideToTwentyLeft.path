@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.075252525252525,
-        "y": 5.092234848484848
+        "x": 5.272697368421052,
+        "y": 5.083388157894737
       },
       "prevControl": {
-        "x": 6.035446514077326,
-        "y": 5.348725926350747
+        "x": 6.232891357245853,
+        "y": 5.339879235760636
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,20 +38,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ElevatorUp",
+      "name": "HomeToCL4",
       "waypointRelativePos": 0.7037701974865366,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ElevatorUp"
+          "name": "HomeToCL4"
         }
       }
     }
   ],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.25,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

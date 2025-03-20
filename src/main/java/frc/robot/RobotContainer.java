@@ -13,11 +13,6 @@ import frc.robot.commands.AlgaeModeFalse;
 import frc.robot.commands.AlgaeModeTrue;
 import frc.robot.commands.ArcadeDriveCmd;
 import frc.robot.commands.GetSequenceCmd;
-import frc.robot.commands.StateCL1;
-import frc.robot.commands.StateCL2;
-import frc.robot.commands.StateCL3;
-import frc.robot.commands.StateCL4;
-import frc.robot.commands.StateHOME;
 import frc.robot.commands.elevator.ElevatorBargeCmd;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
 import frc.robot.commands.elevator.ElevatorManualCmd;
@@ -123,10 +118,12 @@ public class RobotContainer {
 	public RobotContainer() {
 		// register named commands
 		// NamedCommands.registerCommand("exampleCommand", new ExampleCommand(exampleSubsystem));
-		NamedCommands.registerCommand("CoralHomeToCL4", new HomeToCL4(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("CL4ToCoralHome", new CL4ToHome(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("CoralHomeToChute", new HomeToChute(pivotSys, elevatorSys, extenderSys));
-		NamedCommands.registerCommand("ChuteToCoralHome", new ChuteToHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("HomeToCL4", new HomeToCL4(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("CL4ToHome", new CL4ToHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("HomeToChute", new HomeToChute(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("ChuteToHome", new ChuteToHome(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("HomeToGround", new HomeToGround(pivotSys, elevatorSys, extenderSys));
+		NamedCommands.registerCommand("GroundToHome", new GroundToHome(pivotSys, elevatorSys, extenderSys));
 
 		NamedCommands.registerCommand("IntakeIntakeCmd", new IntakeIntakeCmd(intakeSys));
 		NamedCommands.registerCommand("IntakeIdleCmd", new IntakeIdleCmd(intakeSys));
@@ -195,30 +192,30 @@ public class RobotContainer {
 			swerveDrive,
 			poseEstimator));
 		
-		// elevatorSys maunal control
+		// elevator maunal control
 		// elevatorSys.setDefaultCommand(new ElevatorManualCmd(
 		// 	() -> MathUtil.applyDeadband((operatorController.getLeftY()), ControllerConstants.joystickDeadband), 
 		// 	elevatorSys));
 
-		// elevatorSys troubleshooting
+		// elevator troubleshooting
 		// operatorController.x().onTrue(new ElevatorHomeCmd(elevatorSys));
 		// operatorController.a().onTrue(new ElevatorCL2Cmd(elevatorSys));
 		// operatorController.b().onTrue(new ElevatorCL4Cmd(elevatorSys));
 		// operatorController.y().onTrue(new ElevatorBargeCmd(elevatorSys));
 
-		// pivotSys troubleshooting
+		// pivot troubleshooting
 		// operatorController.a().onTrue(new PivotCoralHomeCmd(pivotSys));
 		// operatorController.b().onTrue(new PivotCL23Cmd(pivotSys));
 		// operatorController.x().onTrue(new PivotChuteCmd(pivotSys));
 		// operatorController.y().onTrue(new PivotBargeCmd(pivotSys));
 
-		// extenderSys troubleshooting
+		// extender troubleshooting
 		// operatorController.a().onTrue(new ExtenderCL1Cmd(extenderSys));
 		// operatorController.b().onTrue(new ExtenderCL23Cmd(extenderSys));
 		// operatorController.y().onTrue(new ExtenderBargeCmd(extenderSys));
 		// operatorController.x().onTrue(new ExtenderHomeCmd(extenderSys));
 
-		// competition setup
+		// competition setup (operator)
 		operatorController.a().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL2, winchSys));
 		operatorController.b().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL3, winchSys));
 		operatorController.y().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL4, winchSys));
@@ -229,7 +226,12 @@ public class RobotContainer {
 		operatorController.leftBumper().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.PROCESSOR, winchSys));
 		operatorController.rightBumper().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.PROCESSOR, winchSys));
 
-		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
+		operatorController.povLeft().onTrue(new AlgaeModeFalse());
+		operatorController.povRight().onTrue(new AlgaeModeTrue());
+
+		operatorController.povDown()
+			.onTrue(new WinchInCmd(winchSys))
+			.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CLIMB, winchSys));
 		operatorController.povUp()
 			.onTrue(new WinchOutCmd(winchSys))
 			.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CLIMB, winchSys));
@@ -244,9 +246,7 @@ public class RobotContainer {
 			.onTrue(new IntakeOuttakeCmd(intakeSys))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 
-		operatorController.povLeft().onTrue(new AlgaeModeFalse());
-		operatorController.povRight().onTrue(new AlgaeModeTrue());
-
+		// competition setup (driver)
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 
 		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)

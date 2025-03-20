@@ -56,9 +56,9 @@ public class SwerveDrive extends SubsystemBase {
 
         pigeon = new Pigeon2(CANDevices.pigeonID);
 
-        // TODO Modify this to reflect how the Pidgeon is mounted
-        // Pidgeon is mounted upside down
-        pigeon.getConfigurator().apply(new MountPoseConfigs().withMountPoseRoll(180.0));
+        // TODO Modify this to reflect how the Pigeon is mounted
+        // Pigeon is mounted upside down
+        pigeon.getConfigurator().apply(new MountPoseConfigs().withMountPoseRoll(0.0));
 
         // start publishing an array of module states to NetworkTables with the "/SwerveStates" key
         publisher = NetworkTableInstance.getDefault()

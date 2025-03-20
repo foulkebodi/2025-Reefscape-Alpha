@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.385669191919192,
-        "y": 7.277525252525253
+        "x": 1.2412006578947368,
+        "y": 7.075082236842105
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0239433617474685,
-        "y": 6.835205538580389
+        "x": 1.8794748277230133,
+        "y": 6.6327625228972416
       },
       "isLocked": false,
       "linkedName": "ChuteThirteen"
     },
     {
       "anchor": {
-        "x": 4.160479797979798,
-        "y": 5.2548611111111105
+        "x": 3.9449013157894735,
+        "y": 5.23733552631579
       },
       "prevControl": {
-        "x": 3.5629962034694223,
-        "y": 5.624187407595055
+        "x": 3.3474177212790974,
+        "y": 5.606661822799734
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "NineteenLeft"
     }
   ],
   "rotationTargets": [],
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.25,
+    "maxAcceleration": 1.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

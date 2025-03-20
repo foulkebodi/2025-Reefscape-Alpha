@@ -5,12 +5,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "ElevatorUp"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "RedInsideToTwentyTwoRight"
@@ -25,31 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeCoral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopCoral"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorDown"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "CL4ToHome"
           }
         },
         {
@@ -74,6 +44,24 @@
           "type": "wait",
           "data": {
             "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HomeToGround"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SeventeenLeftToChuteTwelve"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ChuteTwleveToSeventeenRight"
           }
         }
       ]

@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "PivotStow"
+            "name": "GroundToHome"
           }
         },
         {
@@ -25,7 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeCoral"
+            "name": "ChuteToHome"
           }
         },
         {
@@ -37,13 +37,13 @@
         {
           "type": "named",
           "data": {
-            "name": "StopCoral"
+            "name": "HomeToChute"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ElevatorDown"
+            "name": "CL4ToHome"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "named",
           "data": {
-            "name": "OuttakeCoral"
+            "name": "ChuteToHome"
           }
         },
         {
@@ -91,13 +91,13 @@
         {
           "type": "named",
           "data": {
-            "name": "StopCoral"
+            "name": "HomeToChute"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ElevatorDown"
+            "name": "CL4ToHome"
           }
         },
         {

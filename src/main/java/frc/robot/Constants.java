@@ -46,21 +46,21 @@ public final class Constants {
 	public static class CANDevices {
 		public static final int pigeonID = 14;
 
-		public static final int flModuleCANCoderID = 2;
-		public static final int flModuleDriveMtrID = 6;
-		public static final int flModuleSteerMtrID = 10;
+		public static final int frModuleCANCoderID = 2; // front left
+		public static final int frModuleDriveMtrID = 6;
+		public static final int frModuleSteerMtrID = 10;
 
-		public static final int frModuleCANCoderID = 3;
-		public static final int frModuleDriveMtrID = 7;
-		public static final int frModuleSteerMtrID = 11;
+		public static final int brModuleCANCoderID = 3; // front right
+		public static final int brModuleDriveMtrID = 7;
+		public static final int brModuleSteerMtrID = 11;
 
-		public static final int blModuleCANCoderID = 4;
-		public static final int blModuleDriveMtrID = 8;
-		public static final int blModuleSteerMtrID = 12;
+		public static final int flModuleCANCoderID = 4; // back left
+		public static final int flModuleDriveMtrID = 8;
+		public static final int flModuleSteerMtrID = 12;
 
-		public static final int brModuleCANCoderID = 5;
-		public static final int brModuleDriveMtrID = 9;
-		public static final int brModuleSteerMtrID = 13;
+		public static final int blModuleCANCoderID = 5; // back right
+		public static final int blModuleDriveMtrID = 9;
+		public static final int blModuleSteerMtrID = 13;
 
         public static final int topElevatorMtrID = 15;
         public static final int bottomElevatorMtrID = 16;
@@ -128,10 +128,10 @@ public final class Constants {
     }
 
 	public static class SwerveDriveConstants {
-        public static final Rotation2d flModuleOffset = Rotation2d.fromDegrees(32.08);
-        public static final Rotation2d frModuleOffset = Rotation2d.fromDegrees(164.17);
-        public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(71.68);
-        public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(116.9);
+        public static final Rotation2d frModuleOffset = Rotation2d.fromDegrees(32.08);
+        public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(164.17);
+        public static final Rotation2d flModuleOffset = Rotation2d.fromDegrees(71.68);
+        public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(116.9);
 
 		// Set these dimensions for the distance between the center of each wheel.
         // Note that these values are different from the robot's overall dimenstions.
@@ -161,11 +161,11 @@ public final class Constants {
     }
 
     public static class ElevatorConstants {
-        public static final int maxElevatorCurrentAmps = 55;
+        public static final int maxElevatorCurrentAmps = 60;
 
         public static final double gearRatio = 6.0;
 
-        public static final double kP = 0.05;
+        public static final double kP = 0.055;
         public static final double kD = 0.002;
 
         public static final double sprocketToothCount = 22.5; 
@@ -188,11 +188,11 @@ public final class Constants {
         public static final double CL3Inches = 10.0;
         public static final double AL2Inches = 20.0;
         public static final double AL3Inches = 30.0;
-        public static final double bargeInches = 54.5;
+        public static final double bargeInches = 55.0;
 
         public static final float lowerLimitInches = 0f;
 
-        public static final float upperLimitInches = 54f; // 47.7 theoretical max
+        public static final float upperLimitInches = 54.5f; // 47.7 theoretical max
 
         public static final double toleranceInches = 0.5;
     }
@@ -202,7 +202,7 @@ public final class Constants {
 
         public static final double gearRatio = 15.0;
 
-        public static final double kP = 0.425;
+        public static final double kP = 0.43;
         public static final double kD = 0.0045;
 
         public static final double sprocketToothCount = 14; 
@@ -229,12 +229,12 @@ public final class Constants {
     }
 
     public class PivotConstants {
-        public static final int maxPivotCurrentAmps = 60;
+        public static final int maxPivotCurrentAmps = 65;
 
         public static final double gearRatio = 88.88;
 
-        public static final double kP = 0.025;
-        public static final double kD = 0.0035;
+        public static final double kP = 0.026;
+        public static final double kD = 0.004;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
@@ -243,17 +243,18 @@ public final class Constants {
 
         public static final double maxVelDegPerSec = 300.0;
 
-        public static final double maxAccelDegPerSecSq = 290.0;
+        public static final double maxAccelDegPerSecSq = 300.0;
 
-        public static final double maxManualDegPerSec = 100.0;
+        // public static final double maxManualDegPerSec = 100.0;
 
-        public static final double maxManualDegPerSecSq = 375.0;
+        // public static final double maxManualDegPerSecSq = 375.0;
 
         public static final double chuteDeg = 3.0;
         public static final double homeDeg = 22.0;
         public static final double CL1Deg = 36.0;
         public static final double CL23Deg = 50.0;
         public static final double CL23PrepDeg = 35.0;
+        public static final double CL4PrepDeg = 60.0;
         public static final double processorDeg = 70.0;
         public static final double groundDeg = 88.0;
 
@@ -263,7 +264,7 @@ public final class Constants {
     }
 
     public class IntakeConstants {
-        public static final int maxIntakeCurrentAmps = 45;
+        public static final int maxIntakeCurrentAmps = 50;
         
         public static final double outtakePower = 1.0;
 
@@ -273,11 +274,11 @@ public final class Constants {
 
         public static final double idleOutPower = 0.10;
 
-        public static final double waitSeconds = 0.3;
+        public static final double waitSeconds = 0.35;
 
-        public static final double currentThreshold = 35;
+        public static final double currentThreshold = 40;
 
-        public static final double currentDebounceTime = 0.33;
+        public static final double currentDebounceTime = 0.3;
         public static final double beamBreakDebounceTime = 0.1;
 
         public static final int filterSize = 3;
@@ -298,9 +299,9 @@ public final class Constants {
 
         public static final double maxAccelDegPerSecSq = 150.0; 
 
-        public static final double inPresetDeg = -1000;
+        public static final double inPresetDeg = -500.0;
 
-        public static final double outPresetDeg = 5000;
+        public static final double outPresetDeg = 2000.0;
 
         public static final float lowerLimitDeg = -1000f;
 
@@ -311,6 +312,14 @@ public final class Constants {
         public static final String frontLimelightName = "limelight-front";
 
         public static final String backLimelightName = "limelight-back";
+
+        public static final double odomTranslationStdDevMeters = 0.05;
+        public static final double odomRotationStdDevRad = Units.degreesToRadians(0.25);
+
+        public static final double visionTranslationStdDevMeters = 0.35;
+        public static final double visionRotationStdDevRad = Units.degreesToRadians(30.0);
+
+        public static final double poseInnacuracyThreshold = 0.5;
     }
 
     public enum State {

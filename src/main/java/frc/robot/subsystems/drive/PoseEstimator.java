@@ -8,20 +8,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.util.LimelightHelpers;
 
 public class PoseEstimator extends SubsystemBase {
-
-    public static class Constants {
-        public static final double odomTranslationStdDevMeters = 0.05;
-        public static final double odomRotationStdDevRad = Units.degreesToRadians(0.25);
-
-        public static final double visionTranslationStdDevMeters = 0.35;
-        public static final double visionRotationStdDevRad = Units.degreesToRadians(30.0);
-    }
 
     private final SwerveDrivePoseEstimator poseEstimator;
 
@@ -40,13 +31,13 @@ public class PoseEstimator extends SubsystemBase {
             modulePositionsSupplier.get(),
             new Pose2d(),
             VecBuilder.fill(
-                Constants.odomTranslationStdDevMeters,
-                Constants.odomTranslationStdDevMeters,
-                Constants.odomRotationStdDevRad),
+                VisionConstants.odomTranslationStdDevMeters,
+                VisionConstants.odomTranslationStdDevMeters,
+                VisionConstants.odomRotationStdDevRad),
             VecBuilder.fill(
-                Constants.visionTranslationStdDevMeters,
-                Constants.visionTranslationStdDevMeters,
-                Constants.visionRotationStdDevRad));
+                VisionConstants.visionTranslationStdDevMeters,
+                VisionConstants.visionTranslationStdDevMeters,
+                VisionConstants.visionRotationStdDevRad));
 
         this.gyroHeadingSupplier = gyroHeadingSupplier;
         this.modulePositionsSupplier = modulePositionsSupplier;
@@ -54,10 +45,14 @@ public class PoseEstimator extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (LimelightHelpers.getTV(VisionConstants.frontLimelightName)) {
+        if (LimelightHelpers.getTV(VisionConstants.frontLimelightName)
+        && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
+        && Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold) {
             poseEstimator.addVisionMeasurement(getFrontLimelightPose(), getFrontLimelightTimestamp());
         }
-        if (LimelightHelpers.getTV(VisionConstants.backLimelightName)) {
+        if (LimelightHelpers.getTV(VisionConstants.backLimelightName) 
+        && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
+        && Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold) {
             poseEstimator.addVisionMeasurement(getBackLimelightPose(), getBackLimelightTimestamp());
         }
         poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get()); 

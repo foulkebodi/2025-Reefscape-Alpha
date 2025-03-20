@@ -8,37 +8,51 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.714638157894736,
-        "y": 2.427796052631579
+        "x": 4.579934210526315,
+        "y": 2.2834703947368418
       },
       "isLocked": false,
       "linkedName": "TwentyTwoRight"
     },
     {
       "anchor": {
-        "x": 1.2508223684210527,
-        "y": 0.9652960526315791
+        "x": 1.8858552631578944,
+        "y": 2.1872532894736842
       },
       "prevControl": {
-        "x": 1.4624222777874947,
-        "y": 1.0984331186804959
+        "x": 3.916036184210526,
+        "y": 2.225740131578947
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ChuteTwelve"
+      "linkedName": "RedLollipop"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.24528301886792442,
+      "waypointRelativePos": 0.3893591293833128,
       "rotationDegrees": 119.99999999999999
     },
     {
-      "waypointRelativePos": 0.9025157232704408,
-      "rotationDegrees": 55.0
+      "waypointRelativePos": 0.898428053204351,
+      "rotationDegrees": 180.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.39973262032085577,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -51,7 +65,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 55.0
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "TwoPieceRightPaths",

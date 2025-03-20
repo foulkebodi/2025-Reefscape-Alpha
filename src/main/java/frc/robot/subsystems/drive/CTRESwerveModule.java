@@ -47,7 +47,6 @@ public class CTRESwerveModule extends SwerveModule {
 
         steerMtrConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
-        // FIXME check if correct
         driveMtrConfig.Feedback.SensorToMechanismRatio = 1 / SwerveModuleConstants.driveMetersPerEncRev;
         steerMtrConfig.Feedback.SensorToMechanismRatio = 1 / SwerveModuleConstants.steerRadiansPerEncRev;
 
