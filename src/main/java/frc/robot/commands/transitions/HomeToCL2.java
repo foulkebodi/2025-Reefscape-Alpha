@@ -14,7 +14,7 @@ public class HomeToCL2 extends SequentialCommandGroup {
 
   public HomeToCL2(PivotSys pivot, ElevatorSys elevator, ExtenderSys extender) {
     super(
-      new StateCL2(),
+      // new StateCL2(),
       new ElevatorHomeCmd(elevator),
       new ExtenderCL2Cmd(extender),
       new WaitCommand(0.05),

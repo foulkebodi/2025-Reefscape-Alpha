@@ -14,7 +14,7 @@ public class CL3ToHome extends SequentialCommandGroup {
 
   public CL3ToHome(PivotSys pivot, ElevatorSys elevator, ExtenderSys extender) {
     super(
-      new StateHOME(),
+      // new StateHOME(),
       new PivotCL23Cmd(pivot),
       new WaitCommand(0.1),
       new ElevatorHomeCmd(elevator),

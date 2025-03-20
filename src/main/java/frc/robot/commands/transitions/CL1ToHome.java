@@ -13,7 +13,7 @@ public class CL1ToHome extends SequentialCommandGroup {
 
   public CL1ToHome(PivotSys pivot, ElevatorSys elevator, ExtenderSys extender) {
     super(
-      new StateHOME(),
+      // new StateHOME(),
       new PivotHomeCmd(pivot),
       new ExtenderHomeCmd(extender),
       new ElevatorHomeCmd(elevator)

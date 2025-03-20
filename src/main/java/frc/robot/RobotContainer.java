@@ -12,6 +12,7 @@ import frc.robot.Constants.SwerveModuleConstants;
 import frc.robot.commands.AlgaeModeFalse;
 import frc.robot.commands.AlgaeModeTrue;
 import frc.robot.commands.ArcadeDriveCmd;
+import frc.robot.commands.GetSequenceCmd;
 import frc.robot.commands.StateCL1;
 import frc.robot.commands.StateCL2;
 import frc.robot.commands.StateCL3;
@@ -218,26 +219,26 @@ public class RobotContainer {
 		// operatorController.x().onTrue(new ExtenderHomeCmd(extenderSys));
 
 		// competition setup
-		operatorController.a().onTrue(getSequence(State.CL2));
-		operatorController.b().onTrue(getSequence(State.CL3));
-		operatorController.y().onTrue(getSequence(State.CL4));
-		operatorController.x().onTrue(getSequence(State.HOME));		
+		operatorController.a().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL2, winchSys));
+		operatorController.b().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL3, winchSys));
+		operatorController.y().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL4, winchSys));
+		operatorController.x().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys));		
 
 
-		operatorController.start().onTrue(getSequence(State.CL1));
+		operatorController.start().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CL1, winchSys));
 
-		operatorController.leftBumper().onTrue(getSequence(State.PROCESSOR));
-		operatorController.rightBumper().onTrue(getSequence(State.PROCESSOR));
+		operatorController.leftBumper().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.PROCESSOR, winchSys));
+		operatorController.rightBumper().onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.PROCESSOR, winchSys));
 
 		operatorController.povDown().onTrue(new WinchInCmd(winchSys));
 		operatorController.povUp()
 			.onTrue(new WinchOutCmd(winchSys))
-			.onTrue(getSequence(State.CLIMB));
+			.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CLIMB, winchSys));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-			.onTrue(getSequence(State.CHUTE))	
+			.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.CHUTE, winchSys))	
 			.onTrue(new IntakeIntakeCmd(intakeSys))
-			.onFalse(getSequence(State.HOME))
+			.onFalse(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys))
 			.onFalse(new IntakeIdleCmd(intakeSys));
 
 		operatorController.axisGreaterThan(XboxController.Axis.kLeftTrigger.value, ControllerConstants.tiggerPressedThreshold)
@@ -250,10 +251,10 @@ public class RobotContainer {
 		driverController.start().onTrue(Commands.runOnce(() -> poseEstimator.resetHeading()));
 
 		driverController.axisGreaterThan(XboxController.Axis.kRightTrigger.value, ControllerConstants.tiggerPressedThreshold)
-		.onTrue(getSequence(State.GROUND))
+		.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.GROUND, winchSys))
 		.onTrue(new IntakeIntakeCmd(intakeSys))
 		.onFalse(new IntakeIdleCmd(intakeSys))
-		.onTrue(getSequence(State.HOME));
+		.onTrue(new GetSequenceCmd(pivotSys, elevatorSys, extenderSys, State.HOME, winchSys));
 	}
 
 	/**
@@ -313,78 +314,6 @@ public class RobotContainer {
 		SmartDashboard.putBoolean("algae mode", algaeMode);
 	}
 
-	public Command getSequence(State targetState) {
-        if(getCurrentState() == State.HOME && targetState == State.CHUTE) {
-            // getCurrentState() = State.CHUTE;
-            return new HomeToChute(pivotSys, elevatorSys, extenderSys); // home to chute
-        }  else if (getCurrentState() == State.CHUTE && targetState == State.HOME) {
-            // getCurrentState() = State.HOME;
-            return new ChuteToHome(pivotSys, elevatorSys, extenderSys); // chute to home
-        } else if (getCurrentState() == State.HOME && targetState == State.CL1 && !algaeMode) {
-            // getCurrentState() = State.CL1;
-            return new HomeToCL1(pivotSys, elevatorSys, extenderSys); // home to cl1
-        } else if (getCurrentState() == State.HOME && targetState == State.CL2 && !algaeMode) {
-            // getCurrentState() = State.CL2;
-            return new HomeToCL2(pivotSys, elevatorSys, extenderSys); // home to cl2
-        } else if (getCurrentState() == State.HOME && targetState == State.CL3 && !algaeMode) {
-            // getCurrentState() = State.CL3;
-            return new HomeToCL3(pivotSys, elevatorSys, extenderSys); // home to cl3
-        } else if (getCurrentState() == State.HOME && targetState == State.CL4 && !algaeMode) {
-            // getCurrentState() = State.CL4;
-            return new HomeToCL4(pivotSys, elevatorSys, extenderSys); // home to cl4
-        } else if (getCurrentState() == State.HOME && targetState == State.CL2 && algaeMode) {
-            // getCurrentState() = State.CL2;
-            return new HomeToAL2(pivotSys, elevatorSys, extenderSys); // home to al2
-        } else if (getCurrentState() == State.HOME && targetState == State.CL3 && algaeMode) {
-            // getCurrentState() = State.CL3;
-            return new HomeToAL3(pivotSys, elevatorSys, extenderSys); // home to al3
-        } else if (getCurrentState() == State.HOME && targetState == State.CL4 && algaeMode) {
-            // getCurrentState() = State.CL4;
-            return new HomeToBarge(pivotSys, elevatorSys, extenderSys); // home to barge
-        } else if (getCurrentState() == State.HOME && targetState == State.PROCESSOR) {
-            // getCurrentState() = State.PROCESSOR;
-            return new HomeToProcessor(pivotSys, elevatorSys, extenderSys); // home to processor
-        } else if (getCurrentState() == State.HOME && targetState == State.GROUND) {
-            // getCurrentState() = State.GROUND;
-            return new HomeToGround(pivotSys, elevatorSys, extenderSys); // home to ground
-        } else if (getCurrentState() == State.CL1 && targetState == State.HOME && !algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new CL1ToHome(pivotSys, elevatorSys, extenderSys); // cl1 to home
-        } else if (getCurrentState() == State.CL2 && targetState == State.HOME && !algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new CL2ToHome(pivotSys, elevatorSys, extenderSys); // cl2 to home
-        } else if (getCurrentState() == State.CL3 && targetState == State.HOME && !algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new CL3ToHome(pivotSys, elevatorSys, extenderSys); // cl3 to home
-        } else if (getCurrentState() == State.CL4 && targetState == State.HOME && !algaeMode) {
-            // getCurrentState() = State.HOME; 
-            return new CL4ToHome(pivotSys, elevatorSys, extenderSys);// cl4 to home
-        } else if (getCurrentState() == State.GROUND && targetState == State.HOME) {
-            // getCurrentState() = State.HOME;
-            return new GroundToHome(pivotSys, elevatorSys, extenderSys); // ground to home
-        } else if (getCurrentState() == State.PROCESSOR && targetState == State.HOME) {
-            // getCurrentState() = State.HOME;
-            return new ProcessorToHome(pivotSys, elevatorSys, extenderSys); // processor to home
-        } else if (getCurrentState() == State.CL2 && targetState == State.HOME && algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new AL2ToHome(pivotSys, elevatorSys, extenderSys); // al2 to home
-        } else if (getCurrentState() == State.CL3 && targetState == State.HOME && algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new AL3ToHome(pivotSys, elevatorSys, extenderSys); // al3 to home
-        } else if (getCurrentState() == State.CL4 && targetState == State.HOME && algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new BargeToHome(pivotSys, elevatorSys, extenderSys); // barge to home
-        } else if (getCurrentState() == State.CLIMB && targetState == State.HOME && !algaeMode) {
-            // getCurrentState() = State.HOME;
-            return new ClimbToHome(pivotSys, elevatorSys, extenderSys); // climb to home
-        } else if (getCurrentState() == State.HOME && targetState == State.CLIMB && algaeMode) {
-            // getCurrentState() = State.CLIMB;
-            return new HomeToClimb(pivotSys, elevatorSys, extenderSys); // home to climb
-        } else {
-            return new DoNothings(winchSys);
-        }
-    }
-
 	public String getStateAsString(State state) {
 		if(currentState == State.HOME && algaeMode) {
             return "AH";
@@ -414,8 +343,4 @@ public class RobotContainer {
             return "null";
         }
     }
-
-	public State getCurrentState() {
-		return currentState;
-	}
 }
