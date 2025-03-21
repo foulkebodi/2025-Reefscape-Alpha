@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.272697368421052,
-        "y": 5.083388157894737
+        "x": 5.291940789473683,
+        "y": 4.948684210526316
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.695394736842105,
-        "y": 5.833881578947369
+        "x": 4.714638157894736,
+        "y": 5.699177631578948
       },
       "isLocked": false,
       "linkedName": "TwentyLeft"
@@ -40,10 +40,22 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "HomeToGround",
+      "waypointRelativePos": 0.8479262672811063,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "HomeToGround"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.0,
-    "maxAcceleration": 1.5,
+    "maxAcceleration": 1.25,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

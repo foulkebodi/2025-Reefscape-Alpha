@@ -3,6 +3,7 @@ package frc.robot.commands.transitions;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.elevator.ElevatorHomeCmd;
+import frc.robot.commands.extender.ExtenderHomeCmd;
 import frc.robot.commands.pivot.PivotCL23Cmd;
 import frc.robot.commands.pivot.PivotHomeCmd;
 import frc.robot.subsystems.ElevatorSys;
@@ -15,7 +16,8 @@ public class CL3ToHome extends SequentialCommandGroup {
     super(
       // new StateHOME(),
       new PivotCL23Cmd(pivot),
-      new WaitCommand(0.1),
+      new WaitCommand(0.3),
+      new ExtenderHomeCmd(extender),
       new ElevatorHomeCmd(elevator),
       new PivotHomeCmd(pivot)
     );

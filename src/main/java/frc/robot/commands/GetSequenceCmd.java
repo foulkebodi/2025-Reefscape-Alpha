@@ -109,10 +109,10 @@ public class GetSequenceCmd extends Command {
         } else if (RobotContainer.currentState == State.CL4 && targetState == State.HOME && RobotContainer.algaeMode) {
             RobotContainer.currentState = State.HOME;
             CommandScheduler.getInstance().schedule(new BargeToHome(pivotSys, elevatorSys, extenderSys)); // al3 to home
-        } else if (RobotContainer.currentState == State.CLIMB && targetState == State.HOME && !RobotContainer.algaeMode) {
+        } else if (RobotContainer.currentState == State.CLIMB && targetState == State.HOME) {
             RobotContainer.currentState = State.HOME;
             CommandScheduler.getInstance().schedule(new ClimbToHome(pivotSys, elevatorSys, extenderSys)); // climb to home
-        } else if (RobotContainer.currentState == State.HOME && targetState == State.CLIMB && RobotContainer.algaeMode) {
+        } else if (RobotContainer.currentState == State.HOME && targetState == State.CLIMB) {
             RobotContainer.currentState = State.CLIMB;
             CommandScheduler.getInstance().schedule(new HomeToClimb(pivotSys, elevatorSys, extenderSys)); // home to climb
         } else {

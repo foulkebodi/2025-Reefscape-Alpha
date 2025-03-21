@@ -92,7 +92,7 @@ public final class Constants {
         public static final SimpleMotorFeedforward driveFF = new SimpleMotorFeedforward(driveKsVolts, driveKvVoltSecsPerMeter, driveKaVoldSecsPerMeterSq);
 
         // You may want to change this value depending on your breakers and the current usage of the rest of your robot.
-        public static final int driveCurrentLimitAmps = 80;
+        public static final int driveCurrentLimitAmps = 40;
 
         // This number may have to be adjusted depending on what wheels you use.
         public static final double wheelRadiusMeters = Units.inchesToMeters(1.9);
@@ -106,7 +106,7 @@ public final class Constants {
 
         public static final double driveMetersPerSecPerEncRPM = driveMetersPerEncRev / 60.0;
 
-        public static final double steerGearReduction = (15.0 / 32.0) * (10.0 / 60.0); 
+        public static final double steerGearReduction = (15.0 / 32.0) * (10.0 / 60.0);
 
         public static final double steerRadiansPerEncRev = steerGearReduction * 2.0 * Math.PI;
 
@@ -128,10 +128,10 @@ public final class Constants {
     }
 
 	public static class SwerveDriveConstants {
-        public static final Rotation2d frModuleOffset = Rotation2d.fromDegrees(32.08);
-        public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(164.17);
-        public static final Rotation2d flModuleOffset = Rotation2d.fromDegrees(71.68);
-        public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(116.9);
+        public static final Rotation2d frModuleOffset = Rotation2d.fromDegrees(32.08 + 90.0);
+        public static final Rotation2d brModuleOffset = Rotation2d.fromDegrees(164.17 + 90.0);
+        public static final Rotation2d flModuleOffset = Rotation2d.fromDegrees(71.68 + 90.0);
+        public static final Rotation2d blModuleOffset = Rotation2d.fromDegrees(116.9 + 90.0);
 
 		// Set these dimensions for the distance between the center of each wheel.
         // Note that these values are different from the robot's overall dimenstions.
@@ -185,9 +185,9 @@ public final class Constants {
         public static final double maxManualInchesPerSecSq = 100.0;
 
         public static final double homeInches = 0.0;
-        public static final double CL3Inches = 10.0;
-        public static final double AL2Inches = 20.0;
-        public static final double AL3Inches = 30.0;
+        public static final double CL3Inches = 14.0;
+        public static final double AL2Inches = 32.0;
+        public static final double AL3Inches = 45.0;
         public static final double bargeInches = 55.0;
 
         public static final float lowerLimitInches = 0f;
@@ -219,7 +219,7 @@ public final class Constants {
 
         public static final double homeInches = 0.0;
         public static final double CL2Inches = 10.0;
-        public static final double bargeInches = 13.0;
+        public static final double bargeInches = 11.0;
 
         public static final float lowerLimitInches = 0f;
 
@@ -233,8 +233,8 @@ public final class Constants {
 
         public static final double gearRatio = 88.88;
 
-        public static final double kP = 0.026;
-        public static final double kD = 0.004;
+        public static final double kP = 0.022;
+        public static final double kD = 0.003;
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
@@ -249,12 +249,12 @@ public final class Constants {
 
         // public static final double maxManualDegPerSecSq = 375.0;
 
-        public static final double chuteDeg = 3.0;
+        public static final double chuteDeg = 4.5;
         public static final double homeDeg = 22.0;
         public static final double CL1Deg = 36.0;
-        public static final double CL23Deg = 50.0;
-        public static final double CL23PrepDeg = 35.0;
-        public static final double CL4PrepDeg = 60.0;
+        public static final double CL23Deg = 45.0;
+        public static final double CL23PrepDeg = 15.0;
+        public static final double CL4PrepDeg = 35.0;
         public static final double processorDeg = 70.0;
         public static final double groundDeg = 88.0;
 
@@ -297,11 +297,11 @@ public final class Constants {
         
         public static final double maxVelDegPerSec = 150.0;
 
-        public static final double maxAccelDegPerSecSq = 150.0; 
+        public static final double maxAccelDegPerSecSq = 150.0;
 
-        public static final double inPresetDeg = -500.0;
+        public static final double inPresetDeg = -250.0;
 
-        public static final double outPresetDeg = 2000.0;
+        public static final double outPresetDeg = 800.0;
 
         public static final float lowerLimitDeg = -1000f;
 

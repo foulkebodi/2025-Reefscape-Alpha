@@ -29,6 +29,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "GroundToHome"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "RedLollipopToSeventeenLeft"
@@ -50,6 +56,12 @@
           "type": "path",
           "data": {
             "pathName": "SeventeenLeftToMiddleLollipop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GroundToHome"
           }
         },
         {

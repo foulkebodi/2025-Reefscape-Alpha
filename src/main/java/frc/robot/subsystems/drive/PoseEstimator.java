@@ -8,6 +8,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.subsystems.util.LimelightHelpers;
@@ -46,13 +48,13 @@ public class PoseEstimator extends SubsystemBase {
     @Override
     public void periodic() {
         if (LimelightHelpers.getTV(VisionConstants.frontLimelightName)
-        && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
-        && Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold) {
+        // && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
+        /* && Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold */) {
             poseEstimator.addVisionMeasurement(getFrontLimelightPose(), getFrontLimelightTimestamp());
         }
         if (LimelightHelpers.getTV(VisionConstants.backLimelightName) 
-        && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
-        && Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold) {
+        // && Math.abs(getBackLimelightPose().getX() - get().getX()) < VisionConstants.poseInnacuracyThreshold
+        /*&& Math.abs(getBackLimelightPose().getY() - get().getY()) < VisionConstants.poseInnacuracyThreshold */) {
             poseEstimator.addVisionMeasurement(getBackLimelightPose(), getBackLimelightTimestamp());
         }
         poseEstimator.update(gyroHeadingSupplier.get(), modulePositionsSupplier.get()); 
@@ -68,8 +70,8 @@ public class PoseEstimator extends SubsystemBase {
 
     public void resetHeading() {
         poseEstimator.resetPosition(gyroHeadingSupplier.get(), modulePositionsSupplier.get(), 
-        new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), Rotation2d.fromDegrees(180)));
-        // DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(180)));
+        new Pose2d(poseEstimator.getEstimatedPosition().getTranslation(), Rotation2d.fromDegrees(0)));
+        // DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180)));
     }
 
     public Pose2d getFrontLimelightPose() {

@@ -150,8 +150,11 @@ public class RobotContainer {
 			swerveDrive);
 
 		// competition autos
-		new PathPlannerAuto("TwoPieceInsideLeft");
-		new PathPlannerAuto("TwoPieceInsideRight");
+		new PathPlannerAuto("ChuteThreePieceLeft");
+		new PathPlannerAuto("ChuteThreePieceRight");
+		new PathPlannerAuto("LollipopThreePieceLeft");
+		new PathPlannerAuto("LollipopThreePieceRight");
+
 
 		// test autos
 		// new PathPlannerAuto("Test");
