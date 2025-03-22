@@ -16,7 +16,7 @@ public class CL2ToHome extends SequentialCommandGroup {
     super(
       // new StateHOME(),
       new PivotCL23Cmd(pivot),
-      new WaitCommand(0.1),
+      new WaitCommand(0.2),
       new ExtenderHomeCmd(extender),
       new WaitCommand(0.1),
       new ElevatorHomeCmd(elevator),

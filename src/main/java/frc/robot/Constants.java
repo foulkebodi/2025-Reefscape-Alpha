@@ -185,7 +185,7 @@ public final class Constants {
         public static final double maxManualInchesPerSecSq = 100.0;
 
         public static final double homeInches = 0.0;
-        public static final double CL3Inches = 14.0;
+        public static final double CL3Inches = 16.0;
         public static final double AL2Inches = 32.0;
         public static final double AL3Inches = 45.0;
         public static final double bargeInches = 55.0;
@@ -219,6 +219,7 @@ public final class Constants {
 
         public static final double homeInches = 0.0;
         public static final double CL2Inches = 10.0;
+        public static final double CL4Inches = 2.0;
         public static final double bargeInches = 11.0;
 
         public static final float lowerLimitInches = 0f;
@@ -253,7 +254,7 @@ public final class Constants {
         public static final double homeDeg = 22.0;
         public static final double CL1Deg = 36.0;
         public static final double CL23Deg = 45.0;
-        public static final double CL23PrepDeg = 15.0;
+        public static final double CL23PrepDeg = 50.0;
         public static final double CL4PrepDeg = 35.0;
         public static final double processorDeg = 70.0;
         public static final double groundDeg = 88.0;
@@ -265,14 +266,14 @@ public final class Constants {
 
     public class IntakeConstants {
         public static final int maxIntakeCurrentAmps = 50;
-        
+
         public static final double outtakePower = 1.0;
 
         public static final double intakePower = -0.35;
 
-        public static final double idlePower = -0.15;
+        public static final double idlePower = -0.25;
 
-        public static final double idleOutPower = 0.10;
+        public static final double idleOutPower = 0.08;
 
         public static final double waitSeconds = 0.35;
 
@@ -294,7 +295,7 @@ public final class Constants {
 
         public static final double degPerEncRev = 360.0 / gearRatio;
         public static final double degPerSecPerRPM = 360.0 / (60.0 * gearRatio);
-        
+
         public static final double maxVelDegPerSec = 150.0;
 
         public static final double maxAccelDegPerSecSq = 150.0;

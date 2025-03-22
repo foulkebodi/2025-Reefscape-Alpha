@@ -17,7 +17,7 @@ public class CL4ToHome extends SequentialCommandGroup {
       // new StateHOME(),
       new PivotGroundCmd(pivot),
       new WaitCommand(0.2),
-      new PivotHomeCmd(pivot), 
+      new PivotHomeCmd(pivot),
       new WaitCommand(0.05),
       new ElevatorHomeCmd(elevator),
       new ExtenderHomeCmd(extender)
